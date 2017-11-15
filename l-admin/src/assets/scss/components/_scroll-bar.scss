@@ -1,0 +1,22 @@
+::-webkit-scrollbar-track-piece {
+    width: 6px;
+    background: $menu-bg-color - 00020;
+    border: 0;
+    border-radius: 3px;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border: 0;
+    background: $menu-bg-color - 00020;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $scroll-color;
+    border: 0;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: $scroll-color - 00020;
+}

@@ -1,0 +1,255 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei";
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    color: #333;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.02em;
+}
+
+ul, li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.underline {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+// 进度条
+.nprogress-container {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 9999;
+}
+
+// ===========================框架 start========================
+.header {
+    position: fixed;
+    width: 100%;
+    height: $header-height;
+    background: $header-bg-color;
+    color: $header-text-color;
+    z-index: 101;
+    font-size: 14px;
+    overflow: hidden;
+
+    a {
+        text-decoration: none;
+        color: $header-text-color;
+    }
+
+    .br {
+        border-right: 1px solid $header-border-color;
+    }
+
+    .bl {
+        border-left: 1px solid $header-border-color;
+    }
+
+    .header-btn {
+        &:hover {
+            background-color: $header-btn-hover-bg-color;
+        }
+
+        .content {
+            display: block;
+            padding: 0 18px;
+            line-height: $header-height;
+        }
+
+        .index-btn {
+            display: block;
+            width: $menu-width - $logo-box-width - 2;
+            line-height: $header-height;
+            text-align: center;
+        }
+
+        display: block;
+        height: $header-height;
+        background-color: $header-bg-color;
+
+    }
+
+    $logo-img-width: $logo-box-width * 0.7;
+    
+    .logo {
+        width: 50px;
+        padding: ($logo-box-width - $logo-img-width) / 2;
+
+        img {
+            width: $logo-img-width;
+            height: $logo-img-width;
+        }
+    }
+}
+
+.menu {
+    z-index: 102;
+    position: fixed;
+    color: $menu-text-color;
+    top: $header-height;
+    bottom: 0px;
+    background-color: $menu-bg-color;
+    font-size: 12px;
+    transition: width $menu-transition-duration;
+    overflow: hidden;
+
+    &.open {
+        width: $menu-width;
+    }
+
+    &.close {
+        width: $logo-box-width + 1;
+    
+        .el-menu {
+            width: $logo-box-width + 1;
+        }
+
+        .title, .el-icon-arrow-down {
+            display: none;
+        }
+
+        .el-menu-item, .el-submenu__title {
+            width: $logo-box-width + 1 !important;
+            min-width: $logo-box-width + 1 !important;
+            padding: 0 20px !important;
+        }
+
+        .tip-box {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+    }
+
+    .toggle-btn {
+        height: $menu-toggle-btn-height;
+        line-height: $menu-toggle-btn-height !important;
+        width: 100%;
+        background: $menu-toggle-btn-bg-color;
+        color: $menu-toggle-btn-color;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+        
+        .fa {
+            transition: rotate $menu-transition-duration;
+        }
+        
+        .open {
+            transform: rotate(-90deg);
+        }
+    }
+
+    .menu-list {
+        position: absolute;
+        overflow-x: hidden;
+        width: $menu-width + 20; // 隐藏滚动条
+        left: 0;
+        right: 0;
+        top: $menu-toggle-btn-height;
+        bottom: 0;
+
+    }
+
+    // 重写 el 菜单样式
+    .el-menu {
+        transition: width $menu-transition-duration;
+        border-right: none;
+        width: $menu-width;
+        background-color: $menu-bg-color;
+    }
+    
+    .el-icon-arrow-down, .menu-icon {
+        color: $menu-text-color;
+    }
+
+    .el-submenu__title {
+        background-color: $menu-item-parent-bg-color;
+
+        &:hover {
+            background-color: $menu-item-hover-parent-bg-color;
+        }
+    }
+
+    .el-menu-item {
+        transition: padding $menu-transition-duration;
+        background-color: $menu-item-bg-color;
+
+        &:hover {
+            background-color: $menu-item-hover-bg-color;
+        }
+
+        &.is-active {
+            background-color: $menu-item-active-bg-color !important;
+        }
+    }
+
+    .el-menu-item, .el-submenu__title {
+        width: $menu-width;
+        min-width: $menu-width;
+        height: $menu-item-height;
+        line-height: $menu-item-height;
+        color: $menu-text-color;
+        font-size: 12px;
+
+    }
+
+    .title {
+        margin-left: 10px;
+        user-select: none;
+    }
+}
+
+.main-frame {
+    width: auto;
+    position: absolute;
+    top: $header-height;
+    bottom: 0px;
+    right: 0px;
+    overflow: hidden;
+    background: $frame-bg-color;
+    transition: left $menu-transition-duration;
+
+    &.open {
+        left: $menu-width;
+    }
+
+    &.close {
+        left: $logo-box-width + 1;
+    }
+}
+
+.content-wrapper {
+    position: absolute;
+    width: auto;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+// ===========================框架 end========================

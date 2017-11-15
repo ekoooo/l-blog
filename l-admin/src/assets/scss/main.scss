@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+// 全局变量
+@import "./const";
+
+// 基础样式
+@import "./components/_base";
+
+// 公共样式
+@import "./components/_common";
+
+// 滚动条
+@import "./components/_scroll-bar";

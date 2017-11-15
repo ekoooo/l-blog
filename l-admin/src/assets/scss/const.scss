@@ -1,0 +1,29 @@
+$main-color: rgb(51, 173, 255); // 主色调
+$red-color: rgb(252, 67, 77);
+$scroll-color: #00A2CA;
+$frame-bg-color: #eaedf1; // 背景颜色
+
+// header
+$header-height: 50px;
+$header-bg-color: #373E41;
+$header-border-color: #2B2E32;
+$header-btn-hover-bg-color: #2B2E32;
+$header-text-color: #fff;
+// header
+$logo-box-width: $header-height;
+// menu
+$menu-toggle-btn-height: 30px;
+$menu-width: 180px;
+$menu-bg-color: #293038;
+$menu-text-color: #eee;
+$menu-toggle-btn-bg-color: #4A5064;
+$menu-toggle-btn-color: #aeb9c2;
+$menu-transition-duration: .1s;
+$menu-item-height: 40px;
+$menu-item-parent-bg-color: #42485B;
+$menu-item-bg-color: $menu-bg-color;
+
+$menu-item-hover-parent-bg-color: #02C1DE;
+$menu-item-hover-bg-color: #4A5064;
+$menu-item-active-bg-color: $menu-item-hover-parent-bg-color;
+// menu
