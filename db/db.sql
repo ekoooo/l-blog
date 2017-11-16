@@ -38,7 +38,7 @@ create sequence seq_users_id
 -- drop table if exists users;
 create table users (
     id int not null default nextval('seq_users_id'),
-    username character varying(32) not null,
+    username character varying(32) unique not null,
     password character varying(128) not null,
     salt character varying(128) not null,
     avatar_url character varying(255) default null,
