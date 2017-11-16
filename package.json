@@ -15,6 +15,9 @@
     "moment": "^2.19.2",
     "morgan": "~1.9.0",
     "pg": "^7.4.0",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "stack-trace": "0.0.10",
+    "winston": "^2.4.0",
+    "winston-daily-rotate-file": "^1.7.2"
   }
 }
