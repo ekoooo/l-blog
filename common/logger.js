@@ -1,7 +1,6 @@
 var morgan = require('morgan');
 var winston = require('winston');
 
-var rfs = require('rotating-file-stream');
 var path = require('path');
 var fs = require('fs');
 var moment = require('moment');
