@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Vue from 'vue';
 import store from '../store/';
 import { API_URL_RPEFIX } from '../config/config';
