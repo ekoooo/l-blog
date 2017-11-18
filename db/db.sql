@@ -2,11 +2,11 @@
 -- 创建数据库
 -- ----------------------------------------------------------------------------
 -- CREATE DATABASE lBlog
---     WITH 
+--     WITH
 --     OWNER = postgres
 --     ENCODING = 'UTF8'
---     LC_COLLATE = 'zh_CN.UTF-8'
---     LC_CTYPE = 'zh_CN.UTF-8'
+--     LC_COLLATE = 'C'
+--     LC_CTYPE = 'C'
 --     TABLESPACE = pg_default
 --     CONNECTION LIMIT = -1;
 
@@ -31,9 +31,9 @@ $$ LANGUAGE plpgsql;
 -- ----------------------------------------------------------------------------
 -- drop sequence if exists seq_users_id;
 create sequence seq_users_id
-    increment by 1 
-    minvalue 1 
-    no maxvalue 
+    increment by 1
+    minvalue 1
+    no maxvalue
     start with 1;
 -- drop table if exists users;
 create table users (
@@ -66,9 +66,9 @@ comment on column public.users.create_ip is '创建IP';
 -- ----------------------------------------------------------------------------
 -- drop sequence if exists seq_user_profile_id;
 create sequence seq_user_profile_id
-    increment by 1 
-    minvalue 1 
-    no maxvalue 
+    increment by 1
+    minvalue 1
+    no maxvalue
     start with 1;
 -- drop table if exists user_profile;
 create table user_profile (
@@ -99,9 +99,9 @@ comment on column public.user_profile.description is '描述';
 -- ----------------------------------------------------------------------------
 -- drop sequence if exists seq_posts_id;
 create sequence seq_posts_id
-    increment by 1 
-    minvalue 1 
-    no maxvalue 
+    increment by 1
+    minvalue 1
+    no maxvalue
     start with 1;
 -- drop table if exists posts;
 create table posts (
@@ -149,9 +149,9 @@ CREATE TRIGGER t_posts_update_time
 -- ----------------------------------------------------------------------------
 -- drop sequence if exists seq_post_category_id;
 create sequence seq_post_category_id
-    increment by 1 
-    minvalue 1 
-    no maxvalue 
+    increment by 1
+    minvalue 1
+    no maxvalue
     start with 1;
 -- drop table if exists post_category;
 create table post_category (
@@ -176,9 +176,9 @@ comment on column public.post_category.status is '状态 1正常 0删除';
 -- ----------------------------------------------------------------------------
 -- drop sequence if exists seq_post_tags_id;
 create sequence seq_post_tags_id
-    increment by 1 
-    minvalue 1 
-    no maxvalue 
+    increment by 1
+    minvalue 1
+    no maxvalue
     start with 1;
 -- drop table if exists post_tags;
 create table post_tags (
@@ -201,9 +201,9 @@ comment on column public.post_tags.name is '标签名';
 -- ----------------------------------------------------------------------------
 -- drop sequence if exists seq_post_votes_id;
 create sequence seq_post_votes_id
-    increment by 1 
-    minvalue 1 
-    no maxvalue 
+    increment by 1
+    minvalue 1
+    no maxvalue
     start with 1;
 -- drop table if exists post_votes;
 create table post_votes (
@@ -229,9 +229,9 @@ comment on column public.post_votes.create_time is '创建时间';
 -- ----------------------------------------------------------------------------
 -- drop sequence if exists seq_post_access_id;
 create sequence seq_post_access_id
-    increment by 1 
-    minvalue 1 
-    no maxvalue 
+    increment by 1
+    minvalue 1
+    no maxvalue
     start with 1;
 -- drop table if exists post_access;
 create table post_access (
@@ -256,9 +256,9 @@ comment on column public.post_access.create_time is '创建时间';
 -- ----------------------------------------------------------------------------
 -- drop sequence if exists seq_post_comments_id;
 create sequence seq_post_comments_id
-    increment by 1 
-    minvalue 1 
-    no maxvalue 
+    increment by 1
+    minvalue 1
+    no maxvalue
     start with 1;
 -- drop table if exists post_comments;
 create table post_comments (
