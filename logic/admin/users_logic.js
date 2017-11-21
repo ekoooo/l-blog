@@ -51,8 +51,12 @@ var UsersLogic = {
     getInfoById: (id) => new Promise((resolve, reject) => {
         pool.connect().then(client => {
             client.query(`${ UsersLogic.GET_ALL_SQL } where u.id = $1`, [id]).then(rs => {
+                client.release();
                 resolve(rs.rows);
-            }).catch(error => reject(error));
+            }).catch(error => {
+                client.release();
+                reject(error)
+            });
         });
     }),
 
@@ -62,8 +66,12 @@ var UsersLogic = {
     getInfoByUserName: (username) => new Promise((resolve, reject) => {
         pool.connect().then(client => {
             client.query(`${ UsersLogic.GET_ALL_SQL } where u.username = $1`, [username]).then(rs => {
+                client.release();
                 resolve(rs.rows);
-            }).catch(error => reject(error));
+            }).catch(error => {
+                client.release();
+                reject(error)
+            });
         });
     }),
 };
