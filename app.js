@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var router = require('./routes/');
 var Logger = require('./common/logger');
 
 var app = express();
@@ -25,6 +26,9 @@ app.use(cookieParser());
 
 // 静态资源目录
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 注册路由
+router(app);
 
 // 404 错误处理
 app.use(function(req, res, next) {
