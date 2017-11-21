@@ -1,16 +1,16 @@
 -- ----------------------------------------------------------------------------
 -- 创建数据库
 -- ----------------------------------------------------------------------------
--- CREATE DATABASE lBlog
+-- CREATE DATABASE lblog
 --     WITH
 --     OWNER = postgres
 --     ENCODING = 'UTF8'
---     LC_COLLATE = 'C'
---     LC_CTYPE = 'C'
+--     LC_COLLATE = 'zh_CN.UTF-8'
+--     LC_CTYPE = 'zh_CN.UTF-8'
 --     TABLESPACE = pg_default
 --     CONNECTION LIMIT = -1;
 
--- COMMENT ON DATABASE lBlog IS 'l-blog 数据库';
+-- COMMENT ON DATABASE lblog IS 'l-blog 数据库';
 
 
 -- ----------------------------------------------------------------------------
@@ -40,9 +40,10 @@ create table users (
     id int not null default nextval('seq_users_id'),
     username character varying(32) unique not null,
     password character varying(128) not null,
-    salt character varying(128) not null,
+    salt character varying(128),
     avatar_url character varying(255) default null,
     status smallint default 1,
+    is_admin smallint default 0,
     create_time timestamp with time zone default current_timestamp,
     create_ip character varying(39) default null,
     PRIMARY KEY (id)
@@ -57,6 +58,7 @@ comment on column public.users.password is '密码';
 comment on column public.users.salt is '密码盐';
 comment on column public.users.avatar_url is '头像地址';
 comment on column public.users.status is '状态 1正常 0停用';
+comment on column public.users.is_admin is '是否超级管理员 1是 0否';
 comment on column public.users.create_time is '创建时间';
 comment on column public.users.create_ip is '创建IP';
 
