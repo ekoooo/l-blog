@@ -70,8 +70,9 @@ var Logger = {
         app.use(morgan('combined', { 'stream': logger.stream }));
     },
 
+    // 开发模式才开启
     debug: function() {
-        logger.debug.apply(logger, arguments);
+        process.env.NODE_ENV === 'development' && logger.debug.apply(logger, arguments);
     },
 
     info: function() {
