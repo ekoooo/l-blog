@@ -6,4 +6,5 @@ const SUFFIX = process.env.NODE_ENV === 'development' ? '.dev' : '.prod';
 
 module.exports = {
     ...require('./db' + SUFFIX), // 数据库配置文件
+    ...require('./redis' + SUFFIX), // redis 配置文件
 };
