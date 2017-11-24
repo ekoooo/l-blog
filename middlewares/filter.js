@@ -1,7 +1,7 @@
 const CODE = require('../common/code');
-var Logger = require('../common/logger');
+let Logger = require('../common/logger');
 
-var OauthLogic = require('../logic/oauth_logic');
+let OauthLogic = require('../logic/oauth_logic');
 
 module.exports = {
     /**

@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var Logger = require('../../common/logger');
-var OauthLogic = require('../../logic/oauth_logic');
-var Filter = require('../../middlewares/filter');
+let express = require('express');
+let router = express.Router();
+let Logger = require('../../common/logger');
+let OauthLogic = require('../../logic/oauth_logic');
+let Filter = require('../../middlewares/filter');
 
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -15,8 +15,8 @@ router.use(function (req, res, next) {
 
 // 登录
 router.post('/login', function (req, res, next) {
-    var username = req.body.username;
-    var password = req.body.password;
+    let username = req.body.username;
+    let password = req.body.password;
 
     OauthLogic.loginAdmin(username, password).then(rs => {
         res.send(rs);
