@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{l-blog/node_modules}" />
+    <file url="file://$PROJECT_DIR$/l-admin" libraries="{l-blog/l-admin/node_modules}" />
+    <file url="PROJECT" libraries="{express-DefinitelyTyped, l-blog/l-admin/node_modules, l-blog/node_modules, node-DefinitelyTyped, pg-DefinitelyTyped}" />
+    <includedPredefinedLibrary name="Node.js Core" />
+  </component>
+</project>
