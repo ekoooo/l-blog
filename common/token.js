@@ -1,12 +1,12 @@
-var jwt = require('jwt-simple');
-var UsersLogic = require('../logic/users_logic');
-var Logger = require('./logger');
-var redisClient = require('./redis');
+let jwt = require('jwt-simple');
+let UsersLogic = require('../logic/users_logic');
+let Logger = require('./logger');
+let redisClient = require('./redis');
 
 /**
  * JWT Token 处理类
  */
-var Token = {
+let Token = {
     /**
      * token 有效时间
      */
@@ -20,7 +20,8 @@ var Token = {
     /**
      * 更新 Token 失效时间到 redis
      * @param id user_id
-     * @param clear true => 退出登录时设置过期时间为 0 
+     * @param iat
+     * @param clear true => 退出登录时设置过期时间为 0
      */
     updateExpireTime: (id, iat, clear = false) => {
         let key = Token.REIDS_TABLE_NAME + id + '#' + iat;
@@ -40,7 +41,7 @@ var Token = {
      * 生成 JWT Token
      */
     jwtEncode: (info) => {
-        var payload = {
+        let payload = {
             user_id: info.user_id,
             username: info.username,
             is_admin: info.is_admin,
@@ -60,11 +61,12 @@ var Token = {
 
     /**
      * 验证 JWT Token
+     * @param token
      * @param isValid 是否验证正确性
      * @return payload
      */
     validToken: (token, isValid = true) => new Promise((resolve, reject) => {
-        var payload = {};
+        let payload = {};
 
         try {
             payload = jwt.decode(token, null, true);

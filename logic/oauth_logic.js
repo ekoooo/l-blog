@@ -1,10 +1,10 @@
 const { pool } = require('../common/pgsql');
 const CODE = require('../common/code');
 
-var Logger = require('../common/logger');
-var Token = require('../common/token');
-var UsersLogic = require('./users_logic');
-var Pwd = require('../common/pwd');
+let Logger = require('../common/logger');
+let Token = require('../common/token');
+let UsersLogic = require('./users_logic');
+let Pwd = require('../common/pwd');
 
 const USERNAME_MIN_LEN = UsersLogic.VALID_CONFIG.USERNAME_MIN_LENGTH;
 const USERNAME_MAX_LEN = UsersLogic.VALID_CONFIG.USERNAME_MAX_LENGTH;
@@ -14,7 +14,7 @@ const PWD_MAX_LEN = UsersLogic.VALID_CONFIG.PASSWORD_MAX_LENGTH;
 /**
  * 登录权限验证
  */
-var OauthLogic = {
+let OauthLogic = {
     /**
      * 判断是否登录，如果已经登录自动刷新 Token 失效时间
      */
@@ -83,14 +83,14 @@ var OauthLogic = {
             }else {
                 Pwd.valid(password, rows[0].password).then(rs => {
                     if(rs) {
-                        if(rows[0].status != 1) {
+                        if(rows[0].status !== 1) {
                             reject({
                                 code: CODE.UNAUTHORIZED,
                                 message: '账号被冻结！',
                             });
                         }
 
-                        if(rows[0]['is_admin'] != 1) {
+                        if(rows[0]['is_admin'] !== 1) {
                             reject({
                                 code: CODE.UNAUTHORIZED,
                                 message: '非管理员账号！',

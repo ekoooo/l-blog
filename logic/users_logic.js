@@ -1,13 +1,13 @@
 const { pool } = require('../common/pgsql');
 const Misc = require('../utils/misc');
 
-var Logger = require('../common/logger');
-var Token = require('../common/token');
-var Pwd = require('../common/pwd');
-var redisClient = require('../common/redis');
-var DbUtil = require('../utils/db_util');
+let Logger = require('../common/logger');
+let Token = require('../common/token');
+let Pwd = require('../common/pwd');
+let redisClient = require('../common/redis');
+let DbUtil = require('../utils/db_util');
 
-var UsersLogic = {
+let UsersLogic = {
     // 用户先关校验配置
     VALID_CONFIG: {
         // 密码最长长度
@@ -41,7 +41,7 @@ var UsersLogic = {
 
                     const rs = await client.query(usersSqlStr, ['lwl', hash, 1]);
 
-                    await client.query(userProfileSqlStr, [rs.rows[0].id, 1, 24, '15727781885', '954408050@qq.com', '测试账号，密码 123456'])
+                    await client.query(userProfileSqlStr, [rs.rows[0].id, 1, 24, '15727781885', '954408050@qq.com', '测试账号，密码 123456']);
 
                     await client.query('COMMIT');
 
@@ -88,7 +88,7 @@ var UsersLogic = {
                 resolve(rs.rows);
             }).catch(error => {
                 client.release();
-                Logger.warn(`getInfoByUserName(${ id }) error!`, error);
+                Logger.warn(`getInfoByUserName(${ username }) error!`, error);
                 reject(error)
             });
         });
@@ -98,11 +98,11 @@ var UsersLogic = {
      * 获取安全的用户信息
      */
     getSafeUserInfo: (data) => {
-        var info = Misc.cloneObj(data);
+        let info = Misc.cloneObj(data);
 
         info.password !== undefined && delete info.password;
         info.id !== undefined && delete info.id;
-        info.user_profile_id !== undefined && delete info.user_profile_id;
+        info['user_profile_id'] !== undefined && delete info['user_profile_id'];
         info.salt !== undefined && delete info.salt;
 
         return info;

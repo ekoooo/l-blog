@@ -1,9 +1,9 @@
-var bcrypt = require('bcrypt');
+let bcrypt = require('bcrypt');
 
 /**
  * 密码加密和验证
  */
-var Pwd = {
+let Pwd = {
     /**
      * 验证明文密码是否和加密后的密码是一致的
      * @param plaintextPassword 明文密码

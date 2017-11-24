@@ -1,9 +1,9 @@
 const Config = require('../config/');
 
-var Logger = require('../common/logger');
-var redis = require("redis");
+let Logger = require('../common/logger');
+let redis = require("redis");
 
-var client = redis.createClient({
+let client = redis.createClient({
     host: Config.redisHost,
     port: Config.redisPort,
     db: Config.redisDb,

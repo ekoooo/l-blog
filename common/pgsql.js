@@ -1,6 +1,6 @@
 const { Pool } = require('pg');
 const Config = require('../config/');
-var Logger = require('../common/logger');
+let Logger = require('../common/logger');
 
 const pool = new Pool({
     host: Config.dbHost,

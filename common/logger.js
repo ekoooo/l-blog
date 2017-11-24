@@ -1,10 +1,10 @@
-var morgan = require('morgan');
-var winston = require('winston');
+let morgan = require('morgan');
+let winston = require('winston');
 
-var path = require('path');
-var fs = require('fs');
-var moment = require('moment');
-var stackTrace = require('stack-trace');
+let path = require('path');
+let fs = require('fs');
+let moment = require('moment');
+let stackTrace = require('stack-trace');
 
 require('winston-daily-rotate-file');
 
@@ -15,7 +15,7 @@ const LOGS_DIR = path.join(__dirname, '../logs');
  * error 级别日志单独记录到另一个文件中 
  * debug 输出到控制台，不记录到文件中
  */
-var logger = new winston.Logger({
+let logger = new winston.Logger({
     transports: [
         new (winston.transports.DailyRotateFile) ({
             name: 'error',
@@ -64,7 +64,7 @@ logger.stream = {
 /**
  * 日志处理对象
  */
-var Logger = {
+let Logger = {
     // 初始化 morgan 记录请求记录
     initRequestLogger: function(app) {
         app.use(morgan('combined', { 'stream': logger.stream }));
