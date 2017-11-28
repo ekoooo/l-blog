@@ -1,7 +1,7 @@
 // 菜单配置
 const config = [
     {
-        path: '/',
+        path: '/main/index',
         text: '主页',
         icon: 'fa-flag'
     },
@@ -11,17 +11,17 @@ const config = [
         index: '1',
         item: [
             {
-                path: '/posts',
+                path: '/main/posts',
                 text: '文章列表',
                 icon: 'fa-pencil'
             },
             {
-                path: '/postCategory',
+                path: '/main/postCategory',
                 text: '文章分类',
                 icon: 'fa-anchor'
             },
             {
-                path: '/comments',
+                path: '/main/comments',
                 text: '评论列表',
                 icon: 'fa-comments-o'
             },
@@ -33,7 +33,7 @@ const config = [
         index: '2',
         item: [
             {
-                path: '/images',
+                path: '/main/images',
                 text: '图片管理',
                 icon: 'fa-file-image-o'
             },
@@ -45,7 +45,7 @@ const config = [
         index: '3',
         item: [
             {
-                path: '/configs',
+                path: '/main/configs',
                 text: '基础配置',
                 icon: 'fa-cog'
             },
