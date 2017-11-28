@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import store from '../store/';
-import { API_URL_RPEFIX } from '../config/config';
+import { API_URL_RPEFIX } from '../config/';
 
 const Requester = {
 
@@ -18,7 +18,7 @@ const Requester = {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': isFormDataType ? 'multipart/form-data' : 'application/json',
-                'X-ACCESS-TOKEN': store.state.userInfo.token
+                'Authorization': store.state.userInfo.token
             }
         }).then((response) => {
             return response.data;
