@@ -15,7 +15,7 @@ let UsersLogic = {
         // 密码最短长度
         PASSWORD_MIN_LENGTH: 6,
         // 用户名最长长度
-        USERNAME_MAX_LENGTH: 8,
+        USERNAME_MAX_LENGTH: 9,
         // 用户名最短长度
         USERNAME_MIN_LENGTH: 3,
         // redis 表名
