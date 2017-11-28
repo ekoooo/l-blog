@@ -10,6 +10,7 @@ const USERNAME_MIN_LEN = UsersLogic.VALID_CONFIG.USERNAME_MIN_LENGTH;
 const USERNAME_MAX_LEN = UsersLogic.VALID_CONFIG.USERNAME_MAX_LENGTH;
 const PWD_MIN_LEN = UsersLogic.VALID_CONFIG.PASSWORD_MIN_LENGTH;
 const PWD_MAX_LEN = UsersLogic.VALID_CONFIG.PASSWORD_MAX_LENGTH;
+const MAX_LOGIN_NUMBER = 2; // 最多几处登录
 
 /**
  * 登录权限验证
@@ -23,6 +24,27 @@ let OauthLogic = {
             resolve(true);
         }).catch(err => {
             reject(false);
+        });
+    }),
+    
+    /**
+     * 退出登录
+     * @param token
+     */
+    logout: (token) => new Promise((resolve, reject) => {
+        // 根据 Token 拿到 payload 的信息
+        Token.validToken(token, false).then(info => {
+            Token.updateExpireTime(info['user_id'], info['iat'], true);
+    
+            reject({
+                code: CODE.SUCCESS,
+                message: '退出成功！',
+            });
+        }).catch(err => {
+            reject({
+                code: CODE.TOKEN_NON_VERIFIED,
+                message: 'Token 验证失败！',
+            });
         });
     }),
 
@@ -40,6 +62,9 @@ let OauthLogic = {
                 Logger.error(error);
             });
 
+            // 限制一个账号只能在 N 个地方登录（Token 个数）
+            Token.clearOldCacheToken(rs['user_id'], MAX_LOGIN_NUMBER - 1);
+            
             // 返回需要的用户信息
             resolve({
                 code: CODE.SUCCESS,
