@@ -26,9 +26,10 @@ let Token = {
     updateExpireTime: (id, iat, clear = false) => {
         let key = Token.REIDS_TABLE_NAME + id + '#' + iat;
         let time = clear ? 0 : Token.TOKEN_EXPIRE_TIME + new Date().getTime();
-
+        let expireTime = clear ? 0 : Token.TOKEN_EXPIRE_TIME / 1000;
+        
         // 设置过期时间
-        redisClient.set(key, time, 'EX', Token.TOKEN_EXPIRE_TIME / 1000, (err, res) => {
+        redisClient.set(key, time, 'EX', expireTime, (err, res) => {
             if(err) {
                 Logger.error('Token expire time save error', err);
             }else {
@@ -106,6 +107,45 @@ let Token = {
             }
 
         }).catch(error => { reject(error); });
+    }),
+    
+    /**
+     * 清理多余登录 Token
+     * @param id userId
+     * @param maxLen 最多保留几条
+     */
+    clearOldCacheToken: (id, maxLen = 5) => new Promise(() => {
+        let param = `${ Token.REIDS_TABLE_NAME }${ id }#`;
+        
+        redisClient.send_command('keys', [param + '*'], (err, res) => {
+            if(err) {
+                Logger.error(`clearOldCacheToken send "keys" command error`, err);
+            }
+            if(res.length > maxLen) {
+                // 去除前缀
+                res = res.map(item => {
+                    return Number(item.replace(param, ''));
+                });
+                
+                // 排序
+                res = res.sort((a, b) => a - b);
+                
+                // 获取需要删除 key 值
+                res = res.slice(0, res.length - maxLen);
+                
+                let delKeys = res.map(item => {
+                    return param + item;
+                });
+        
+                redisClient.send_command('del', ['key', ...delKeys], (err, res) => {
+                    if(err) {
+                        Logger.error(`clearOldCacheToken send "del key" command error`, err);
+                    }else {
+                        Logger.info(`user id: ${ id }, 清理登录 Token ${ res } 条`);
+                    }
+                })
+            }
+        });
     }),
 };
 
