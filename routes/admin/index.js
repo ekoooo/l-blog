@@ -25,4 +25,14 @@ router.post('/login', function (req, res, next) {
     });
 });
 
+// 退出
+router.post('/logout', Filter.filtHttpLogin, function (req, res, next) {
+    OauthLogic.logout(req.headers.authorization).then(rs => {
+        res.send(rs);
+    }).catch(error => {
+        res.send(error);
+    });
+});
+
+
 module.exports = router;
