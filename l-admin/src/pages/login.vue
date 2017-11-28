@@ -6,6 +6,7 @@
             </a>
             <h3 class="title">后台管理系统</h3>
             <el-input
+                :maxlength="9"
                 class="ipt"
                 size="small"
                 placeholder="请输入用户名"
@@ -15,6 +16,7 @@
                 </span>
             </el-input>
             <el-input
+                :maxlength="16"
                 @keyup.enter.native="login"
                 class="ipt"
                 size="small"
@@ -38,6 +40,8 @@
 
 <script>
     import InfoConfig from '../config/info';
+    import OauthLogic from '../logic/oauth';
+    import MSG from '../utils/message';
 
     export default {
         data: function() {
@@ -51,13 +55,43 @@
             };
         },
         methods: {
+            /**
+             * 验证登录参数
+             */
+            validLogin: function() {
+                if(this.formInfo.username.length < 3
+                        || this.formInfo.username.length > 9) {
+                    MSG.error('账号长度应3至9位！');
+                    return false;
+                }
+                else if(this.formInfo.password.length < 6
+                        || this.formInfo.password.length > 16) {
+                    MSG.error('密码长度应6至16位！');
+                    return false;
+                }
+                return true;
+            },
             login: function() {
+                if(!this.validLogin()) { return; }
+
                 this.loginLoading = true;
-                this.$router.push({ name: 'index' });
+
+                OauthLogic.loginAdmin(this.formInfo).then(data => {
+                    if(data.code === 200) {
+                        MSG.success('登陆成功！');
+                        this.$router.replace({ name: 'index' });
+                    }else {
+                        this.loginLoading = false;
+                        MSG.error(data.message);
+                    }
+                }).catch(err => {
+                    this.loginLoading = false;
+                });
             }
         },
         created: function() {
             // 进入登录页，自动清除登录信息
+            OauthLogic.clearLoginData();
         },
     }
 </script>
@@ -71,7 +105,7 @@
         color: #eee;
         top: 0;
         left: 0;
-        overflow: hidden; 
+        overflow: hidden;
 
         .wrapper {
             position: relative;
