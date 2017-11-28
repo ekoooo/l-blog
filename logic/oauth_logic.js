@@ -36,7 +36,7 @@ let OauthLogic = {
         Token.validToken(token, false).then(info => {
             Token.updateExpireTime(info['user_id'], info['iat'], true);
     
-            reject({
+            resolve({
                 code: CODE.SUCCESS,
                 message: '退出成功！',
             });
