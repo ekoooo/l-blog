@@ -26,7 +26,7 @@ let Token = {
     updateExpireTime: (id, iat, clear = false) => {
         let key = Token.REIDS_TABLE_NAME + id + '#' + iat;
         let time = clear ? 0 : Token.TOKEN_EXPIRE_TIME + new Date().getTime();
-        let expireTime = clear ? 0 : Token.TOKEN_EXPIRE_TIME / 1000;
+        let expireTime = clear ? 1 : Token.TOKEN_EXPIRE_TIME / 1000; // 失效时间至少 1 秒
         
         // 设置过期时间
         redisClient.set(key, time, 'EX', expireTime, (err, res) => {
@@ -87,7 +87,7 @@ let Token = {
                 // 验证 JWT Token 是否合法
                 jwt.decode(token, Token.getSecret(id, password));
                 // 验证是否过期
-                redisClient.get(Token.REIDS_TABLE_NAME + id + '#' + payload.iats, (err, res) => {
+                redisClient.get(Token.REIDS_TABLE_NAME + id + '#' + payload.iat, (err, res) => {
                     if(err) {
                         Logger.error('Token expire time get error', err);
                         reject(false);
