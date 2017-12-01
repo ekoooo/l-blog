@@ -71,3 +71,4 @@ npm run build # 打包发布
 2. 需要安装
     - 缓存 `Redis`
     - 数据库 `postgresql`
+    - 图片存储使用的是 `七牛云`
