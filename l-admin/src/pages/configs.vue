@@ -1,13 +1,14 @@
 <template>
-    <div>
-        configs
+    <div class="box">
     </div>
 </template>
 
 <script>
     export default {
-        components: {
-
-        }
+        computed: {
+            title: function() {
+                return this.$route.meta.title;
+            }
+        },
     }
 </script>
