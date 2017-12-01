@@ -53,6 +53,10 @@
 ```bash
 npm run dev # 开发环境运行
 npm run start # 生产环境运行
+
+# windows
+npm run win_dev # 开发环境运行
+npm run win_start # 生产环境运行
 ```
 
 ### 前端
@@ -68,7 +72,12 @@ npm run build # 打包发布
     - 复制一份开发环境配置文件然后修改后缀名为 `.prod.js` 即可。
     - 里面配置值根据实际情况填写。
     - 具体逻辑可看 `./config/index.js` 代码。
-2. 需要安装
-    - 缓存 `Redis`
-    - 数据库 `postgresql`
-    - 图片存储使用的是 `七牛云`
+2. 需要环境
+    - 缓存 `Redis`。
+    - 数据库 `postgresql`。
+    - 图片存储使用的是 `七牛云`。
+
+3. 管理员账号生成
+    - 打开 `logic\users_logic.js` 中 `// UsersLogic._addAdmin();` 注释。
+    - 执行 `node --harmony logic\users_logic.js`。
+    - 默认账号 `admin`，密码 `123456`。
