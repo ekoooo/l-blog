@@ -29,9 +29,7 @@ const Oauth = {
      */
     logout() {
         MSG.warningConfirm('是否退出登陆？').then(() => {
-            // Oauth.clearLoginData(); // 登陆 created 钩子中已清楚
-            // TODO 调用服务器退出接口
-            
+            requester.post('/admin/logout');
             // 返回到登陆界面
             router.replace({ name: 'login' });
         }).catch(() => {
