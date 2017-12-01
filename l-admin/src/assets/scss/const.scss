@@ -2,6 +2,7 @@ $main-color: rgb(51, 173, 255); // 主色调
 $red-color: rgb(252, 67, 77);
 $scroll-color: #00A2CA;
 $frame-bg-color: #eaedf1; // 背景颜色
+$gray-line-color: #ddd;
 
 // header
 $header-height: 50px;
@@ -27,3 +28,9 @@ $menu-item-hover-parent-bg-color: #02C1DE;
 $menu-item-hover-bg-color: #4A5064;
 $menu-item-active-bg-color: $menu-item-hover-parent-bg-color;
 // menu
+
+// box
+$box-margin: 16px;
+$box-padding: $box-margin;
+$box-title-left-border-color: #88B7E0;
+// box

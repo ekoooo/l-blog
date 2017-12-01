@@ -66,6 +66,8 @@ ul, li {
     }
 
     .header-btn {
+        outline: none;
+
         &:hover {
             background-color: $header-btn-hover-bg-color;
         }
@@ -107,7 +109,7 @@ ul, li {
     position: fixed;
     color: $menu-text-color;
     top: $header-height;
-    bottom: 0px;
+    bottom: 0;
     background-color: $menu-bg-color;
     font-size: 12px;
     transition: width $menu-transition-duration;
@@ -213,7 +215,6 @@ ul, li {
         line-height: $menu-item-height;
         color: $menu-text-color;
         font-size: 12px;
-
     }
 
     .title {
@@ -226,8 +227,8 @@ ul, li {
     width: auto;
     position: absolute;
     top: $header-height;
-    bottom: 0px;
-    right: 0px;
+    bottom: 0;
+    right: 0;
     overflow: hidden;
     background: $frame-bg-color;
     transition: left $menu-transition-duration;
@@ -244,12 +245,51 @@ ul, li {
 .content-wrapper {
     position: absolute;
     width: auto;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     overflow: hidden;
     overflow-y: auto;
 }
 
 // ===========================框架 end========================
+.box {
+    margin: $box-margin;
+    padding: $box-padding;
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+
+    .box-header {
+        border-bottom: 1px solid $gray-line-color;
+        padding-bottom: $box-padding;
+    }
+
+    .box-content {
+        padding-top: $box-padding;
+    }
+
+    .title {
+        font-size: 14px;
+        margin: 0;
+        border-left: 2px solid $box-title-left-border-color;
+        line-height: 1.6;
+        padding-left: $box-padding / 2;
+        font-weight: normal;
+    }
+
+    // 重写 card 样式
+    .el-tabs__nav {
+        border-radius: 0 !important;
+    }
+
+    .el-tabs__item {
+        font-size: 12px;
+        user-select: none;
+    }
+
+    .el-tabs--border-card {
+        border-color: $gray-line-color;
+    }
+}
+
