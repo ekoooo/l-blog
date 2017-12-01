@@ -41,7 +41,14 @@ Vue.http.interceptors.response.use(function(response) {
     Vue.log('[HttpResponse][status, data]', response.status, response.data);
 
     // validate login
-
+    if(response.data.code === 401) {
+        MSG.error(response.data.message);
+        
+        router.replace({
+            name: 'login'
+        });
+    }
+    
     return response;
 }, function(error) {
     MSG.error(error.message);
