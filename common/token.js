@@ -113,13 +113,15 @@ let Token = {
      * 清理多余登录 Token
      * @param id userId
      * @param maxLen 最多保留几条
+     * @return Promise 返回清理条数
      */
-    clearOldCacheToken: (id, maxLen = 5) => new Promise(() => {
+    clearOldCacheToken: (id, maxLen = 5) => new Promise((resolve, reject) => {
         let param = `${ Token.REIDS_TABLE_NAME }${ id }#`;
         
         redisClient.send_command('keys', [param + '*'], (err, res) => {
             if(err) {
                 Logger.error(`clearOldCacheToken send "keys" command error`, err);
+                reject(0);
             }
             if(res.length > maxLen) {
                 // 去除前缀
@@ -140,10 +142,14 @@ let Token = {
                 redisClient.send_command('del', ['key', ...delKeys], (err, res) => {
                     if(err) {
                         Logger.error(`clearOldCacheToken send "del key" command error`, err);
+                        reject(0);
                     }else {
                         Logger.info(`user id: ${ id }, 清理登录 Token ${ res } 条`);
+                        resolve(res);
                     }
                 })
+            }else {
+                resolve(0);
             }
         });
     }),
