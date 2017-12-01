@@ -2,10 +2,8 @@ const { pool } = require('../common/pgsql');
 const Misc = require('../utils/misc');
 
 let Logger = require('../common/logger');
-let Token = require('../common/token');
 let Pwd = require('../common/pwd');
 let redisClient = require('../common/redis');
-let DbUtil = require('../utils/db_util');
 
 let UsersLogic = {
     // 用户先关校验配置
@@ -25,8 +23,11 @@ let UsersLogic = {
     /**
      * 添加测试管理员
      */
-    _addTestAdmin () {
-        Pwd.hash('123456').then(hash => {
+    _addAdmin () {
+        let username = 'admin';
+        let pwd = '123456';
+        
+        Pwd.hash(pwd).then(hash => {
             (async () => {
                 const client = await pool.connect();
 
@@ -39,9 +40,9 @@ let UsersLogic = {
                 try {
                     await client.query('BEGIN');
 
-                    const rs = await client.query(usersSqlStr, ['lwl', hash, 1]);
+                    const rs = await client.query(usersSqlStr, [username, hash, 1]);
 
-                    await client.query(userProfileSqlStr, [rs.rows[0].id, 1, 24, '15727781885', '954408050@qq.com', '测试账号，密码 123456']);
+                    await client.query(userProfileSqlStr, [rs.rows[0].id, 1, 24, '15727781885', '954408050@qq.com', '管理员账号']);
 
                     await client.query('COMMIT');
 
@@ -170,5 +171,7 @@ let UsersLogic = {
         return UsersLogic.cacheUserInfo(id);
     },
 };
+
+// UsersLogic._addAdmin();
 
 module.exports = UsersLogic;
