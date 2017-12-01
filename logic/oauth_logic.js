@@ -21,7 +21,7 @@ let OauthLogic = {
      */
     isLogin: (token) => new Promise((resolve, reject) => {
         Token.validToken(token).then(info => {
-            resolve(true);
+            resolve(info);
         }).catch(err => {
             reject(false);
         });
