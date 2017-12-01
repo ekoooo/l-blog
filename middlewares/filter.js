@@ -7,9 +7,16 @@ module.exports = {
     /**
      * 调用接口判断是否登录
      */
-    filtHttpLogin(req, res, next) {
+    filtAdminHttpLogin(req, res, next) {
         OauthLogic.isLogin(req.headers['authorization']).then(rs => {
-            next();
+            if(rs['is_admin'] !== 1) {
+                res.send({
+                    code: CODE.UNAUTHORIZED,
+                    message: '无权访问',
+                });
+            }else {
+                next();
+            }
         }).catch(err => {
             res.send({
                 code: CODE.UNAUTHORIZED,
