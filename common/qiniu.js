@@ -1,5 +1,5 @@
 let qiniu = require('qiniu');
-let Config = require('../config/');
+let Config = require('../config/index');
 
 qiniu.conf.ACCESS_KEY = Config.qiniuAK;
 qiniu.conf.SECRET_KEY = Config.qiniuSK;
@@ -25,16 +25,6 @@ let Qiniu = {
         let putPolicy = new qiniu.rs.PutPolicy(options);
         
         return putPolicy.uploadToken(mac);
-    },
-    
-    /**
-     * 获取 AccessToken，用于客户端 API
-     * @param requestURI https://developer.qiniu.com/kodo/api/1731/api-overview
-     * @param reqBody 请求Body，仅当请求的 ContentType 为
-     *                application/x-www-form-urlencoded时才需要传入该参数
-     */
-    getAccessToken(requestURI, reqBody) {
-        return qiniu.util.generateAccessToken(mac, requestURI, reqBody);
     },
     
     /**
