@@ -183,7 +183,7 @@
                     return this.pageId + 1;
                 },
                 set: function (val) {
-                    console.log(val, 'xxoo');
+
                 }
             },
             title: function() {
