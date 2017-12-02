@@ -1,4 +1,3 @@
-const { pool } = require('../common/pgsql');
 const CODE = require('../common/code');
 
 let Logger = require('../common/logger');
