@@ -1,3 +1,17 @@
+// .wd* => widh: * × 20px;
+@for $i from 1 through 10 {
+    .wd#{$i} {
+        width: 20px * $i !important;
+    }
+}
+
+// .wp* => widh: * × 10%;
+@for $i from 1 through 10 {
+    .wp#{$i} {
+        width: 10% * $i;
+    }
+}
+
 .fr {
     float: right;
 }

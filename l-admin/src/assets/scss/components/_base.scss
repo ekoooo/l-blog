@@ -293,3 +293,63 @@ ul, li {
     }
 }
 
+// =========================== element ui table ========================
+.el-table {
+    font-size: 12px;
+
+    thead {
+        color: #373D41;
+    }
+}
+
+.el-table td, .el-table th {
+    padding: 10px 0;
+}
+
+.el-pagination__jump {
+    .el-input__inner {
+        font-size: 12px;
+    }
+}
+
+.el-pager li {
+    font-size: 12px;
+}
+
+.el-pagination__editor.el-input .el-input__inner {
+    height: 24px;
+}
+
+.table-header {
+    padding-bottom: 6px;
+    border-bottom: 1px solid $gray-line-color;
+
+    .el-button {
+        padding: 8px 15px;
+    }
+
+    .item {
+        display: block;
+        float: left;
+        margin-bottom: 10px;
+        margin-right: 4px;
+    }
+
+    .el-input__inner {
+        font-size: 12px;
+        &:focus {
+            border-color: $main-color;
+        }
+    }
+}
+
+.table-body {
+
+}
+
+.table-pagination {
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid $gray-line-color;
+}
+// =========================== element ui table ========================
