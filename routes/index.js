@@ -1,6 +1,3 @@
-let express = require('express');
-let router = express.Router();
-
 module.exports = function(app) {
     app.all('*', function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
@@ -14,4 +11,5 @@ module.exports = function(app) {
     app.use('/', require('./blog/'));
     app.use('/admin', require('./admin/'));
     app.use('/admin/qiniu', require('./admin/qiniu'));
+    app.use('/admin/post', require('./admin/post'));
 };
