@@ -1,13 +1,13 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+let express = require('express');
+let path = require('path');
+let favicon = require('serve-favicon');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
 
-var router = require('./routes/');
-var Logger = require('./common/logger');
+let router = require('./routes/index');
+let Logger = require('./common/logger');
 
-var app = express();
+let app = express();
 
 // 模板引擎设置
 app.set('views', path.join(__dirname, 'views'));
@@ -32,7 +32,7 @@ router(app);
 
 // 404 错误处理
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
+    let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
