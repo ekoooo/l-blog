@@ -1,8 +1,7 @@
 let express = require('express');
 let router = express.Router();
-let Logger = require('../../common/logger');
 
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
     res.send('blog index！');
 });
 
