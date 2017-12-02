@@ -1,14 +1,14 @@
 const CODE = require('../common/code');
 let Logger = require('../common/logger');
 
-let OauthLogic = require('../logic/oauth_logic');
+let AuthLogic = require('../model/auth');
 
 module.exports = {
     /**
      * 调用接口判断是否登录
      */
     filtAdminHttpLogin(req, res, next) {
-        OauthLogic.isLogin(req.headers['authorization']).then(rs => {
+        AuthLogic.isLogin(req.headers['authorization']).then(rs => {
             if(rs['is_admin'] !== 1) {
                 res.send({
                     code: CODE.UNAUTHORIZED,

@@ -5,11 +5,18 @@ module.exports = function(app) {
         res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
         res.header("Content-Type", "application/json;charset=utf-8");
         
-        next();
+        if(req.method === "OPTIONS") {
+            res.send(200);
+        }else {
+            next();
+        }
     });
     
-    app.use('/', require('./blog/'));
-    app.use('/admin', require('./admin/'));
+    // blog
+    app.use('/', require('./blog/index'));
+    
+    // admin
+    app.use('/admin', require('./admin/index'));
     app.use('/admin/qiniu', require('./admin/qiniu'));
     app.use('/admin/post', require('./admin/post'));
 };
