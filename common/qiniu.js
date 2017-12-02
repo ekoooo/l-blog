@@ -1,6 +1,4 @@
 let qiniu = require('qiniu');
-let http = require('http');
-let Logger = require('./logger');
 let Config = require('../config/');
 
 qiniu.conf.ACCESS_KEY = Config.qiniuAK;
