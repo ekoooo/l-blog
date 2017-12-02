@@ -77,7 +77,7 @@ npm run build # 打包发布
     - 数据库 `postgresql`。
     - 图片存储使用的是 `七牛云`。
 
-3. 管理员账号生成
-    - 打开 `logic\users_logic.js` 中 `// UsersLogic._addAdmin();` 注释。
-    - 执行 `node --harmony logic\users_logic.js`。
-    - 默认账号 `admin`，密码 `123456`。
+3. ~~管理员账号~~
+    - 管理员账号会在第一次服务器启动时自动生成。
+    - 默认账号为 `admin`，密码为 `123456`。
+    - 具体可修改 `./model/user.js` 中 `initAdmin()` 方法。
