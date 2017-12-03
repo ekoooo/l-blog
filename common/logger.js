@@ -110,7 +110,7 @@ let Logger = {
             logger.debug.apply(
                 logger,
                 [
-                    arguments[0],
+                    ...arguments,
                     {
                         FilePath: cellSite.getFileName(),
                         LineNumber: cellSite.getLineNumber(),
@@ -126,7 +126,7 @@ let Logger = {
         logger.info.apply(
             logger,
             [
-                arguments[0],
+                ...arguments,
                 {
                     FilePath: cellSite.getFileName(),
                     LineNumber: cellSite.getLineNumber(),
@@ -141,7 +141,7 @@ let Logger = {
         logger.warn.apply(
             logger,
             [
-                arguments[0],
+                ...arguments,
                 {
                     FilePath: cellSite.getFileName(),
                     LineNumber: cellSite.getLineNumber(),
@@ -157,7 +157,7 @@ let Logger = {
         logger.error.apply(
             logger,
             [
-                arguments[0],
+                ...arguments,
                 {
                     filePath: cellSite.getFileName(),
                     lineNumber: cellSite.getLineNumber(),
