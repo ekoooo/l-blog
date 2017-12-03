@@ -1,5 +1,6 @@
 # 个人网站后台以及前端项目
-> 个人网站项目 => http://www.lwl.tech
+> 个人网站 => http://www.lwl.tech
+> 后台管理 => http://admin.lwl.tech
 
 ## 目录说明
 ### 后台
@@ -8,12 +9,14 @@
 ├── config          // 配置文件夹
 ├── db              // 数据库语句
 ├── l-admin         // 管理后台前端 Vue 项目
-├── logic           // 逻辑处理
 ├── logs            // 打印日志文件夹
 ├── middlewares     // 中间件
+├── model           // 业务处理
 ├── node_modules
 ├── public          // 静态资源
 ├── routes          // 路由
+│   ├── admin       // 管理后台相关路由
+│   ├── blog        // 博客端相关路由
 ├── utils           // 工具
 └── views           // 前端页面
 ```
