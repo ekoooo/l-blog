@@ -54,10 +54,40 @@ let logger = new winston.Logger({
     exitOnError: false,
 });
 
+/**
+ * 打印 Access Log 使用
+ */
+let accessLogger = new winston.Logger({
+    transports: [
+        new (winston.transports.DailyRotateFile) ({
+            name: 'access',
+            level: 'info',
+            filename: LOGS_DIR + '/access.log.txt',
+            timestamp: moment().format('YYYY-MM-DD HH:mm:ss:SSS'),
+            prepend: true,
+            datePattern:'yyyy-MM-dd.',
+            maxsize: 1024 * 1024 * 10,
+            colorize: false,
+            json: false,
+        }),
+        
+        // 不输出到控制台中
+        // new winston.transports.Console({
+        //     name: 'debug',
+        //     level: 'debug',
+        //     handleExceptions: true,
+        //     json: false,
+        //     colorize: true
+        // }),
+    ],
+    
+    exitOnError: false,
+});
+
 // 提供 morgan 使用
 logger.stream = {
-    write: function(message){
-        Logger.info(message);
+    write: function(message) {
+        accessLogger.info(message);
     }
 };
 
@@ -67,20 +97,61 @@ logger.stream = {
 let Logger = {
     // 初始化 morgan 记录请求记录
     initRequestLogger: function(app) {
-        app.use(morgan('combined', { 'stream': logger.stream }));
+        app.use(
+            morgan('combined', {
+                'stream': logger.stream,
+                // OPTIONS 类型请求不记录在日志中
+                'skip': (req, res) => req.method === 'OPTIONS'
+            })
+        );
     },
 
     // 开发模式才开启
     debug: function() {
-        process.env.NODE_ENV === 'development' && logger.debug.apply(logger, arguments);
+        if(process.env.NODE_ENV === 'development') {
+            let cellSite = stackTrace.get()[1];
+    
+            logger.debug.apply(
+                logger,
+                [
+                    arguments[0],
+                    {
+                        FilePath: cellSite.getFileName(),
+                        LineNumber: cellSite.getLineNumber(),
+                    }
+                ]
+            );
+        }
     },
 
     info: function() {
-        logger.info.apply(logger, arguments);
+        let cellSite = stackTrace.get()[1];
+        
+        logger.info.apply(
+            logger,
+            [
+                arguments[0],
+                {
+                    FilePath: cellSite.getFileName(),
+                    LineNumber: cellSite.getLineNumber(),
+                }
+            ]
+        );
     },
 
     warn: function() {
-        logger.warn.apply(logger, arguments);
+        let cellSite = stackTrace.get()[1];
+    
+        logger.warn.apply(
+            logger,
+            [
+                arguments[0],
+                {
+                    FilePath: cellSite.getFileName(),
+                    LineNumber: cellSite.getLineNumber(),
+                }
+            ]
+        );
     },
 
     // 错误日志并记录行号
