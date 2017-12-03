@@ -146,6 +146,8 @@
              */
             del(key) {
                 MSG.warningConfirm('是否确定删除？').then(() => {
+                    this.listLoading = true;
+
                     ImageLogic.deleteImage(key).then(rs => {
                         if(rs.code === 200) {
                             MSG.success('删除成功！');
@@ -154,6 +156,10 @@
                         }else {
                             MSG.error(rs.message);
                         }
+
+                        this.listLoading = false;
+                    }).catch(() => {
+                        this.listLoading = false;
                     });
                 }).catch(() => {});
             },
