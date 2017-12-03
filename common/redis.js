@@ -10,7 +10,7 @@ let client = redis.createClient({
 });
 
 client.on('error', function (error) {
-    Logger.error('redis client on error', error);
+    Logger.error('redis client on error =>', error);
 });
 
 module.exports = client;

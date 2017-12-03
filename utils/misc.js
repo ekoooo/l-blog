@@ -23,7 +23,7 @@ const Misc = {
         if (typeof obj !== 'object') {
             return;
         } else if (global.JSON) {
-            str = JSON.stringify(obj), //系列化对象
+            str = JSON.stringify(obj); //系列化对象
             newobj = JSON.parse(str); //还原
         } else {
             for (let i in obj) {

@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const Config = require('../config/');
+const Config = require('../config/index');
 let Logger = require('../common/logger');
 
 const pool = new Pool({
@@ -15,7 +15,7 @@ const pool = new Pool({
 });
 
 pool.on('error', (error, client) => {
-    Logger.error('database pool on error', error);
+    Logger.error('database pool on error =>', error);
 });
 
 module.exports = {

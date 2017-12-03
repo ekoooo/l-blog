@@ -23,7 +23,7 @@ class Auth {
         return new Promise((resolve, reject) => {
             new Token().validToken(token).then(info => {
                 resolve(info);
-            }).catch(err => {
+            }).catch(() => {
                 reject(false);
             });
         });
@@ -60,12 +60,11 @@ class Auth {
     loginAdmin(username, password) {
         return new Promise((resolve, reject) => {
             this.validAdmin(username, password).then(rs => {
-                
                 // 缓存到 redis 中
-                this.userModel.cacheUserInfo(null, rs).then(data => {
-                    Logger.info(`user info save redis successed! user id: ${ rs['user_id'] }`);
+                this.userModel.cacheUserinfo(null, rs).then(() => {
+                    Logger.info(`cache user info to resdis successed =>`, `user id => ${ rs['user_id'] }`);
                 }).catch(error => {
-                    Logger.error(error);
+                    Logger.error(`cache user info to resdis on error =>`, error);
                 });
         
                 // 限制一个账号只能在 N 个地方登录（Token 个数）
@@ -81,6 +80,8 @@ class Auth {
                     token: this.tokenModel.jwtEncode(rs),
                 });
             }).catch(error => {
+                Logger.info(`validate admin user fail =>`, `message => ${ error.message }`);
+                
                 reject(error);
             });
         });
@@ -108,7 +109,7 @@ class Auth {
                 });
             }
     
-            this.userModel.getInfoByUserName(username).then(rows => {
+            this.userModel.getInfoByUsername(username).then(rows => {
                 if(rows.length !== 1) {
                     reject({
                         code: CODE.UNAUTHORIZED,

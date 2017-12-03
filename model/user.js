@@ -22,7 +22,7 @@ class User {
         let mail = '954408050@qq.com';
         let desc = '管理员账号';
         
-        new User().getInfoByUserName(username).then(rs => {
+        new User().getInfoByUsername(username).then(rs => {
             if(rs.length === 0) {
                 Pwd.hash(pwd).then(hash => {
                     (async () => {
@@ -43,17 +43,17 @@ class User {
                 
                             await client.query('COMMIT');
                 
-                            Logger.debug('测试用户插入完成！');
+                            Logger.info('first admin user init successed =>', `username => ${ username }`);
                         } catch (e) {
                             await client.query('ROLLBACK');
                             throw e;
                         } finally {
                             client.release();
                         }
-                    })().catch(e => Logger.error(e.stack));
+                    })().catch(e => Logger.error(`init first admin user on error =>`, e.stack));
                 });
             }else {
-                Logger.info('已存在一个超级管理员，无需创建！');
+                Logger.info('exist admin user =>', `username => ${ username }`);
             }
         });
     }
@@ -92,7 +92,7 @@ class User {
      * 根据 users 表 username 获取信息
      * @param username 用户名
      */
-    getInfoByUserName(username) {
+    getInfoByUsername(username) {
         return new Promise((resolve, reject) => {
             pool.connect().then(client => {
                 client.query(`${ User.GET_ALL_SQL } where u.username = $1`, [username]).then(rs => {
@@ -100,7 +100,8 @@ class User {
                     resolve(rs.rows);
                 }).catch(error => {
                     client.release();
-                    Logger.warn(`getInfoByUserName(${ username }) error!`, error);
+                    Logger.error(`get info by username on error =>`, error, `username => ${ username }`);
+                    
                     reject(error);
                 });
             });
@@ -118,8 +119,9 @@ class User {
                     client.release();
                     resolve(rs.rows);
                 }).catch(error => {
+                    Logger.error(`get info by id on error =>`, error, `id => ${ id }`);
+                    
                     client.release();
-                    Logger.warn(`getInfoById(${ id }) error!`, error);
                     reject(error)
                 });
             });
@@ -133,7 +135,7 @@ class User {
      * @param info 要缓存的数据，必须有 user_id 字段
      * 成功则返回缓存的信息
      */
-    cacheUserInfo(id, info) {
+    cacheUserinfo(id, info) {
         return new Promise((resolve, reject) => {
             if(Misc.isNullStr(id)) {
                 if(Misc.isNullStr(info['user_id'])) {
@@ -145,13 +147,13 @@ class User {
                         if(!res) {
                             redisClient.hmset(key, info, (err, res) => {
                                 if(err) {
-                                    reject('cacheUserInfo error: ' + err);
+                                    reject('cache userinfo on error: ' + err);
                                 }else {
                                     resolve(info);
                                 }
                             });
                         }else {
-                            Logger.debug('already exists in redis =>', res);
+                            Logger.info('cache userinfo already exists in redis =>', res);
                             resolve(res);
                         }
                     });
@@ -175,7 +177,9 @@ class User {
                             }
                         });
                     }else {
-                        Logger.debug('already exists in redis =>', res);
+                        Logger.info('cache userinfo already already exists in redis =>',
+                            `user id => ${ res['user_id'] }, username => ${ res['username'] }`);
+                        
                         resolve(res);
                     }
                 });
@@ -187,7 +191,7 @@ class User {
      * 获取用户缓存信息
      */
     getCacheUserInfo(id) {
-        return this.cacheUserInfo(id);
+        return this.cacheUserinfo(id);
     }
 }
 

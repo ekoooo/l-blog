@@ -12,14 +12,14 @@ let DBUtil = {
 
         pool.connect().then(client => {
             client.query(`select nextval($1::text) as seq`, [seqName]).then(rs => {
+                Logger.info(`get next val successed =>`, `sel => ${ seqName }, val => ${ rs.rows[0].seq }`);
+                
                 client.release();
-                Logger.info(`getNextVal('${ name }', '${ isTableName }') successed`, seqName, rs.rows[0].seq);
-
                 resolve(rs.rows[0].seq);
             }).catch(e => {
-                client.release();
-                Logger.warn(`getNextVal('${ name }', '${ isTableName }') error`, e.message, e.stack);
+                Logger.error(`get next val on error =>`, e);
                 
+                client.release();
                 reject(e.message);
             });
         });
@@ -37,13 +37,14 @@ let DBUtil = {
         pool.connect().then(client => {
             client.query(sql, params).then(rs => {
                 client.release();
-                Logger.info(`getTotalCount('${ tableName }') successed`, rs.rows[0]['num']);
-                
                 resolve(parseInt(rs.rows[0]['num']));
             }).catch(e => {
+                Logger.error(`get total count on error =>`, e,
+                    `table name => ${ tableName }`,
+                    `condition => ${ condition }`,
+                    `params =>`, params);
+                
                 client.release();
-                Logger.warn(`getTotalCount('${ tableName }') error`, e.message, e.stack);
-            
                 reject(e.message);
             });
         });

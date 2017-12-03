@@ -35,7 +35,8 @@ class PostCategory {
             // 分页
             sql = sql + conditionSql + pagerSql;
     
-            Logger.info(`getPostCategory()`, formInfo, `sql: `, sql, 'params: ', params);
+            Logger.info(`get post category list form info =>`, formInfo);
+            Logger.info(`get post category list sql info =>`, `sql => ${ sql }`, `params =>`, params);
     
             Promise.all([
                 new Promise(function (resolve) {
@@ -44,8 +45,9 @@ class PostCategory {
                             client.release();
                             resolve(rs.rows);
                         }).catch(error => {
+                            Logger.error(`get post category on error =>`, error);
+                            
                             client.release();
-                            Logger.warn(`getPostCategory() error!`, error);
                             resolve();
                         });
                     });
@@ -103,8 +105,9 @@ class PostCategory {
                         info: rs.rows[0].id,
                     });
                 }).catch(error => {
+                    Logger.error(`add post category on error => `, error, `form info =>`, formInfo);
+                    
                     client.release();
-                    Logger.warn(`addPostCategory() error!`, formInfo, error);
                     reject({
                         code: CODE.ERROR,
                         message: '添加分类名称失败'

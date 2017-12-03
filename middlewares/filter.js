@@ -10,6 +10,8 @@ module.exports = {
     filtAdminHttpLogin(req, res, next) {
         AuthLogic.isLogin(req.headers['authorization']).then(rs => {
             if(rs['is_admin'] !== 1) {
+                Logger.info('unauthorized access =>', `user id => ${ rs['user_id'] }`);
+                
                 res.send({
                     code: CODE.UNAUTHORIZED,
                     message: '无权访问',
@@ -17,7 +19,9 @@ module.exports = {
             }else {
                 next();
             }
-        }).catch(err => {
+        }).catch(() => {
+            Logger.info('logon expires ip =>', req.ip);
+            
             res.send({
                 code: CODE.UNAUTHORIZED,
                 message: '登录失效',

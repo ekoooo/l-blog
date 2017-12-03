@@ -20,7 +20,8 @@ class FileManager {
     
             Qiniu.getBucketManager().listPrefix(Config.qiniuBucket, options, (err, respBody, respInfo) => {
                 if(err) {
-                    Logger.warn(`获取文件列表失败`, err);
+                    Logger.error(`get file list on error =>`, err);
+                    
                     reject({
                         code: CODE.ERROR,
                         message: err,
@@ -36,7 +37,7 @@ class FileManager {
                         },
                     });
                 }else {
-                    Logger.warn(`获取文件列表失败, ${ respInfo.data.error }`);
+                    Logger.error(`get file list on erorr =>`, respInfo.data.error);
             
                     reject({
                         code: CODE.ERROR,
@@ -55,7 +56,7 @@ class FileManager {
         return new Promise((resolve, reject) => {
             Qiniu.getBucketManager().delete(Config.qiniuBucket, key, (err, respBody, respInfo) => {
                 if (err) {
-                    Logger.warn(`删除图片失败`, err);
+                    Logger.error(`delete file on error =>`, err);
                     reject({
                         code: CODE.ERROR,
                         message: err,
@@ -67,7 +68,7 @@ class FileManager {
                             info: respInfo.data,
                         });
                     }else {
-                        Logger.warn(`删除图片失败, ${ respInfo.data.error }`);
+                        Logger.error(`delete file on error =>`, respInfo.data.error);
                 
                         reject({
                             code: CODE.ERROR,
@@ -90,7 +91,7 @@ class FileManager {
                     info: Qiniu.getUploadToken(),
                 });
             }catch(e) {
-                Logger.warn('获取 upload token 失败！');
+                Logger.error('get upload token on error =>', e);
         
                 reject({
                     code: CODE.ERROR,
