@@ -8,11 +8,24 @@ let stackTrace = require('stack-trace');
 
 require('winston-daily-rotate-file');
 
+// 日志打印位置
 const LOGS_DIR = path.join(__dirname, '../logs');
 
+// 公共配置选项，每天生成一个日志文件，一个文件最大 10M
+const LOGGER_COMMON_CONFIG = {
+    timestamp: moment().format('YYYY-MM-DD HH:mm:ss:SSS'),
+    prepend: true,
+    datePattern:'yyyy-MM-dd.',
+    maxsize: 1024 * 1024 * 10,
+    colorize: false,
+    json: false,
+    handleExceptions: true,
+};
+
 /**
- * info 级别以上日志记录到文件中，每天生成一个日志文件，一个文件最大 10M
- * error 级别日志单独记录到另一个文件中 
+ * info 普通日志记录
+ * error 错误严重时记录
+ * warn 普通错误记录
  * debug 输出到控制台，不记录到文件中
  */
 let logger = new winston.Logger({
@@ -21,33 +34,29 @@ let logger = new winston.Logger({
             name: 'error',
             level: 'error',
             filename: LOGS_DIR + '/error.log.txt',
-            timestamp: moment().format('YYYY-MM-DD HH:mm:ss:SSS'),
-            prepend: true,
-            datePattern:'yyyy-MM-dd.',
-            maxsize: 1024 * 1024 * 10,
-            colorize: false,
-            json: false,
-            handleExceptions: true,
+            ...LOGGER_COMMON_CONFIG,
+        }),
+        
+        new (winston.transports.DailyRotateFile) ({
+            name: 'warn',
+            level: 'warn',
+            filename: LOGS_DIR + '/warn.log.txt',
+            ...LOGGER_COMMON_CONFIG,
         }),
 
         new (winston.transports.DailyRotateFile) ({
             name: 'normal',
             level: 'info',
             filename: LOGS_DIR + '/normal.log.txt',
-            timestamp: moment().format('YYYY-MM-DD HH:mm:ss:SSS'),
-            prepend: true,
-            datePattern:'yyyy-MM-dd.',
-            maxsize: 1024 * 1024 * 10,
-            colorize: false,
-            json: false,
+            ...LOGGER_COMMON_CONFIG,
         }),
 
         new winston.transports.Console({
             name: 'debug',
             level: 'debug',
-            handleExceptions: true,
+            colorize: true,
             json: false,
-            colorize: true
+            handleExceptions: true,
         }),
     ],
 
@@ -56,6 +65,7 @@ let logger = new winston.Logger({
 
 /**
  * 打印 Access Log 使用
+ * 不输出到控制台中
  */
 let accessLogger = new winston.Logger({
     transports: [
@@ -63,22 +73,8 @@ let accessLogger = new winston.Logger({
             name: 'access',
             level: 'info',
             filename: LOGS_DIR + '/access.log.txt',
-            timestamp: moment().format('YYYY-MM-DD HH:mm:ss:SSS'),
-            prepend: true,
-            datePattern:'yyyy-MM-dd.',
-            maxsize: 1024 * 1024 * 10,
-            colorize: false,
-            json: false,
+            ...LOGGER_COMMON_CONFIG,
         }),
-        
-        // 不输出到控制台中
-        // new winston.transports.Console({
-        //     name: 'debug',
-        //     level: 'debug',
-        //     handleExceptions: true,
-        //     json: false,
-        //     colorize: true
-        // }),
     ],
     
     exitOnError: false,
@@ -87,7 +83,7 @@ let accessLogger = new winston.Logger({
 // 提供 morgan 使用
 logger.stream = {
     write: function(message) {
-        accessLogger.info(message);
+        accessLogger.info(message.trim()); // trim 去除多余换行
     }
 };
 
