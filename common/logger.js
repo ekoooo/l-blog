@@ -2,7 +2,6 @@ let morgan = require('morgan');
 let winston = require('winston');
 
 let path = require('path');
-let fs = require('fs');
 let moment = require('moment');
 let stackTrace = require('stack-trace');
 
