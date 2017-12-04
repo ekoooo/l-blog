@@ -3,10 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=production node --harmony ./bin/www",
-    "dev": "NODE_ENV=development node --harmony ./bin/www",
-    "win_start": "set NODE_ENV=production && node --harmony ./bin/www",
-    "win_dev": "set NODE_ENV=development && node --harmony ./bin/www"
+    "start": "set NODE_ENV=production && node --harmony ./bin/www",
+    "dev": "set NODE_ENV=development && node --harmony ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
