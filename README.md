@@ -86,5 +86,5 @@ npm run build # 打包发布
     - 具体可修改 `./model/user.js` 中 `initAdmin()` 方法。
 
 
-# 后台管理接口文档
-> ./API.md 文件可查看详情
+## 后台管理接口文档
+> `./API.md` 文件可查看详情
