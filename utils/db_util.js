@@ -1,5 +1,6 @@
 const { pool } = require('../common/pgsql');
 let Logger = require('../common/logger');
+let Misc = require('../utils/misc');
 
 let DBUtil = {
     /**
@@ -56,6 +57,13 @@ let DBUtil = {
      * @param pageSize 一页显示多少条数据
      */
     getPagerSqlStr: ({ pageId, pageSize }) => {
+        // 验证 pageId, pageSize 是否为非负整数，注入？
+        if(!Misc.validInt(pageId, 4) || !Misc.validInt(pageSize, 4)) {
+            Logger.warn(`get pager sql validate fail =>`,
+                `pageId => ${ pageId }, pageSize => ${ pageSize }`);
+            return null;
+        }
+        
         return ` limit ${pageSize} offset ${ pageId * pageSize } `;
     }
 };
