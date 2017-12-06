@@ -232,9 +232,37 @@ Authorization: <Token>
 
 请求体
 ```json
-
+{
+    "postCategoryId": 123
+}
 ```
 成功响应
-```json
+```
+{
+    "code": 200,
+    "info": 123, // 删除成功的ID
+}
+```
 
+## 编辑文章分类
+请求语法
+```
+PUT /admin/post/category/:id
+Content-Type: application/json
+Authorization: <Token>
+```
+> `id` 文章分类 id
+
+请求体
+```json
+{
+    "postCategoryName": "TEST"
+}
+```
+成功响应
+```
+{
+    "code": 200,
+    "info": 123, // 编辑成功的ID
+}
 ```
