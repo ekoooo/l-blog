@@ -42,6 +42,7 @@
                         @click="openAddEditDialog(null)"
                         size="small"
                         class="item"
+                        :data="itemData"
                         icon="el-icon-plus">添加分类</el-button>
                 </div>
             </div>
@@ -66,6 +67,16 @@
                         label="添加时间">
                         <template slot-scope="props">
                             {{ moment(props.row['create_time']).format('YYYY-MM-DD HH:mm:ss') }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="操作"
+                        align="center"
+                        width="60">
+                        <template slot-scope="props">
+                            <i class="el-icon-edit cursor" @click="openAddEditDialog(props.row)"></i>
+                            &nbsp;
+                            <i class="el-icon-delete red cursor" @click="deleteOneRow(props.row.id)"></i>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -155,13 +166,32 @@
             },
 
             /**
+             * 删除一条记录
+             * @param id
+             */
+            deleteOneRow: function(id) {
+                MSG.warningConfirm('是否确认删除').then(() => {
+                    PostCategoryLogic.deletePostCategory(id).then(rs => {
+                        if(rs.code === 200) {
+                            MSG.success('删除成功');
+
+                            this.refreshCurrentPage();
+                        }else {
+                            MSG.error(rs.message);
+                        }
+                    });
+                });
+            },
+
+            /**
              * 打开添加编辑 Modal
              * @param itemData 编辑时原数据，添加可不传入
              */
             openAddEditDialog: function(itemData) {
-                this.itemData = itemData;
+                this.itemData = {...itemData, t: +new Date()};
                 this.addEditDialogVisible = true;
             },
+
             /**
              * 添加编辑操作之后回调函数
              * @param refresh 是否需要刷新列表

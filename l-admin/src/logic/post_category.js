@@ -27,12 +27,21 @@ const PostCategory = {
     addPostCategory(formInfo) {
         return requester.post('/admin/post/category', formInfo);
     },
+    
     /**
      * 编辑文章分类
      * @param formInfo
      */
     editPostCategory(formInfo) {
         return requester.put('/admin/post/category/' + formInfo.postCategoryId, formInfo);
+    },
+    
+    /**
+     * 删除文章分类
+     * @param id
+     */
+    deletePostCategory(id) {
+        return requester.delete('/admin/post/category/' + id);
     },
 };
 

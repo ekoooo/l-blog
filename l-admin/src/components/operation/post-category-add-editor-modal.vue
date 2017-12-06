@@ -42,20 +42,21 @@
                 formInfo: {
                     postCategoryId: undefined,
                     postCategoryName: undefined,
+                    t: undefined, // 用于监听该变量是否改变，清除输入框遗留内容
                 },
                 commitLoading: false,
             };
         },
         methods: {
             setFormInfo: function(info) {
-                if(info == null) { // 添加
+                if(info === null) { // 添加
                     this.formInfo = {
                         postCategoryName: undefined,
                     };
                 }else {
                     this.formInfo = {
-                        postCategoryId: info.postCategoryId,
-                        postCategoryName: info.postCategoryName,
+                        postCategoryId: info.id,
+                        postCategoryName: info.name,
                     };
                 }
             },
