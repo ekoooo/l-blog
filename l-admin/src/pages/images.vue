@@ -161,7 +161,7 @@
                     }).catch(() => {
                         this.listLoading = false;
                     });
-                }).catch(() => {});
+                });
             },
 
             /**

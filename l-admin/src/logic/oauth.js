@@ -32,8 +32,6 @@ const Oauth = {
             requester.post('/admin/logout');
             // 返回到登陆界面
             router.replace({ name: 'login' });
-        }).catch(() => {
-        
         });
     },
     
