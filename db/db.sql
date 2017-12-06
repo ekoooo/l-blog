@@ -112,6 +112,8 @@ create table posts (
     post_category_id int not null,
     title character varying(64) not null,
     content text default null,
+    markdown text default null,
+    plain_text text default null,
     link_count int default 0,
     access_count int default 0,
     comment_check smallint default 0,
@@ -128,7 +130,9 @@ comment on column public.posts.id is '主键id';
 comment on column public.posts.user_id is '用户表ID';
 comment on column public.posts.post_category_id is '文章分类表ID';
 comment on column public.posts.title is '文章表题';
-comment on column public.posts.content is '文章内容';
+comment on column public.posts.content is '文章内容 HTML';
+comment on column public.posts.markdown is '文章内容 Markdown';
+comment on column public.posts.plain_text is '文章内容纯文本，用于搜索';
 comment on column public.posts.link_count is '点赞数量';
 comment on column public.posts.access_count is '访问量';
 comment on column public.posts.comment_check is '评论是否需审核 0不需要 1需要';
@@ -291,5 +295,5 @@ comment on column public.post_comments.mail is '邮箱地址';
 comment on column public.post_comments.content is '评论内容';
 comment on column public.post_comments.create_ip is 'ip';
 comment on column public.post_comments.create_time is '创建时间';
-comment on column public.post_comments.status is '状态 1正常 0删除';
+comment on column public.post_comments.status is '状态 1正常 0待审核 -1 已删除';
 
