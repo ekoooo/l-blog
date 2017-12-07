@@ -4104,8 +4104,16 @@
      */
     
     editormd.loadCSS   = function(fileName, callback, into) {
-        into       = into     || "head";        
+        into       = into     || "head";
         callback   = callback || function() {};
+        
+        // validate is already loaded
+        if($('link[href="' + fileName + '.css"]').length) {
+            setTimeout(function() {
+                callback();
+            }, 50);
+            return;
+        }
         
         var css    = document.createElement("link");
         css.type   = "text/css";
@@ -4140,6 +4148,14 @@
         
         into          = into     || "head";
         callback      = callback || function() {};
+        
+        // validate is already loaded
+        if($('#' + fileName.replace(/[\./]+/g, "-")).length) {
+            setTimeout(function() {
+                callback();
+            }, 50);
+            return;
+        }
         
         var script    = null; 
         script        = document.createElement("script");

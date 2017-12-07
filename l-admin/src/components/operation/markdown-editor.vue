@@ -77,7 +77,7 @@
             initEditor: function () {
                 (async () => {
                     await this.fetchScript('/static/editor.md/jquery.min.js');
-                    await this.fetchScript('/static/editor.md/editormd.min.js');
+                    await this.fetchScript('/static/editor.md/editormd.js');
 
                     this.$nextTick(() => {
                         let editor = window.editormd('markdown-editor', this.config);
@@ -100,7 +100,7 @@
         mounted: function() {
             this.initEditor();
         },
-        beforeDestroy: function () {
+        destroyed: function () {
             this.editor.off('change');
         }
     }
