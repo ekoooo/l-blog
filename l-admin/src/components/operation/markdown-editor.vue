@@ -1,6 +1,15 @@
 <template>
     <div class="markdown-editor-box">
-        <link rel="stylesheet" href="/static/editor.md/css/editormd.css">
+        <el-select v-model="codeTheme" placeholder="请选择主题">
+            <el-option
+                v-for="item in codeThemes"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+        </el-select>
+        <link rel="stylesheet" href="/static/editor.md/css/editormd.min.css">
+        <link rel="stylesheet" :href="'/static/editor.md/css/google_code_prettify_themes/' + codeTheme">
         <div id="markdown-editor"></div>
     </div>
 </template>
@@ -63,6 +72,137 @@
         data: function() {
             return {
                 editor: null,
+                codeTheme: 'monokai.min.css',
+                codeThemes: [
+                    {
+                        label: 'monokai',
+                        value: 'monokai.min.css',
+                    },
+                    {
+                        label: 'atelier-cave-dark',
+                        value: 'atelier-cave-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-cave-light',
+                        value: 'atelier-cave-light.min.css',
+                    },
+                    {
+                        label: 'atelier-dune-dark',
+                        value: 'atelier-dune-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-dune-light',
+                        value: 'atelier-dune-light.min.css',
+                    },
+                    {
+                        label: 'atelier-estuary-dark',
+                        value: 'atelier-estuary-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-estuary-light',
+                        value: 'atelier-estuary-light.min.css',
+                    },
+                    {
+                        label: 'atelier-forest-dark',
+                        value: 'atelier-forest-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-forest-light',
+                        value: 'atelier-forest-light.min.css',
+                    },
+                    {
+                        label: 'atelier-heath-dark',
+                        value: 'atelier-heath-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-heath-light',
+                        value: 'atelier-heath-light.min.css',
+                    },
+                    {
+                        label: 'atelier-lakeside-dark',
+                        value: 'atelier-lakeside-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-lakeside-light',
+                        value: 'atelier-lakeside-light.min.css',
+                    },
+                    {
+                        label: 'atelier-plateau-dark',
+                        value: 'atelier-plateau-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-plateau-light',
+                        value: 'atelier-plateau-light.min.css',
+                    },
+                    {
+                        label: 'atelier-savanna-dark',
+                        value: 'atelier-savanna-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-savanna-light',
+                        value: 'atelier-savanna-light.min.css',
+                    },
+                    {
+                        label: 'atelier-seaside-dark',
+                        value: 'atelier-seaside-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-seaside-light',
+                        value: 'atelier-seaside-light.min.css',
+                    },
+                    {
+                        label: 'atelier-sulphurpool-dark',
+                        value: 'atelier-sulphurpool-dark.min.css',
+                    },
+                    {
+                        label: 'atelier-sulphurpool-light',
+                        value: 'atelier-sulphurpool-light.min.css',
+                    },
+                    {
+                        label: 'github',
+                        value: 'github.min.css',
+                    },
+                    {
+                        label: 'github-v2',
+                        value: 'github-v2.min.css',
+                    },
+                    {
+                        label: 'hemisu-dark',
+                        value: 'hemisu-dark.min.css',
+                    },
+                    {
+                        label: 'hemisu-light',
+                        value: 'hemisu-light.min.css',
+                    },
+                    {
+                        label: 'tomorrow',
+                        value: 'tomorrow.min.css',
+                    },
+                    {
+                        label: 'tomorrow-night',
+                        value: 'tomorrow-night.min.css',
+                    },
+                    {
+                        label: 'tomorrow-night-blue',
+                        value: 'tomorrow-night-blue.min.css',
+                    },
+                    {
+                        label: 'tomorrow-night-bright',
+                        value: 'tomorrow-night-bright.min.css',
+                    },
+                    {
+                        label: 'tomorrow-night-eighties',
+                        value: 'tomorrow-night-eighties.min.css',
+                    },
+                    {
+                        label: 'tranquil-heart',
+                        value: 'tranquil-heart.min.css',
+                    },
+                    {
+                        label: 'vibrant-ink',
+                        value: 'vibrant-ink.min.css',
+                    },
+                ]
             };
         },
         methods: {
@@ -77,7 +217,7 @@
             initEditor: function () {
                 (async () => {
                     await this.fetchScript('/static/editor.md/jquery.min.js');
-                    await this.fetchScript('/static/editor.md/editormd.js');
+                    await this.fetchScript('/static/editor.md/editormd.min.js');
 
                     this.$nextTick(() => {
                         let editor = window.editormd('markdown-editor', this.config);
