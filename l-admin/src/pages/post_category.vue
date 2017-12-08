@@ -42,7 +42,6 @@
                         @click="openAddEditDialog(null)"
                         size="small"
                         class="item"
-                        :data="itemData"
                         icon="el-icon-plus">添加分类</el-button>
                 </div>
             </div>
@@ -133,7 +132,7 @@
                     }
 
                     this.listLoading = false;
-                });
+                }).catch(() => { this.listLoading = false; });
             },
             search: function() {
                 this.listLoading = true;
