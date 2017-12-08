@@ -166,7 +166,7 @@ create sequence seq_post_category_id
 -- drop table if exists post_category;
 create table post_category (
     id int not null default nextval('seq_post_category_id'),
-    name character varying(32) not null,
+    name character varying(32) unique not null,
     create_time timestamp with time zone default current_timestamp,
     status smallint default 1,
     PRIMARY KEY (id)
