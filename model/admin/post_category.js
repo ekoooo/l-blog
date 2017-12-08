@@ -31,9 +31,9 @@ class PostCategory {
      */
     async getPostCategorySelector() {
        let sql = `select id, name from post_category where status = 1 order by create_time desc `;
-       let client = null;
+       const client = await pool.connect();
+       
        try {
-           client = await pool.connect();
            let rs = await client.query(sql);
            
            return Promise.resolve({
@@ -188,9 +188,9 @@ class PostCategory {
             });
         }
     
-        let client = null;
+        const client = await pool.connect();
+        
         try {
-            client = await pool.connect();
             let sql = `update post_category set name = $1 where status = 1 and id = $2 `;
             let params = [formInfo.postCategoryName, id];
             let rs = await client.query(sql, params);
@@ -229,11 +229,10 @@ class PostCategory {
                 message: '参数不存在'
             });
         }
-        
-        let client = null;
+    
+        const client = await pool.connect();
         
         try {
-            client = await pool.connect();
             let rs = await client.query(`update post_category set status = 0 where status <> 0 and id = $1 `, [id]);
             
             if(rs.rowCount === 0) {

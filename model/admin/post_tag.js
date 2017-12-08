@@ -12,9 +12,9 @@ class PostTag {
      * @return {Promise.<void>}
      */
     async getTagSelector() {
-        let client = null;
+        const client = await pool.connect();
+        
         try {
-            client = await pool.connect();
             let rs = await client.query(`select distinct name from post_tags order by name`);
             
             return Promise.resolve({
