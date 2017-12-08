@@ -20,11 +20,9 @@
                     size="small"
                     type="primary"
                     @click.native="commit"
+                    :icon="isEdit ? 'el-icon-edit' : 'el-icon-plus'"
                     :loading="commitLoading">
-                    <i
-                        class="fa"
-                        :class="!!formInfo.postCategoryId ? 'fa-edit' : 'fa-plus'"></i>
-                    {{ !this.isEdit ? '保存' : '添加' }}
+                    {{ isEdit ? '保存' : '添加' }}
                 </el-button>
             </div>
         </el-form>
