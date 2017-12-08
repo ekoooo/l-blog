@@ -20,7 +20,32 @@ const PostLogic = {
     
         return requester.post('/admin/post/list',
             Object.assign({}, defaultParams, searchParams));
-    }
+    },
+    
+    /**
+     * 添加一个文章
+     * @param formInfo
+     */
+    addPost(formInfo) {
+        return requester.post('/admin/post', formInfo);
+    },
+    
+    /**
+     * 编辑一个文章
+     * @param id
+     * @param formInfo
+     */
+    editPost(id, formInfo) {
+        return requester.put('/admin/post/' + id, formInfo);
+    },
+    
+    /**
+     * 获取一个文章
+     * @param id
+     */
+    getPost(id) {
+        return requester.get('/admin/post/?id=' + id);
+    },
 };
 
 export default PostLogic;
