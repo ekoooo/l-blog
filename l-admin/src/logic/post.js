@@ -4,7 +4,11 @@ const PostLogic = {
     PAGE_SIZE: 10,
     
     POST_LIST_SEARCHPARAMS: {
-    
+        title: undefined, // 标题
+        categoryName: undefined, // 分类名
+        keyWords: undefined, // 关键字
+        tag: undefined, // 标签
+        text: undefined, // 内容
     },
     
     /**
