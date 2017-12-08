@@ -116,7 +116,8 @@ create table posts (
     plain_text text default null,
     content_desc character varying(1024) default null,
     key_words character varying(128) default null,
-    link_count int default 0,
+    up_vote int default 0,
+    down_vote int default 0,
     access_count int default 0,
     comment_check smallint default 0,
     create_time timestamp with time zone default current_timestamp,
@@ -137,7 +138,8 @@ comment on column public.posts.markdown is '内容 Markdown';
 comment on column public.posts.plain_text is '内容纯文本，用于搜索';
 comment on column public.posts.content_desc is '内容简述';
 comment on column public.posts.key_words is '关键字';
-comment on column public.posts.link_count is '点赞数量';
+comment on column public.posts.up_vote is '点赞数量';
+comment on column public.posts.down_vote is '反对数量';
 comment on column public.posts.access_count is '访问量';
 comment on column public.posts.comment_check is '评论是否需审核 0不需要 1需要';
 comment on column public.posts.create_time is '创建时间';
