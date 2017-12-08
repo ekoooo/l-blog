@@ -43,6 +43,13 @@ const PostCategory = {
     deletePostCategory(id) {
         return requester.delete('/admin/post/category/' + id);
     },
+    
+    /**
+     * 文章分类下拉
+     */
+    getPostCategorySelector() {
+        return requester.get('/admin/post/category');
+    }
 };
 
 export default PostCategory;
