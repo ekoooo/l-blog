@@ -266,3 +266,100 @@ Authorization: <Token>
     "info": 123, // 编辑成功的ID
 }
 ```
+
+## 获取分类下拉数据
+请求语法
+```
+GET /admin/post/category
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```json
+```
+成功响应
+```json
+{
+    "code": 200,
+    "info": [
+        {
+            "id": 21,
+            "name": "React Native"
+        },
+        {
+            "id": 20,
+            "name": "Node.js"
+        },
+        {
+            "id": 19,
+            "name": "Element UI"
+        },
+        {
+            "id": 18,
+            "name": "Vue"
+        }
+    ]
+}
+```
+
+## 获取标签下拉数据
+请求语法
+```
+GET /admin/post/tag
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```json
+```
+成功响应
+```json
+{
+    "code": 200,
+    "info": [
+        {
+            "name": "html"
+        },
+        {
+            "name": "js"
+        },
+        {
+            "name": "linux"
+        },
+        {
+            "name": "vue"
+        }
+    ]
+}
+```
+
+## 添加文章
+请求语法
+```
+POST /admin/post
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+{
+    title: undefined, // 标题
+    categoryId: undefined, // 分类
+    tags: [], // 标签
+    markdown: undefined, // 内容 markdown
+    html: undefined, // 内容 html
+    text: undefined, // 内容 text
+    desc: undefined, // 简述
+    commentCheck: false, // 评论是否需审核
+    keyWords: undefined, // 关键字
+}
+```
+成功响应
+```json
+{
+    "code": 200,
+    "info": 123
+}
+```
+## 编辑文章
+## 获取文章
