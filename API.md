@@ -362,4 +362,49 @@ Authorization: <Token>
 }
 ```
 ## 编辑文章
-## 获取文章
+
+## 获取文章列表
+请求语法
+```
+GET /admin/post/list
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+{
+    "pageId": 0,
+    "pageSize": 10,
+    "q": {
+        title: undefined, // 标题
+        categoryName: undefined, // 分类名
+        keyWords: undefined, // 关键字
+        tag: undefined, // 标签
+        text: undefined, // 内容
+    }
+}
+```
+成功响应
+```json
+{
+    "code": 200,
+    "info": [
+        {
+            "id": 1,
+            "title": "CentOS 6.8 安装 ngnix",
+            "key_words": "ngnix,安装,centos",
+            "link_count": 0,
+            "access_count": 0,
+            "comment_check": 0,
+            "create_time": "2017-12-08T15:46:12.546Z",
+            "username": "admin",
+            "category_name": "Linux",
+            "tags": "ngnix,linxu,CentOS,CentOS 6.8"
+        },
+        ...
+    ],
+    "pageId": 0,
+    "pageSize": 10,
+    "totalCount": "1"
+}
+```
