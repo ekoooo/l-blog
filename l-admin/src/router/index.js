@@ -36,6 +36,24 @@ const router = new Router({
                     }
                 },
                 {
+                    path: 'post/add',
+                    name: 'postAdd',
+                    component: () => import('../pages/post_add_edit'),
+                    meta: {
+                        title: '文章添加',
+                        auth: true,
+                    }
+                },
+                {
+                    path: 'post/edit/:id',
+                    name: 'postEdit',
+                    component: () => import('../pages/post_add_edit'),
+                    meta: {
+                        title: '文章编辑',
+                        auth: true,
+                    }
+                },
+                {
                     path: 'postCategory',
                     name: 'postCategory',
                     component: () => import('../pages/post_category'),
