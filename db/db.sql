@@ -114,6 +114,8 @@ create table posts (
     content text default null,
     markdown text default null,
     plain_text text default null,
+    content_desc character varying(1024) default null,
+    key_words character varying(128) default null,
     link_count int default 0,
     access_count int default 0,
     comment_check smallint default 0,
@@ -129,16 +131,18 @@ comment on table public.posts is '文章表';
 comment on column public.posts.id is '主键id';
 comment on column public.posts.user_id is '用户表ID';
 comment on column public.posts.post_category_id is '文章分类表ID';
-comment on column public.posts.title is '文章表题';
-comment on column public.posts.content is '文章内容 HTML';
-comment on column public.posts.markdown is '文章内容 Markdown';
-comment on column public.posts.plain_text is '文章内容纯文本，用于搜索';
+comment on column public.posts.title is '标题';
+comment on column public.posts.content is '内容 HTML';
+comment on column public.posts.markdown is '内容 Markdown';
+comment on column public.posts.plain_text is '内容纯文本，用于搜索';
+comment on column public.posts.content_desc is '内容简述';
+comment on column public.posts.key_words is '关键字';
 comment on column public.posts.link_count is '点赞数量';
 comment on column public.posts.access_count is '访问量';
 comment on column public.posts.comment_check is '评论是否需审核 0不需要 1需要';
 comment on column public.posts.create_time is '创建时间';
 comment on column public.posts.update_time is '更新时间';
-comment on column public.posts.status is '状态 1正常 0删除';
+comment on column public.posts.status is '状态 1正常 0草稿 -1删除';
 
 -- ------------------
 -- 触发器
