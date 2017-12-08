@@ -74,7 +74,7 @@
             this.initEditor();
         },
         destroyed: function () {
-            this.editor.off('change');
+//            this.editor.off('change');
         }
     }
 </script>
