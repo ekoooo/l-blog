@@ -14,10 +14,8 @@
     export default {
         props: {
             editorId: {
-                type: String,
-                'default'() {
-                    return 'markdown-editor';
-                }
+                'type': String,
+                'default': 'markdown-editor',
             },
             onchange: { // 内容改变时回调，返回（html, markdown, text）
                 type: Function
@@ -26,10 +24,8 @@
                 type: Object
             },
             codeTheme: { // 代码高亮主题，传入 codeThemes 中 monokai 的值
-                type: String,
-                'default'() {
-                    return codeThemes[0].value;
-                }
+                'type': String,
+                'default': codeThemes[0].value
             },
         },
         data: function() {
