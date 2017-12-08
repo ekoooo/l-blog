@@ -17,6 +17,13 @@ router.post('/', Filter.filtAdminHttpLogin, function (req, res) {
 });
 
 /**
+ * 获取文章列表
+ */
+router.post('/list', Filter.filtAdminHttpLogin, function (req, res) {
+    Misc.send(res, new Post().getPostList(req.body));
+});
+
+/**
  * 获取文章分类
  */
 router.post('/category/list', Filter.filtAdminHttpLogin, function (req, res) {
