@@ -1,5 +1,5 @@
 // .wd* => widh: * × 20px;
-@for $i from 1 through 10 {
+@for $i from 1 through 20 {
     .wd#{$i} {
         width: 20px * $i !important;
     }
