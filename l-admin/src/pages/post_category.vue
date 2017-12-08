@@ -20,7 +20,7 @@
                         v-model="searchParams.postCategoryName"
                         size="small"
                         class="wd10 item"
-                        placeholder="请输入分类名称" ></el-input>
+                        placeholder="请输入分类名称"></el-input>
                     <el-button
                         :loading="listLoading"
                         @click="search"
