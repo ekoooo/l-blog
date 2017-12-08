@@ -27,6 +27,32 @@ class PostCategory {
     }
     
     /**
+     * 获取文章分类下拉数据
+     */
+    async getPostCategorySelector() {
+       let sql = `select id, name from post_category where status = 1 order by create_time desc `;
+       let client = null;
+       try {
+           client = await pool.connect();
+           let rs = await client.query(sql);
+           
+           return Promise.resolve({
+               code: CODE.SUCCESS,
+               info: rs.rows,
+           });
+       }catch(e) {
+           Logger.error(`get post category selector data on error => `, e);
+    
+           return Promise.reject({
+               code: CODE.ERROR,
+               message: '文章分类下拉数据失败'
+           });
+       }finally {
+           client && client.release();
+       }
+    }
+    
+    /**
      * 获取文章分类列表
      * @returns {Promise<list>}
      */
