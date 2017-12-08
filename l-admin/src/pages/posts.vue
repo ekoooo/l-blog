@@ -6,6 +6,31 @@
         <div class="box-content">
             <div class="table-header clearfix">
                 <div class="fl clearfix wp8">
+                    <el-input
+                        v-model="searchParams.title"
+                        size="small"
+                        class="wd12 item"
+                        placeholder="请输入标题"></el-input>
+                    <el-input
+                        v-model="searchParams.categoryName"
+                        size="small"
+                        class="wd8 item"
+                        placeholder="请输入分类"></el-input>
+                    <el-input
+                        v-model="searchParams.keyWords"
+                        size="small"
+                        class="wd8 item"
+                        placeholder="请输入关键字"></el-input>
+                    <el-input
+                        v-model="searchParams.tag"
+                        size="small"
+                        class="wd8 item"
+                        placeholder="请输入标签"></el-input>
+                    <el-input
+                        v-model="searchParams.text"
+                        size="small"
+                        class="wd15 item"
+                        placeholder="请输入内容"></el-input>
                     <el-button
                         :loading="listLoading"
                         @click="search"
@@ -36,8 +61,89 @@
                 <el-table
                     :data="listData"
                     :stripe="true"
-                    :border="false"
+                    :border="true"
                     style="width: 100%">
+                    <el-table-column
+                        prop="id"
+                        label="ID"
+                        width="60">
+                    </el-table-column>
+                    <el-table-column
+                        show-overflow-tooltip
+                        prop="title"
+                        label="标题"
+                        min-width="2">
+                    </el-table-column>
+                    <el-table-column
+                        prop="category_name"
+                        label="分类名"
+                        width="100">
+                    </el-table-column>
+                    <el-table-column
+                        label="关键字"
+                        min-width="1">
+                        <template slot-scope="props">
+                            <el-tag
+                                v-for="item in props.row['key_words'].split(',')"
+                                style="margin-left: 4px;"
+                                type="success"
+                                size="mini"
+                                :key="item">
+                                {{ item }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="标签"
+                        min-width="1">
+                        <template slot-scope="props">
+                            <el-tag
+                                v-for="item in props.row['tags'].split(',')"
+                                style="margin-left: 4px;"
+                                type="warning"
+                                size="mini"
+                                :key="item">
+                                {{ item }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="评论审核"
+                        width="70">
+                        <template slot-scope="props">
+                            {{ props.row['comment_check'] ? '是' : '否' }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="up_vote"
+                        label="点赞数"
+                        align="right"
+                        width="70">
+                    </el-table-column>
+                    <el-table-column
+                        prop="down_vote"
+                        label="反对数"
+                        align="right"
+                        width="70">
+                    </el-table-column>
+                    <el-table-column
+                        prop="access_count"
+                        label="访问数"
+                        align="right"
+                        width="70">
+                    </el-table-column>
+                    <el-table-column
+                        prop="username"
+                        label="添加人"
+                        width="80">
+                    </el-table-column>
+                    <el-table-column
+                        label="添加时间"
+                        width="140">
+                        <template slot-scope="props">
+                            {{ moment(props.row['create_time']).format('YYYY-MM-DD HH:mm:ss') }}
+                        </template>
+                    </el-table-column>
                 </el-table>
                 <div class="table-pagination clearfix">
                     <div class="fr">
