@@ -36,6 +36,7 @@
 │   ├── store       // Vuex
 │   └── utils       // 工具
 └── static          // 资源
+    └── editor.md   // markdown 编辑器库
     └── img
 ```
 ## 所用技术
@@ -56,10 +57,6 @@
 ```bash
 npm run dev # 开发环境运行
 npm run start # 生产环境运行
-
-# windows
-npm run win_dev # 开发环境运行
-npm run win_start # 生产环境运行
 ```
 
 ### 前端
