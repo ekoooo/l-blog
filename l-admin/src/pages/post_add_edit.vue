@@ -24,7 +24,7 @@
             <el-form
                 :model="formInfo"
                 ref="form"
-                label-width="80px">
+                label-width="100px">
                 <el-form-item
                     required
                     label="分类">
@@ -91,7 +91,7 @@
                         v-model="formInfo.commentCheck"
                         size="small"></el-switch>
                 </el-form-item>
-                <div style="padding-left: 80px;">
+                <div style="padding-left: 100px;">
                     <el-button
                         size="small"
                         type="primary"
