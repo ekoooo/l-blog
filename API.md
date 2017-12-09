@@ -349,7 +349,8 @@ Authorization: <Token>
     markdown: undefined, // 内容 markdown
     html: undefined, // 内容 html
     text: undefined, // 内容 text
-    desc: undefined, // 简述
+    desc: undefined, // 简述 html
+    descMarkdown: undefined, // 简述 markdown
     commentCheck: false, // 评论是否需审核
     keyWords: undefined, // 关键字
 }
@@ -362,6 +363,34 @@ Authorization: <Token>
 }
 ```
 ## 编辑文章
+请求语法
+```
+PUT /admin/post/id
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+{
+    title: undefined, // 标题
+    categoryId: undefined, // 分类
+    tags: [], // 标签
+    markdown: undefined, // 内容 markdown
+    html: undefined, // 内容 html
+    text: undefined, // 内容 text
+    desc: undefined, // 简述 html
+    descMarkdown: undefined, // 简述 markdown
+    commentCheck: false, // 评论是否需审核
+    keyWords: undefined, // 关键字
+}
+```
+成功响应
+```json
+{
+    "code": 200,
+    "info": 123
+}
+```
 
 ## 获取文章列表
 请求语法
@@ -406,5 +435,37 @@ Authorization: <Token>
     "pageId": 0,
     "pageSize": 10,
     "totalCount": "1"
+}
+```
+
+## 获取单个文章
+请求语法
+```
+GET /admin/post/?id=<id>
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+
+```
+成功响应
+```
+{
+    "code": 200,
+    "info": {
+        "title": "标题",
+        "categoryId": ?, // 分类 ID
+        "markdown": "",
+        "html": "",
+        "text": "",
+        "descMarkdown": "",
+        "commentCheck": false,
+        "keyWords": "",
+        "tags": [
+            "tag",
+            ...
+        ]
+    }
 }
 ```
