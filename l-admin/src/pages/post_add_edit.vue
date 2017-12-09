@@ -1,8 +1,19 @@
 <template>
-    <div class="box">
+    <div class="box"
+         v-loading="dataLoding"
+         element-loading-text="拼命加载中">
+        <el-dialog title="图片管理" :visible.sync="imagePageVisible">
+            <open-images />
+        </el-dialog>
         <div class="box-header clearfix">
             <h2 class="title fl">{{ title }}</h2>
             <div class="fr">
+                <el-button
+                    size="mini"
+                    icon="el-icon-picture-outline"
+                    @click.native="openImagePage">
+                    图片管理
+                </el-button>
                 <el-button
                     size="mini"
                     type="primary"
@@ -14,8 +25,7 @@
                 <el-button
                     size="mini"
                     icon="el-icon-back"
-                    @click.native="goBack"
-                    :loading="commitLoading">
+                    @click.native="goBack">
                     返回
                 </el-button>
             </div>
@@ -30,7 +40,8 @@
                     label="分类">
                     <post-category
                         v-model="formInfo.categoryId"
-                        :auto-select-first="true"
+                        empty-option
+                        empty-option-label="请选择分类"
                     />
                 </el-form-item>
                 <el-form-item
@@ -53,6 +64,8 @@
                     <div style="margin-top: 12px;">
                         <markdown-editor
                             editor-id="post-content-editor"
+                            :init-data="contentInitData"
+                            :init-data-delay="500"
                             :onchange="contentOnChange"
                             :config="{
                                 placeholder: '请输入文章内容'
@@ -66,6 +79,8 @@
                     <div style="margin-top: 12px;">
                         <markdown-editor
                             editor-id="post-desc-editor"
+                            :init-data="descInitData"
+                            :init-data-delay="0"
                             :onchange="descOnChange"
                             :config="{
                                 height: 120,
@@ -103,8 +118,7 @@
                     <el-button
                         size="small"
                         icon="el-icon-back"
-                        @click.native="goBack"
-                        :loading="commitLoading">
+                        @click.native="goBack">
                         返回
                     </el-button>
                 </div>
@@ -117,6 +131,7 @@
     import markdownEditor from '../components/operation/markdown-editor';
     import postCategory from '../components/selector/post-category';
     import postTag from '../components/selector/post-tag';
+    import openImages from './images';
     import MSG from '../utils/message';
     import Util from '../utils/util';
     import PostLogic from '../logic/post';
@@ -131,12 +146,19 @@
                     markdown: undefined, // 内容 markdown
                     html: undefined, // 内容 html
                     text: undefined, // 内容 text
-                    desc: undefined, // 简述
+                    desc: undefined, // 简述 html
+                    descMarkdown: undefined, // 简述 markdown
                     commentCheck: false, // 评论是否需审核
                     keyWords: undefined, // 关键字
                 },
 
                 commitLoading: false,
+                dataLoding: false,
+
+                imagePageVisible: false,
+
+                contentInitData: undefined, // 编辑时文章初始化数据
+                descInitData: undefined, // 编辑时简述初始化数据
             };
         },
         methods: {
@@ -183,9 +205,35 @@
                 this.formInfo.html = html;
                 this.formInfo.text = text;
             },
-            descOnChange: function({ html }) {
+            descOnChange: function({ markdown, html }) {
+                this.formInfo.descMarkdown = markdown;
                 this.formInfo.desc = html;
             },
+            openImagePage() {
+                this.imagePageVisible = true;
+            }
+        },
+        created: function () {
+            if(this.isEdit) {
+                this.dataLoding = true;
+
+                PostLogic.getPost(this.$route.params.id).then(rs => {
+                    if(rs.code === 200) {
+                        this.formInfo = {
+                            ...this.formInfo,
+                            ...rs.info
+                        };
+                        this.descInitData = rs.info.descMarkdown;
+                        this.contentInitData = rs.info.markdown;
+                    }else {
+                        MSG.error(rs.message);
+                    }
+
+                    this.dataLoding = false;
+                }).catch(() => {
+                    this.dataLoding = false;
+                });
+            }
         },
         computed: {
             title: function() {
@@ -199,6 +247,7 @@
             markdownEditor,
             postCategory,
             postTag,
+            openImages,
         },
     }
 </script>
