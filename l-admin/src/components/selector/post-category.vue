@@ -51,10 +51,6 @@
             placeholder: {
                 'type': String,
                 'default': '请选择分类'
-            },
-            autoSelectFirst: {
-                'type': Boolean,
-                'default': false
             }
         },
         data: function() {
@@ -70,12 +66,6 @@
         created: function() {
             PostCategoryLogic.getPostCategorySelector().then((data) => {
                 this.categoryList = data.info;
-
-                if(this.autoSelectFirst && data.info.length) {
-                    this.$nextTick(() => {
-                        this.change(data.info[0].id);
-                    })
-                }
             });
         }
     }
