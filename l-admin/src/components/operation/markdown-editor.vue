@@ -27,11 +27,19 @@
                 'type': String,
                 'default': codeThemes[0].value
             },
+            initData: {
+                'type': String
+            },
+            initDataDelay: {
+                'type': Number, // 延迟初始化时间，单位毫秒
+                'default': 0
+            }
         },
         data: function() {
             return {
                 editor: null,
                 codeThemes,
+                editorLoaded: false,
             };
         },
         methods: {
@@ -51,9 +59,17 @@
                 (async () => {
                     await this.fetchScript('/static/editor.md/jquery.min.js');
                     await this.fetchScript('/static/editor.md/editormd.min.js');
+                    // await this.fetchScript('/static/editor.md/editormd.js');
 
                     this.$nextTick(() => {
                         let editor = window.editormd(this.editorId, this.getConfig());
+
+                        editor.on('load', () => {
+                            setTimeout(() => { // hack bug: 多个编辑器只能 preview 一个的问题
+                                this.editorLoaded = true;
+                                this.initData && editor.setMarkdown(this.initData);
+                            }, this.initDataDelay);
+                        });
 
                         this.onchange && editor.on('change', () => {
                             let html = editor.getHTML();
@@ -73,8 +89,12 @@
         mounted: function() {
             this.initEditor();
         },
-        destroyed: function () {
-//            this.editor.off('change');
+        watch: {
+            'initData': function (newVal) {
+                if(newVal) {
+                    this.editorLoaded && this.editor.setMarkdown(newVal);
+                }
+            }
         }
     }
 </script>
