@@ -115,6 +115,7 @@ create table posts (
     markdown text default null,
     plain_text text default null,
     content_desc character varying(1024) default null,
+    content_desc_markdown character varying(1024) default null,
     key_words character varying(128) default null,
     up_vote int default 0,
     down_vote int default 0,
@@ -136,7 +137,8 @@ comment on column public.posts.title is '标题';
 comment on column public.posts.content is '内容 HTML';
 comment on column public.posts.markdown is '内容 Markdown';
 comment on column public.posts.plain_text is '内容纯文本，用于搜索';
-comment on column public.posts.content_desc is '内容简述';
+comment on column public.posts.content_desc is '内容简述 HTML';
+comment on column public.posts.content_desc_markdown is '内容简述 Markdown';
 comment on column public.posts.key_words is '关键字';
 comment on column public.posts.up_vote is '点赞数量';
 comment on column public.posts.down_vote is '反对数量';
@@ -168,7 +170,7 @@ create sequence seq_post_category_id
 -- drop table if exists post_category;
 create table post_category (
     id int not null default nextval('seq_post_category_id'),
-    name character varying(32) unique not null,
+    name character varying(32) not null,
     create_time timestamp with time zone default current_timestamp,
     status smallint default 1,
     PRIMARY KEY (id)
