@@ -27,6 +27,40 @@ class PostCategory {
     }
     
     /**
+     * 是否存在这个名称
+     * @param name
+     * @param id 编辑时传入验证除这个ID之外是否有其他相同的名称
+     * @returns {Promise<boolean>} 存在 true, 不存在 false
+     */
+    async isExistName(name, id) {
+        const client = await pool.connect();
+        
+        let sql = `select count(1)::int as num from post_category where status <> 0 and name = $1 `;
+        let params = [name];
+        
+        if(!Misc.isNullStr(id)) {
+            sql += ` and id <> $2 `;
+            params.push(id);
+        }
+        
+        try {
+            let { rows } = await client.query(sql, params);
+            
+            if(rows[0]['num'] !== 0) {
+                return true;
+            }
+        }catch (e) {
+            Logger.error(`check is exist name on error => `, e);
+
+            throw new Error(e);
+        }finally {
+            client.release();
+        }
+        
+        return false;
+    }
+    
+    /**
      * 获取文章分类下拉数据
      */
     async getPostCategorySelector() {
@@ -48,7 +82,7 @@ class PostCategory {
                message: '文章分类下拉数据失败'
            });
        }finally {
-           client && client.release();
+           client.release();
        }
     }
     
@@ -127,41 +161,47 @@ class PostCategory {
      * @param formInfo
      * @returns {Promise<id>}
      */
-    addPostCategory(formInfo) {
-        return new Promise((resolve, reject) => {
-            // 验证
-            let errorMsg = PostCategory.validAddEditForm(formInfo);
-            
-            if(errorMsg) {
-                reject({
-                    code: CODE.ERROR,
-                    message: errorMsg
-                });
-            }
+    async addPostCategory(formInfo) {
+        // 验证
+        let errorMsg = PostCategory.validAddEditForm(formInfo);
     
-            // 添加到数据库
-            pool.connect().then(client => {
-                const sql = `insert into post_category (name) values ($1) returning id`;
-                const params = [formInfo.postCategoryName];
-        
-                client.query(sql, params).then(rs => {
-                    client.release();
-            
-                    resolve({
-                        code: CODE.SUCCESS,
-                        info: rs.rows[0].id,
-                    });
-                }).catch(error => {
-                    Logger.error(`add post category on error => `, error, `form info =>`, formInfo);
-                    
-                    client.release();
-                    reject({
-                        code: CODE.ERROR,
-                        message: '添加分类名称失败'
-                    })
-                });
+        if(errorMsg) {
+            return Promise.reject({
+                code: CODE.ERROR,
+                message: errorMsg
             });
-        });
+        }
+        
+        const client = await pool.connect();
+        
+        try {
+            let isExist = await this.isExistName(formInfo.postCategoryName);
+            // 验证是否存在名称
+            if(isExist) {
+                return Promise.reject({
+                    code: CODE.ERROR,
+                    message: '添加分类名已存在'
+                })
+            }
+            
+            const sql = `insert into post_category (name) values ($1) returning id`;
+            const params = [formInfo.postCategoryName];
+            const rs = await client.query(sql, params);
+
+            return Promise.resolve({
+                code: CODE.SUCCESS,
+                info: rs.rows[0].id,
+            });
+        }catch (e) {
+            Logger.error(`add post category on error => `, error, `form info =>`, formInfo);
+            
+            return Promise.reject({
+                code: CODE.ERROR,
+                message: '添加分类名称失败'
+            });
+        }finally {
+            client.release();
+        }
     }
     
     /**
@@ -191,6 +231,15 @@ class PostCategory {
         const client = await pool.connect();
         
         try {
+            let isExist = await this.isExistName(formInfo.postCategoryName, id);
+            // 验证是否存在名称
+            if(isExist) {
+                return Promise.reject({
+                    code: CODE.ERROR,
+                    message: '添加分类名已存在'
+                })
+            }
+            
             let sql = `update post_category set name = $1 where status = 1 and id = $2 `;
             let params = [formInfo.postCategoryName, id];
             let rs = await client.query(sql, params);
@@ -214,7 +263,7 @@ class PostCategory {
                 message: '编辑文章分类失败'
             });
         }finally {
-            client && client.release();
+            client.release();
         }
     }
     
@@ -233,6 +282,16 @@ class PostCategory {
         const client = await pool.connect();
         
         try {
+            // 验证是否已经被使用
+            let { rows } = await client.query(`select count(1)::int as num from posts where status <> -1 and post_category_id = $1`, [id]);
+            
+            if(rows[0]['num'] !== 0) {
+                return Promise.reject({
+                    code: CODE.ERROR,
+                    message: '该文章分类已被使用'
+                });
+            }
+            
             let rs = await client.query(`update post_category set status = 0 where status <> 0 and id = $1 `, [id]);
             
             if(rs.rowCount === 0) {
@@ -254,7 +313,7 @@ class PostCategory {
                 message: '删除文章分类失败'
             });
         }finally {
-            client && client.release();
+            client.release();
         }
     }
 }
