@@ -3398,7 +3398,7 @@
             sequenceDiagram      : false,          // sequenceDiagram.js only support IE9+
         };
         
-        var settings        = $.extend(defaults, options || {});    
+        var settings        = $.extend(defaults, options || {});
         var marked          = editormd.$marked;
         var markedRenderer  = new marked.Renderer();
         markdownToC         = markdownToC || [];        
