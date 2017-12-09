@@ -33,12 +33,12 @@ let DBUtil = {
      * @param params 参数
      */
     getTotalCount: (tableName, condition = '', params = []) => new Promise((resolve, reject) => {
-        let sql = ` select count(1) as num from ${ tableName } where 1 = 1 ${ condition } `;
+        let sql = ` select count(1)::int as num from ${ tableName } where 1 = 1 ${ condition } `;
         
         pool.connect().then(client => {
             client.query(sql, params).then(rs => {
                 client.release();
-                resolve(parseInt(rs.rows[0]['num']));
+                resolve(rs.rows[0]['num']);
             }).catch(e => {
                 Logger.error(`get total count on error =>`, e,
                     `table name => ${ tableName }`,
