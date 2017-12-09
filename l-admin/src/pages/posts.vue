@@ -61,7 +61,7 @@
                 <el-table
                     :data="listData"
                     :stripe="true"
-                    :border="true"
+                    :border="false"
                     style="width: 100%">
                     <el-table-column
                         prop="id"
@@ -142,6 +142,25 @@
                         width="140">
                         <template slot-scope="props">
                             {{ moment(props.row['create_time']).format('YYYY-MM-DD HH:mm:ss') }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="操作"
+                        align="center"
+                        width="60">
+                        <template slot-scope="props">
+                            <router-link
+                                tag="span"
+                                :to="{
+                                    name: 'postEdit',
+                                    params: {
+                                        id: props.row.id
+                                    }
+                                }">
+                                <i class="el-icon-edit cursor"></i>
+                            </router-link>
+                            &nbsp;
+                            <i class="el-icon-delete red cursor"></i>
                         </template>
                     </el-table-column>
                 </el-table>
