@@ -4106,20 +4106,15 @@
     editormd.loadCSS   = function(fileName, callback, into) {
         into       = into     || "head";
         callback   = callback || function() {};
-        
+    
         // validate is already loaded
-        if($('link[href="' + fileName + '.css"]').length) {
-            setTimeout(function() {
-                callback();
-            }, 50);
-            return;
-        }
+        var isExistLoad = $('link[href="' + fileName + '.css"]').length;
         
         var css    = document.createElement("link");
         css.type   = "text/css";
         css.rel    = "stylesheet";
         css.onload = css.onreadystatechange = function() {
-            editormd.loadFiles.css.push(fileName);
+            isExistLoad ? $(css).remove() : editormd.loadFiles.css.push(fileName);
             callback();
         };
 
@@ -4149,19 +4144,14 @@
         into          = into     || "head";
         callback      = callback || function() {};
         
-        // validate is already loaded
-        if($('#' + fileName.replace(/[\./]+/g, "-")).length) {
-            setTimeout(function() {
-                callback();
-            }, 50);
-            return;
-        }
-        
-        var script    = null; 
+        var script    = null;
         script        = document.createElement("script");
         script.id     = fileName.replace(/[\./]+/g, "-");
         script.type   = "text/javascript";        
         script.src    = fileName + ".js";
+    
+        // validate is already loaded
+        var isExistLoad = $('#' + script.id).length;
         
         if (editormd.isIE8) 
         {            
@@ -4170,8 +4160,8 @@
                 {
                     if (script.readyState === "loaded" || script.readyState === "complete") 
                     {
-                        script.onreadystatechange = null; 
-                        editormd.loadFiles.js.push(fileName);
+                        script.onreadystatechange = null;
+                        isExistLoad ? $(script).remove() : editormd.loadFiles.js.push(fileName);
                         callback();
                     }
                 } 
@@ -4180,7 +4170,7 @@
         else
         {
             script.onload = function() {
-                editormd.loadFiles.js.push(fileName);
+                isExistLoad ? $(script).remove() : editormd.loadFiles.js.push(fileName);
                 callback();
             };
         }
