@@ -29,7 +29,7 @@ class PostTag {
                 message: '文章标签拉数据失败'
             });
         }finally {
-            client && client.release();
+            client.release();
         }
     }
 }
