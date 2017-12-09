@@ -13,7 +13,13 @@ let jwt = require('jwt-simple');
 router.post('/', Filter.filtAdminHttpLogin, function (req, res) {
     // 传入用户 ID
     req.body['userId'] = jwt.decode(req.headers['authorization'], null, true, null)['user_id'];
-    Misc.send(res, new Post().addPost(req.body));
+    Misc.send(res, new Post().addEditPost(req.body));
+});
+// 编辑文章
+router.put('/:id', Filter.filtAdminHttpLogin, function (req, res) {
+    // 传入用户 ID
+    req.body['userId'] = jwt.decode(req.headers['authorization'], null, true, null)['user_id'];
+    Misc.send(res, new Post().addEditPost(req.body, req['params']['id']));
 });
 
 /**
@@ -21,6 +27,14 @@ router.post('/', Filter.filtAdminHttpLogin, function (req, res) {
  */
 router.post('/list', Filter.filtAdminHttpLogin, function (req, res) {
     Misc.send(res, new Post().getPostList(req.body));
+});
+
+/**
+ * 获取一个文章
+ * /admin/post/?id=<id>
+ */
+router.get('/', Filter.filtAdminHttpLogin, function (req, res) {
+    Misc.send(res, new Post().getPostById(req.query.id));
 });
 
 /**
