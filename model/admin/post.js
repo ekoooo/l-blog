@@ -137,7 +137,7 @@ class Post {
         }
     
         let sql = `select p.id, p.title, p.key_words, p.up_vote, p.down_vote, p.access_count,
-                       p.comment_check, p.create_time, u.username,
+                       p.comment_check, p.create_time, p.status ,u.username,
                        pc.name as category_name, pt.tags
                    from posts p
                        left join users u on u.id = p.user_id
@@ -161,6 +161,11 @@ class Post {
             if(!Misc.isNullStr(searchParams.categoryName)) {
                 sql += ` and pc.name like $${ ++index } `;
                 params.push(`%${ searchParams.categoryName }%`);
+            }
+            // categoryId // 分类名
+            if(!Misc.isNullStr(searchParams.categoryId)) {
+                sql += ` and pc.id = $${ ++index } `;
+                params.push(searchParams.categoryId);
             }
             // keyWords // 关键字
             if(!Misc.isNullStr(searchParams.keyWords)) {
@@ -206,7 +211,7 @@ class Post {
             
             return Promise.reject({
                 code: CODE.ERROR,
-                message: '添加文章列表失败'
+                message: '获取文章列表失败'
             });
         }finally {
             client.release();
@@ -317,6 +322,47 @@ class Post {
             return Promise.reject({
                 code: CODE.ERROR,
                 message: isEdit ? '编辑文章失败' : '添加文章失败'
+            });
+        }finally {
+            client.release();
+        }
+    }
+    
+    /**
+     * 发布、删除、撤回
+     * @param id
+     * @param status 0草稿 1发布 -1删除
+     * @returns {Promise<void>}
+     */
+    async updateStatus(id, status) {
+        if(status !== 0 && status !== 1 && status !== -1) {
+            return Promise.reject({
+                code: CODE.ERROR,
+                message: '参数错误'
+            });
+        }
+    
+        const client = await pool.connect();
+        
+        try {
+            const rs = await client.query('update posts set status = $1 where id = $2 ', [status, id]);
+            
+            if(rs.rowCount === 0) {
+                return Promise.reject({
+                    code: CODE.ERROR,
+                    message: '文章不存在'
+                });
+            }else {
+                return Promise.resolve({
+                    code: CODE.SUCCESS,
+                    info: id
+                });
+            }
+        }catch (e) {
+            Logger.error(`update post status on error => `, e);
+            return Promise.reject({
+                code: CODE.ERROR,
+                message: '操作失败'
             });
         }finally {
             client.release();
