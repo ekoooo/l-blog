@@ -6,6 +6,7 @@ const PostLogic = {
     POST_LIST_SEARCHPARAMS: {
         title: undefined, // 标题
         categoryName: undefined, // 分类名
+        categoryId: undefined, // 分类ID
         keyWords: undefined, // 关键字
         tag: undefined, // 标签
         text: undefined, // 内容
@@ -49,6 +50,21 @@ const PostLogic = {
      */
     getPost(id) {
         return requester.get('/admin/post/?id=' + id);
+    },
+    
+    /**
+     * 更新状态
+     * @param id
+     * @param status 1发布 0撤回 -1删除
+     */
+    updateStatus(id, status) {
+        if(status === 1) {
+            return requester.put('/admin/post/publish/' + id);
+        }else if(status === 0) {
+            return requester.put('/admin/post/unpublish/' + id);
+        }else if(status === -1) {
+            return requester.delete('/admin/post/' + id);
+        }
     },
 };
 
