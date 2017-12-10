@@ -73,9 +73,8 @@
                         align="center"
                         width="60">
                         <template slot-scope="props">
-                            <i class="el-icon-edit cursor" @click="openAddEditDialog(props.row)"></i>
-                            &nbsp;
-                            <i class="el-icon-delete red cursor" @click="deleteOneRow(props.row.id)"></i>
+                            <i class="el-icon-edit op-icon" @click="openAddEditDialog(props.row)"></i>
+                            <i class="el-icon-delete red op-icon" @click="deleteOneRow(props.row.id)"></i>
                         </template>
                     </el-table-column>
                 </el-table>
