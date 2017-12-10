@@ -356,3 +356,10 @@ ul, li {
     border-top: 1px solid $gray-line-color;
 }
 // =========================== element ui table ========================
+.op-icon {
+    cursor: pointer;
+    padding: 0 2px;
+    font-weight: bold;
+    font-size: 13px;
+    outline: none;
+}
