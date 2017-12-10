@@ -145,7 +145,9 @@
              * 删除图片
              */
             del(key) {
-                MSG.warningConfirm('是否确定删除？').then(() => {
+                MSG.warningConfirm('是否确定删除？').then((confirm) => {
+                    if(!confirm) { return; }
+
                     this.listLoading = true;
 
                     ImageLogic.deleteImage(key).then(rs => {

@@ -28,7 +28,9 @@ const Oauth = {
      * 退出登陆
      */
     logout() {
-        MSG.warningConfirm('是否退出登陆？').then(() => {
+        MSG.warningConfirm('是否退出登陆？').then((confirm) => {
+            if(!confirm) { return; }
+    
             requester.post('/admin/logout');
             // 返回到登陆界面
             router.replace({ name: 'login' });

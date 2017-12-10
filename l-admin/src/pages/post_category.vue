@@ -169,7 +169,9 @@
              * @param id
              */
             deleteOneRow: function(id) {
-                MSG.warningConfirm('是否确认删除').then(() => {
+                MSG.warningConfirm('是否确认删除').then((confirm) => {
+                    if(!confirm) { return; }
+
                     PostCategoryLogic.deletePostCategory(id).then(rs => {
                         if(rs.code === 200) {
                             MSG.success('删除成功');

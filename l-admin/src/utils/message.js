@@ -6,7 +6,7 @@ const MSG = {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
-        }).catch(() => {});
+        }).catch(() => false);
     },
     success: (text) => {
         Message({
