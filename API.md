@@ -362,10 +362,11 @@ Authorization: <Token>
     "info": 123
 }
 ```
+
 ## 编辑文章
 请求语法
 ```
-PUT /admin/post/id
+PUT /admin/post/<id>
 Content-Type: application/json
 Authorization: <Token>
 ```
@@ -392,6 +393,63 @@ Authorization: <Token>
 }
 ```
 
+## 删除文章
+请求语法
+```
+DELETE /admin/post/<id>
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+
+```
+成功响应
+```json
+{
+    "code": 200,
+    "info": 123
+}
+```
+
+## 发布文章
+请求语法
+```
+PUT /admin/post/publish/<id>
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+
+```
+成功响应
+```json
+{
+    "code": 200,
+    "info": 123
+}
+```
+
+## 撤回文章
+请求语法
+```
+PUT /admin/post/unpublish/<id>
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+
+```
+成功响应
+```json
+{
+    "code": 200,
+    "info": 123
+}
+```
+
 ## 获取文章列表
 请求语法
 ```
@@ -407,6 +465,7 @@ Authorization: <Token>
     "q": {
         title: undefined, // 标题
         categoryName: undefined, // 分类名
+        categoryId: undefined, // 分类ID
         keyWords: undefined, // 关键字
         tag: undefined, // 标签
         text: undefined, // 内容
@@ -428,7 +487,8 @@ Authorization: <Token>
             "create_time": "2017-12-08T15:46:12.546Z",
             "username": "admin",
             "category_name": "Linux",
-            "tags": "ngnix,linxu,CentOS,CentOS 6.8"
+            "tags": "ngnix,linxu,CentOS,CentOS 6.8",
+            "status": 1
         },
         ...
     ],
