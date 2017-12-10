@@ -6,26 +6,26 @@
         <div class="box-content">
             <div class="table-header clearfix">
                 <div class="fl clearfix wp8">
+                    <post-category
+                        emptyOption
+                        emptyOptionLabel="请选择分类"
+                        class="wd8 item"
+                        v-model="searchParams.categoryId" />
                     <el-input
                         v-model="searchParams.title"
                         size="small"
                         class="wd12 item"
                         placeholder="请输入标题"></el-input>
                     <el-input
-                        v-model="searchParams.categoryName"
+                        v-model="searchParams.tag"
                         size="small"
                         class="wd8 item"
-                        placeholder="请输入分类"></el-input>
+                        placeholder="请输入标签"></el-input>
                     <el-input
                         v-model="searchParams.keyWords"
                         size="small"
                         class="wd8 item"
                         placeholder="请输入关键字"></el-input>
-                    <el-input
-                        v-model="searchParams.tag"
-                        size="small"
-                        class="wd8 item"
-                        placeholder="请输入标签"></el-input>
                     <el-input
                         v-model="searchParams.text"
                         size="small"
@@ -133,6 +133,12 @@
                         width="70">
                     </el-table-column>
                     <el-table-column
+                        :formatter="ColumnFormatter.postStatusFormatter"
+                        prop="status"
+                        label="状态"
+                        width="70">
+                    </el-table-column>
+                    <el-table-column
                         prop="username"
                         label="添加人"
                         width="80">
@@ -147,9 +153,17 @@
                     <el-table-column
                         label="操作"
                         align="center"
-                        width="60">
+                        width="90">
                         <template slot-scope="props">
+                            <el-tooltip
+                                v-if="props.row.status === 0"
+                                class="item" effect="dark" content="删除" placement="top">
+                                <i
+                                    key="update-status-1"
+                                    @click="updateStatus(props.row.id, -1)" class="el-icon-delete red op-icon"></i>
+                            </el-tooltip>
                             <router-link
+                                v-if="props.row.status === 0"
                                 tag="span"
                                 :to="{
                                     name: 'postEdit',
@@ -157,10 +171,24 @@
                                         id: props.row.id
                                     }
                                 }">
-                                <i class="el-icon-edit cursor"></i>
+                                <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                                    <i class="el-icon-edit op-icon"></i>
+                                </el-tooltip>
                             </router-link>
-                            &nbsp;
-                            <i class="el-icon-delete red cursor"></i>
+                            <el-tooltip
+                                v-if="props.row.status === 1"
+                                class="item" effect="dark" content="撤回" placement="top">
+                                <i
+                                    key="update-status-2"
+                                    @click="updateStatus(props.row.id, 0)" class="el-icon-remove-outline op-icon"></i>
+                            </el-tooltip>
+                            <el-tooltip
+                                v-if="props.row.status === 0"
+                                class="item" effect="dark" content="发布" placement="top">
+                                <i
+                                    key="update-status-3"
+                                    @click="updateStatus(props.row.id, 1)" class="el-icon-circle-check-outline op-icon"></i>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -185,6 +213,8 @@
     import PostLogic from '../logic/post';
     import MSG from '../utils/message';
     import moment from 'moment';
+    import ColumnFormatter from '../common/column_formatter';
+    import postCategory from '../components/selector/post-category';
 
     export default {
         data: function() {
@@ -197,6 +227,7 @@
                 listLoading: false, // 表格数据加载中标志
 
                 moment,
+                ColumnFormatter,
             };
         },
         methods: {
@@ -215,6 +246,28 @@
                     this.listLoading = false;
                 }).catch(() => { this.listLoading = false; });
             },
+            /**
+             * 更新状态
+             * @param id
+             * @param status
+             */
+            updateStatus(id, status) {
+                console.log(status);
+
+                MSG.warningConfirm('是否确定' + ({ '1': '发布', '0': '撤回', '-1': '删除' })[status] + '?').then(confirm => {
+                    if(!confirm) { return; }
+
+                    PostLogic.updateStatus(id, status).then(rs => {
+                        if(rs.code === 200) {
+                            MSG.success('操作成功');
+                            this.refreshCurrentPage();
+                        }else {
+                            MSG.error(rs.message);
+                        }
+                    });
+                });
+            },
+
             search: function() {
                 this.listLoading = true;
 
@@ -245,9 +298,6 @@
                 this.searchParams = Object.assign({}, PostLogic.POST_LIST_SEARCHPARAMS);
             },
         },
-        components: {
-
-        },
         computed: {
             currentPage: {
                 get: function() {
@@ -260,6 +310,9 @@
             title: function() {
                 return this.$route.meta.title;
             }
+        },
+        components: {
+            postCategory
         },
         created: function() {
             this.search();
