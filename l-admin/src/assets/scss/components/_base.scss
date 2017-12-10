@@ -41,6 +41,13 @@ ul, li {
     z-index: 9999;
 }
 
+// markdown 编辑器初始化样式 editormd.min.css 中提取
+.editormd-preview-close-btn,
+.editormd .editormd-html-textarea,
+.editormd .editormd-markdown-textarea {
+    display: none
+}
+
 // ===========================框架 start========================
 .header {
     position: fixed;
