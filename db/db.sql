@@ -123,7 +123,7 @@ create table posts (
     comment_check smallint default 0,
     create_time timestamp with time zone default current_timestamp,
     update_time timestamp with time zone default current_timestamp,
-    status smallint default 1,
+    status smallint default 0,
     PRIMARY KEY (id)
 ) WITH (
     OIDS = FALSE
