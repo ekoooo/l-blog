@@ -3,6 +3,7 @@ export default {
         token: undefined,
         userId: undefined,
         username: undefined,
+        nickname: undefined,
         status: undefined,
         gender: undefined,
         age: undefined,
