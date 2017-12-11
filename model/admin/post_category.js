@@ -23,6 +23,10 @@ class PostCategory {
             return '分类名称不能超过 32 字符';
         }
         
+        if(!Misc.isNullStr(formInfo.orderBy) && !Misc.validInt(formInfo.orderBy, 4)) {
+            return '排序必须为整数字';
+        }
+        
         return false;
     }
     
@@ -64,7 +68,9 @@ class PostCategory {
      * 获取文章分类下拉数据
      */
     async getPostCategorySelector() {
-       let sql = `select id, name from post_category where status = 1 order by create_time desc `;
+       let sql = `select id, name from post_category
+                    where status = 1
+                    order by order_by asc, create_time desc`;
        const client = await pool.connect();
        
        try {
@@ -106,7 +112,7 @@ class PostCategory {
             
             let sql = ` select * from post_category where 1 = 1 `;
             let conditionSql = ` and status = 1 `;
-            let orderBySql = ` order by create_time desc `;
+            let orderBySql = ` order by order_by asc, create_time desc `;
     
             let params = [];
     
@@ -184,8 +190,8 @@ class PostCategory {
                 })
             }
             
-            const sql = `insert into post_category (name) values ($1) returning id`;
-            const params = [formInfo.postCategoryName];
+            const sql = `insert into post_category (name, order_by) values ($1, $2) returning id`;
+            const params = [formInfo.postCategoryName, formInfo.orderBy || 0];
             const rs = await client.query(sql, params);
 
             return Promise.resolve({
@@ -240,8 +246,8 @@ class PostCategory {
                 })
             }
             
-            let sql = `update post_category set name = $1 where status = 1 and id = $2 `;
-            let params = [formInfo.postCategoryName, id];
+            let sql = `update post_category set name = $1, order_by = $2 where status = 1 and id = $3 `;
+            let params = [formInfo.postCategoryName, formInfo.orderBy || 0, id];
             let rs = await client.query(sql, params);
             
             if(rs.rowCount === 0) {
