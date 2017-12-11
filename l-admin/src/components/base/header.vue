@@ -13,7 +13,7 @@
             <span class="content">退出</span>
         </a>
         <a href="javascript: void(0)" class="header-btn bl fr">
-            <span class="content">一生好吃没钱酒</span>
+            <span class="content">{{ $store.state.userInfo.nickname }}</span>
         </a>
     </header>
 </template>
