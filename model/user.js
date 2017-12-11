@@ -16,6 +16,7 @@ class User {
      */
     static initAdmin() {
         let username = 'admin';
+        let nickname = '一生好吃没钱酒';
         let pwd = '123456';
         let age = 24;
         let phone = '15727781885';
@@ -28,16 +29,18 @@ class User {
                     (async () => {
                         const client = await pool.connect();
             
-                        const usersSqlStr = `insert into users (username, password, is_admin)
-                        values ($1, $2, $3) returning id`;
-                        const userProfileSqlStr = `insert into user_profile
-                        (user_id, gender, age, phone, mail, description)
-                        values ($1, $2, $3, $4, $5, $6)`;
+                        const usersSqlStr = `insert into
+                                users (username, password, is_admin, nickname)
+                                values ($1, $2, $3, $4)
+                            returning id`;
+                        const userProfileSqlStr = `insert into
+                            user_profile (user_id, gender, age, phone, mail, description)
+                            values ($1, $2, $3, $4, $5, $6)`;
             
                         try {
                             await client.query('BEGIN');
                 
-                            const rs = await client.query(usersSqlStr, [username, hash, 1]);
+                            const rs = await client.query(usersSqlStr, [username, hash, 1, nickname]);
                 
                             await client.query(userProfileSqlStr, [rs.rows[0].id, 1, age, phone, mail, desc]);
                 
