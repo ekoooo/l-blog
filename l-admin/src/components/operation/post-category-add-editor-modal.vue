@@ -10,9 +10,18 @@
                 label="分类名称">
                 <el-input
                     v-model="formInfo.postCategoryName"
-                    @keyup.enter.native="commit"
                     class="wd10"
                     placeholder="请输入分类名称"
+                    size="small"></el-input>
+            </el-form-item>
+            <el-form-item
+                required
+                label="排序">
+                <el-input
+                    v-model="formInfo.orderBy"
+                    @keyup.enter.native="commit"
+                    class="wd10"
+                    placeholder="请输入排序"
                     size="small"></el-input>
             </el-form-item>
             <el-form-item>
@@ -40,6 +49,7 @@
                 formInfo: {
                     postCategoryId: undefined,
                     postCategoryName: undefined,
+                    orderBy: 0,
                     t: undefined, // 用于监听该变量是否改变，清除输入框遗留内容
                 },
                 commitLoading: false,
@@ -50,11 +60,13 @@
                 if(info === null) { // 添加
                     this.formInfo = {
                         postCategoryName: undefined,
+                        orderBy: undefined,
                     };
                 }else {
                     this.formInfo = {
                         postCategoryId: info.id,
                         postCategoryName: info.name,
+                        orderBy: info['order_by'],
                     };
                 }
             },
