@@ -39,6 +39,7 @@ create sequence seq_users_id
 create table users (
     id int not null default nextval('seq_users_id'),
     username character varying(32) unique not null,
+    nickname character varying(32) not null,
     password character varying(128) not null,
     salt character varying(128),
     avatar_url character varying(255) default null,
@@ -54,6 +55,7 @@ create table users (
 comment on table public.users is '用户表';
 comment on column public.users.id is '主键id';
 comment on column public.users.username is '用户名';
+comment on column public.users.nickname is '昵称';
 comment on column public.users.password is '密码';
 comment on column public.users.salt is '密码盐';
 comment on column public.users.avatar_url is '头像地址';
@@ -172,6 +174,7 @@ create table post_category (
     id int not null default nextval('seq_post_category_id'),
     name character varying(32) not null,
     create_time timestamp with time zone default current_timestamp,
+    order_by int default 0,
     status smallint default 1,
     PRIMARY KEY (id)
 ) WITH (
@@ -182,6 +185,7 @@ comment on table public.post_category is '文章分类表';
 comment on column public.post_category.id is '主键id';
 comment on column public.post_category.name is '分类名';
 comment on column public.post_category.create_time is '创建时间';
+comment on column public.post_category.order_by is '排序';
 comment on column public.post_category.status is '状态 1正常 0删除';
 
 
