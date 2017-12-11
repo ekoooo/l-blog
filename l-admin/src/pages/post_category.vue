@@ -54,7 +54,12 @@
                     <el-table-column
                         prop="id"
                         label="ID"
-                        width="180">
+                        width="70">
+                    </el-table-column>
+                    <el-table-column
+                        prop="order_by"
+                        label="排序"
+                        width="70">
                     </el-table-column>
                     <el-table-column
                         prop="name"
