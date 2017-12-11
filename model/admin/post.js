@@ -137,7 +137,7 @@ class Post {
         }
     
         let sql = `select p.id, p.title, p.key_words, p.up_vote, p.down_vote, p.access_count,
-                       p.comment_check, p.create_time, p.status ,u.username,
+                       p.comment_check, p.create_time, p.status , u.username, u.nickname,
                        pc.name as category_name, pt.tags
                    from posts p
                        left join users u on u.id = p.user_id
