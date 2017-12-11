@@ -106,7 +106,7 @@
                         v-model="formInfo.commentCheck"
                         size="small"></el-switch>
                 </el-form-item>
-                <div style="padding-left: 100px;">
+                <el-form-item>
                     <el-button
                         size="small"
                         type="primary"
@@ -121,7 +121,7 @@
                         @click.native="goBack">
                         返回
                     </el-button>
-                </div>
+                </el-form-item>
             </el-form>
         </div>
     </div>

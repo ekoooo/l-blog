@@ -15,7 +15,7 @@
                     placeholder="请输入分类名称"
                     size="small"></el-input>
             </el-form-item>
-            <div style="padding-left: 100px;">
+            <el-form-item>
                 <el-button
                     size="small"
                     type="primary"
@@ -24,7 +24,7 @@
                     :loading="commitLoading">
                     {{ isEdit ? '保存' : '添加' }}
                 </el-button>
-            </div>
+            </el-form-item>
         </el-form>
     </div>
 </template>
