@@ -46,6 +46,7 @@ const Oauth = {
         let saveInfo = {
             userId: undefined,
             username: undefined,
+            nickname: undefined,
             status: undefined,
             gender: undefined,
             age: undefined,
@@ -57,6 +58,7 @@ const Oauth = {
             saveInfo = {
                 userId: info['user_id'] || info['userId'],
                 username: info['username'],
+                nickname: info['nickname'],
                 status: info['status'],
                 gender: info['gender'],
                 age: info['age'],
