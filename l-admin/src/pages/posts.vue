@@ -139,9 +139,9 @@
                         width="70">
                     </el-table-column>
                     <el-table-column
-                        prop="username"
+                        prop="nickname"
                         label="添加人"
-                        width="80">
+                        width="120">
                     </el-table-column>
                     <el-table-column
                         label="添加时间"
