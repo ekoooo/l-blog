@@ -43,9 +43,9 @@ class Auth {
                     code: CODE.SUCCESS,
                     message: '退出成功！',
                 });
-            }).catch(err => {
+            }).catch(() => {
                 reject({
-                    code: CODE.TOKEN_NON_VERIFIED,
+                    code: CODE.ERROR,
                     message: 'Token 验证失败！',
                 });
             });
