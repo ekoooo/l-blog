@@ -75,7 +75,7 @@ Authorization: <Token>
 ```json
 ```
 成功响应
-```json
+```
 {
     "code": 200,
     "info": {
@@ -89,15 +89,7 @@ Authorization: <Token>
                 "type": 0,
                 "status": 0
             },
-            {
-                "key": "music.mp3",
-                "hash": "lkUi5M3KGjKRHGBbTdfoBWPayVG1",
-                "fsize": 5955259,
-                "mimeType": "audio/mp3",
-                "putTime": 15121140127886448,
-                "type": 0,
-                "status": 0
-            }
+            ...
         ]
     }
 }
@@ -159,7 +151,7 @@ Authorization: <Token>
 }
 ```
 成功响应
-```json
+```
 {
     "code": 200,
     "list": [
@@ -169,30 +161,7 @@ Authorization: <Token>
             "create_time": "2017-12-04T01:28:40.041Z",
             "status": 1
         },
-        {
-            "id": 2,
-            "name": "JavaScript",
-            "create_time": "2017-12-04T01:28:48.434Z",
-            "status": 1
-        },
-        {
-            "id": 3,
-            "name": "Node",
-            "create_time": "2017-12-04T01:28:57.898Z",
-            "status": 1
-        },
-        {
-            "id": 4,
-            "name": "Vue",
-            "create_time": "2017-12-04T01:29:08.487Z",
-            "status": 1
-        },
-        {
-            "id": 5,
-            "name": "element ui",
-            "create_time": "2017-12-04T01:29:20.423Z",
-            "status": 1
-        }
+        ...
     ],
     "pageId": 0,
     "pageSize": 12,
@@ -278,7 +247,7 @@ Authorization: <Token>
 ```json
 ```
 成功响应
-```json
+```
 {
     "code": 200,
     "info": [
@@ -286,18 +255,7 @@ Authorization: <Token>
             "id": 21,
             "name": "React Native"
         },
-        {
-            "id": 20,
-            "name": "Node.js"
-        },
-        {
-            "id": 19,
-            "name": "Element UI"
-        },
-        {
-            "id": 18,
-            "name": "Vue"
-        }
+        ...
     ]
 }
 ```
@@ -313,22 +271,14 @@ Authorization: <Token>
 ```json
 ```
 成功响应
-```json
+```
 {
     "code": 200,
     "info": [
         {
             "name": "html"
         },
-        {
-            "name": "js"
-        },
-        {
-            "name": "linux"
-        },
-        {
-            "name": "vue"
-        }
+        ...
     ]
 }
 ```
