@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <%#动态 keywords、description、author %>
+    <meta name="author" content="<%=locals.author %>">
+    <meta name="keywords" content="<%=locals.keywords %>" >
+    <meta name="description" content="<%=locals.description %>">
+    <%#动态标题 %>
+    <title><%=locals.title %></title>
+    <%#是否需要加载文章页专有样式 %>
+    <% if(locals.loadPostCss) { %>
+    <link rel="stylesheet" href="/static/editor.md/css/editormd.preview.min.css">
+    <link rel="stylesheet" href="/static/editor.md/css/google_code_prettify_themes/monokai.min.css">
+    <% } %>
+</head>
+<body>

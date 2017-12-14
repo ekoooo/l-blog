@@ -1,0 +1,8 @@
+<%-include('./tmpl/header', { loadPostCss: true }) %>
+<h2>
+    <%=locals.info.title %>
+</h2>
+<div class="markdown-body">
+    <%-locals.info.content %>
+</div>
+<%-include('./tmpl/footer') %>
