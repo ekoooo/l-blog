@@ -64,7 +64,7 @@ class Post {
      * @returns {Promise<void>}
      */
     async getPostById(id) {
-        if(Misc.isNullStr(id)) {
+        if(Misc.isNullStr(id) || !Misc.validInt(id, 1)) {
             return Promise.reject({
                 code: CODE.ERROR,
                 message: '参数错误'
@@ -244,9 +244,10 @@ class Post {
                     plain_text = $5,
                     content_desc = $6,
                     content_desc_markdown = $7,
-                    key_words = $8,
-                    comment_check = $9
-                where id = $10
+                    content_desc_plain_text = $8,
+                    key_words = $9,
+                    comment_check = $10
+                where id = $11
             ` : `
                 insert into posts (
                     user_id,
@@ -257,10 +258,11 @@ class Post {
                     plain_text,
                     content_desc,
                     content_desc_markdown,
+                    content_desc_plain_text,
                     key_words,
                     comment_check
                 ) values (
-                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
                 ) returning id
             `;
         
@@ -273,6 +275,7 @@ class Post {
                 formInfo['text'],
                 formInfo['desc'],
                 formInfo['descMarkdown'],
+                formInfo['descText'],
                 formInfo['keyWords'],
                 formInfo['commentCheck'] ? 1 : 0,
                 id
@@ -285,6 +288,7 @@ class Post {
                 formInfo['text'],
                 formInfo['desc'],
                 formInfo['descMarkdown'],
+                formInfo['descText'],
                 formInfo['keyWords'],
                 formInfo['commentCheck'] ? 1 : 0,
             ];
