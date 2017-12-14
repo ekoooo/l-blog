@@ -72,7 +72,7 @@
                         });
 
                         this.onchange && editor.on('change', () => {
-                            let html = editor.getHTML();
+                            let html = editor.getPreviewedHTML();
 
                             this.onchange({
                                 markdown: editor.getMarkdown(),
