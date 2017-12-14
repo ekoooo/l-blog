@@ -12,6 +12,10 @@
 
 -- COMMENT ON DATABASE lblog IS 'l-blog 数据库';
 
+--添加字段语句
+--﻿ALTER TABLE posts ADD content_desc_plain_text character varying(1024) default null;
+--comment on column public.posts.content_desc_plain_text is '内容简述纯文本';
+
 
 -- ----------------------------------------------------------------------------
 -- FUNCTION
@@ -118,6 +122,7 @@ create table posts (
     plain_text text default null,
     content_desc character varying(1024) default null,
     content_desc_markdown character varying(1024) default null,
+    content_desc_plain_text character varying(1024) default null,
     key_words character varying(128) default null,
     up_vote int default 0,
     down_vote int default 0,
@@ -141,6 +146,7 @@ comment on column public.posts.markdown is '内容 Markdown';
 comment on column public.posts.plain_text is '内容纯文本，用于搜索';
 comment on column public.posts.content_desc is '内容简述 HTML';
 comment on column public.posts.content_desc_markdown is '内容简述 Markdown';
+comment on column public.posts.content_desc_plain_text is '内容简述纯文本';
 comment on column public.posts.key_words is '关键字';
 comment on column public.posts.up_vote is '点赞数量';
 comment on column public.posts.down_vote is '反对数量';
