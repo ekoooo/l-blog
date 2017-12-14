@@ -351,6 +351,7 @@ Authorization: <Token>
     text: undefined, // 内容 text
     desc: undefined, // 简述 html
     descMarkdown: undefined, // 简述 markdown
+    descText: undefined, // 简述 text
     commentCheck: false, // 评论是否需审核
     keyWords: undefined, // 关键字
 }
@@ -381,6 +382,7 @@ Authorization: <Token>
     text: undefined, // 内容 text
     desc: undefined, // 简述 html
     descMarkdown: undefined, // 简述 markdown
+    descText: undefined, // 简述 text
     commentCheck: false, // 评论是否需审核
     keyWords: undefined, // 关键字
 }
