@@ -148,6 +148,7 @@
                     text: undefined, // 内容 text
                     desc: undefined, // 简述 html
                     descMarkdown: undefined, // 简述 markdown
+                    descText: undefined, // 简述 text
                     commentCheck: false, // 评论是否需审核
                     keyWords: undefined, // 关键字
                 },
@@ -205,8 +206,9 @@
                 this.formInfo.html = html;
                 this.formInfo.text = text;
             },
-            descOnChange: function({ markdown, html }) {
+            descOnChange: function({ markdown, html, text }) {
                 this.formInfo.descMarkdown = markdown;
+                this.formInfo.descText = text;
                 this.formInfo.desc = html;
             },
             openImagePage() {
