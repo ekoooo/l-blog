@@ -39,7 +39,7 @@ class Token {
             if(err) {
                 Logger.error('token expire time save on error =>', err);
             }else {
-                Logger.info('token expire time save successed =>', `key => ${ key }, time => ${ time }`);
+                Logger.debug('token expire time save successed =>', `key => ${ key }, time => ${ time }`);
             }
         });
     }
