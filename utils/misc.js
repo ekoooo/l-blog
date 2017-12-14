@@ -3,19 +3,6 @@
  */
 const Misc = {
     /**
-     * 返回请求结果
-     * @param res
-     * @param promise
-     */
-    send(res, promise) {
-        promise.then(rs => {
-            res.send(rs);
-        }).catch(error => {
-            res.send(error);
-        });
-    },
-    
-    /**
      * 复制一个对象
      */
     cloneObj: function(obj) {
