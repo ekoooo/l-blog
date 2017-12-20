@@ -1,6 +1,7 @@
 let Logger = require('./logger');
 let Config = require('../config/index');
 let Misc = require('../utils/misc');
+let moment = require('moment');
 const CODE = require('./code');
 
 const Sender = {
@@ -46,13 +47,44 @@ const Sender = {
      */
     sendPostPage(res, next, promise) {
         promise.then(data => {
+            data.info['create_time'] = moment(data.info['create_time']).format('YYYY-MM-DD HH:mm:ss');
+            data.info['update_time'] = moment(data.info['update_time']).format('YYYY-MM-DD HH:mm:ss');
+            
             res.render('post', {
                 ...data,
                 ...Sender.mergeBlogInfo({
-                    title: data.info.title,
-                    keywords: data.info.keyWords,
-                    description: data.info.descText
+                    title: data.info['title'],
+                    keywords: data.info['key_words'],
+                    description: data.info['content_desc_plain_text']
                 }),
+            });
+        }).catch(err => {
+            if(err.code !== CODE.ERROR) {
+                Logger.error(err);
+            }else {
+                Logger.warn(err);
+            }
+            next();
+        });
+    },
+    
+    /**
+     * 主页
+     * @param res
+     * @param next
+     * @param promise
+     */
+    sendIndexPage(res, next, promise) {
+        promise.then(data => {
+            data.list.map(item => {
+                if(item['create_time']) {
+                    item['create_time'] = moment(item['create_time']).format('YYYY-MM-DD HH:mm:ss');
+                }
+            });
+            
+            res.render('index', {
+                ...data,
+                ...Sender.mergeBlogInfo(),
             });
         }).catch(err => {
             if(err.code !== CODE.ERROR) {
