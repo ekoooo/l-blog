@@ -9,6 +9,8 @@ let Logger = require('./common/logger');
 
 let app = express();
 
+app.set('trust proxy', 'loopback');
+
 // 模板引擎设置
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
