@@ -57,6 +57,8 @@
 ```bash
 npm run dev # 开发环境运行
 npm run start # 生产环境运行
+
+gulp # ...
 ```
 
 ### 前端
