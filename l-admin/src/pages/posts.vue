@@ -6,6 +6,27 @@
         <div class="box-content">
             <div class="table-header clearfix">
                 <div class="fl clearfix wp8">
+                    <div class="item">
+                        <el-popover
+                            ref="columnspopover"
+                            placement="bottom-start"
+                            width="100"
+                            trigger="click">
+                            <ul>
+                                <li v-for="column in columns">
+                                    <el-checkbox
+                                        v-model="column.show"
+                                        :disabled="column.disabled">
+                                        {{ column.label }}
+                                    </el-checkbox>
+                                </li>
+                            </ul>
+                        </el-popover>
+                        <el-button size="small" v-popover:columnspopover>
+                            <i class="fa fa-table"></i>
+                            <span>配置显示列</span>
+                        </el-button>
+                    </div>
                     <post-category
                         emptyOption
                         emptyOptionLabel="请选择分类"
@@ -64,23 +85,27 @@
                     :border="false"
                     style="width: 100%">
                     <el-table-column
+                        v-if="columns['id'].show"
+                        :label="columns['id'].label"
                         prop="id"
-                        label="ID"
                         width="60">
                     </el-table-column>
                     <el-table-column
+                        v-if="columns['title'].show"
+                        :label="columns['title'].label"
                         show-overflow-tooltip
                         prop="title"
-                        label="标题"
                         min-width="2">
                     </el-table-column>
                     <el-table-column
+                        v-if="columns['category_name'].show"
+                        :label="columns['category_name'].label"
                         prop="category_name"
-                        label="分类名"
                         width="100">
                     </el-table-column>
                     <el-table-column
-                        label="关键字"
+                        v-if="columns['key_words'].show"
+                        :label="columns['key_words'].label"
                         min-width="1">
                         <template slot-scope="props">
                             <el-tag
@@ -94,7 +119,8 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        label="标签"
+                        v-if="columns['tags'].show"
+                        :label="columns['tags'].label"
                         min-width="1">
                         <template slot-scope="props">
                             <el-tag
@@ -108,43 +134,50 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        label="评论审核"
+                        v-if="columns['comment_check'].show"
+                        :label="columns['comment_check'].label"
                         width="70">
                         <template slot-scope="props">
                             {{ props.row['comment_check'] ? '是' : '否' }}
                         </template>
                     </el-table-column>
                     <el-table-column
+                        v-if="columns['up_vote'].show"
+                        :label="columns['up_vote'].label"
                         prop="up_vote"
-                        label="点赞数"
                         align="right"
                         width="70">
                     </el-table-column>
                     <el-table-column
+                        v-if="columns['down_vote'].show"
+                        :label="columns['down_vote'].label"
                         prop="down_vote"
-                        label="反对数"
                         align="right"
                         width="70">
                     </el-table-column>
                     <el-table-column
+                        v-if="columns['access_count'].show"
+                        :label="columns['access_count'].label"
                         prop="access_count"
-                        label="访问数"
                         align="right"
                         width="70">
                     </el-table-column>
                     <el-table-column
+                        v-if="columns['status'].show"
+                        :label="columns['status'].label"
                         :formatter="ColumnFormatter.postStatusFormatter"
                         prop="status"
-                        label="状态"
                         width="70">
                     </el-table-column>
                     <el-table-column
+                        v-if="columns['nickname'].show"
+                        :label="columns['nickname'].label"
                         prop="nickname"
-                        label="添加人"
                         width="120">
                     </el-table-column>
                     <el-table-column
-                        label="添加时间"
+                        v-if="columns['create_time'].show"
+                        :label="columns['create_time'].label"
                         width="140">
                         <template slot-scope="props">
                             {{ moment(props.row['create_time']).format('YYYY-MM-DD HH:mm:ss') }}
@@ -228,6 +261,58 @@
 
                 moment,
                 ColumnFormatter,
+
+                columns: {
+                    id: {
+                        label: 'ID',
+                        show: true,
+                        disabled: true,
+                    },
+                    title: {
+                        label: '标题',
+                        show: true,
+                    },
+                    category_name: {
+                        label: '分类名',
+                        show: true,
+                    },
+                    key_words: {
+                        label: '关键字',
+                        show: false,
+                    },
+                    tags: {
+                        label: '标签',
+                        show: false,
+                    },
+                    comment_check: {
+                        label: '评论审核',
+                        show: true,
+                    },
+                    up_vote: {
+                        label: '点赞数',
+                        show: true,
+                    },
+                    down_vote: {
+                        label: '反对数',
+                        show: true,
+                    },
+                    access_count: {
+                        label: '访问数',
+                        show: true,
+                    },
+                    status: {
+                        label: '状态',
+                        show: true,
+                    },
+                    nickname: {
+                        label: '添加人',
+                        show: true,
+                    },
+                    create_time: {
+                        label: '添加时间',
+                        show: true,
+                    },
+                },
             };
         },
         methods: {

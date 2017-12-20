@@ -355,6 +355,13 @@ ul, li {
     margin-top: 10px;
     border-top: 1px solid $gray-line-color;
 }
+
+.el-popover {
+    li {
+        list-style-type: none;
+    }
+}
+
 // =========================== element ui table ========================
 .op-icon {
     cursor: pointer;
