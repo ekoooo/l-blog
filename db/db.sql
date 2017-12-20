@@ -18,19 +18,6 @@
 
 
 -- ----------------------------------------------------------------------------
--- FUNCTION
--- ----------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION update_timestamp()
-RETURNS TRIGGER AS
-$$
-BEGIN
-    NEW.update_time = now();
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-
--- ----------------------------------------------------------------------------
 -- 用户表以及序列
 -- ----------------------------------------------------------------------------
 -- drop sequence if exists seq_users_id;
@@ -156,16 +143,6 @@ comment on column public.posts.create_time is '创建时间';
 comment on column public.posts.update_time is '更新时间';
 comment on column public.posts.status is '状态 1正常 0草稿 -1删除';
 
--- ------------------
--- 触发器
--- ------------------
-DROP TRIGGER IF EXISTS t_posts_update_time ON posts;
-CREATE TRIGGER t_posts_update_time
-  BEFORE UPDATE
-  ON posts
-  FOR EACH ROW
-  EXECUTE PROCEDURE update_timestamp();
-
 -- ----------------------------------------------------------------------------
 -- 文章分类表及序列
 -- ----------------------------------------------------------------------------
@@ -234,6 +211,7 @@ create table post_votes (
     id int not null default nextval('seq_post_votes_id'),
     post_id int not null,
     type smallint default 1,
+    user_agent character varying(256),
     create_ip character varying(39) not null,
     create_time timestamp with time zone default current_timestamp,
     PRIMARY KEY (id)
@@ -245,6 +223,7 @@ comment on table public.post_votes is '文章点赞表';
 comment on column public.post_votes.id is '主键id';
 comment on column public.post_votes.post_id is '文章表ID';
 comment on column public.post_votes.type is '类型 1点赞 -1踩';
+comment on column public.post_votes.user_agent is 'User Agent';
 comment on column public.post_votes.create_ip is 'ip';
 comment on column public.post_votes.create_time is '创建时间';
 
@@ -262,6 +241,7 @@ create table post_access (
     id int not null default nextval('seq_post_access_id'),
     post_id int not null,
     create_ip character varying(39) not null,
+    user_agent character varying(256),
     create_time timestamp with time zone default current_timestamp,
     PRIMARY KEY (id)
 ) WITH (
@@ -272,6 +252,7 @@ comment on table public.post_access is '文章访问表';
 comment on column public.post_access.id is '主键id';
 comment on column public.post_access.post_id is '文章表ID';
 comment on column public.post_access.create_ip is 'ip';
+comment on column public.post_access.user_agent is 'User Agent';
 comment on column public.post_access.create_time is '创建时间';
 
 
