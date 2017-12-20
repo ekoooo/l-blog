@@ -3,6 +3,7 @@ let Sender = require('../common/sender');
 module.exports = function(app) {
     // blog
     app.use('/', require('./blog/index'));
+    app.use('/post', require('./blog/post'));
     
     // admin header
     app.all('/admin/*', function (req, res, next) {
