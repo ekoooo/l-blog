@@ -194,7 +194,7 @@ class Post {
     
         try {
             let rsPromise = client.query(dataSql, params);
-            let countPromise = client.query(`select count(1) as num from (${ sql + conditionSql }) as tmp`, params);
+            let countPromise = client.query(`select count(1)::int as num from (${ sql + conditionSql }) as tmp`, params);
     
             let rs = await rsPromise;
             let count = await countPromise;
@@ -204,7 +204,7 @@ class Post {
                 list: rs.rows,
                 pageId: formInfo.pageId,
                 pageSize: formInfo.pageSize,
-                totalCount: Number(count.rows[0]['num']),
+                totalCount: count.rows[0]['num'],
             });
         }catch(e) {
             Logger.error(`get post list on error => `, e);
@@ -246,7 +246,8 @@ class Post {
                     content_desc_markdown = $7,
                     content_desc_plain_text = $8,
                     key_words = $9,
-                    comment_check = $10
+                    comment_check = $10,
+                    update_time = now()
                 where id = $11
             ` : `
                 insert into posts (
