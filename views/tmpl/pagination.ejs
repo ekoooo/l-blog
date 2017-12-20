@@ -1,0 +1,61 @@
+<%#
+    @param totalCount 总条数
+    @param pageSize 一页显示多少条
+    @param pageId 当前页码（从 0 开始）
+    @param go 跳转地址，例如: /post/${pageId}，${pageId} 将会替换成将要跳转的 pageId
+    @param layout: { // 布局显示
+        jumper: true,
+        prev: true,
+        next: true,
+    }
+    @param class
+%>
+<nav class="pagination clearfix<%=locals['class'] ? ' ' + locals['class'] : '' %>">
+    <ul class="pagination-list">
+        <%
+            totalCount = Number(totalCount);
+            pageSize = Number(pageSize);
+            pageId = Number(pageId);
+
+            // 总页数
+            var step = 5; // 点击三个小点点跳转的页数
+            var totalPage = parseInt((totalCount + pageSize - 1) / pageSize);
+            var prevHref = layout.prev && pageId > 0 ? go.replace('${pageId}', pageId - 1) : 'javascript:void(0);';
+            var nextHref = layout.next && pageId < totalPage - 1 ? go.replace('${pageId}', pageId + 1) : 'javascript:void(0);';
+
+            %><li><a href="<%=prevHref %>"><i class="iconfont icon-return"></i></a></li><%
+
+            if(totalPage <= step * 2) {
+                for(let i = 0; i < totalPage; i++) {
+                    %><li><a class="<%=i === pageId ? 'active' : '' %>" href="<%=go.replace('${pageId}', i) %>"><%=i + 1 %></a></li><%
+                }
+            }else {
+                if(pageId < step) {
+                    for(let i = 0; i < step * 2 - 2; i++) {
+                        %><li><a class="<%=i === pageId ? 'active' : '' %>" href="<%=go.replace('${pageId}', i) %>"><%=i + 1 %></a></li><%
+                    }
+                    %><li><a href="<%=go.replace('${pageId}', pageId + step) %>">...</a></li><%
+                    %><li><a href="<%=go.replace('${pageId}', totalPage - 1) %>"><%=totalPage %></a></li><%
+                }else if(pageId < totalPage - step) {
+                    %><li><a href="<%=go.replace('${pageId}', 0) %>">1</a></li><%
+                    %><li><a href="<%=go.replace('${pageId}', pageId - step) %>">...</a></li><%
+                    for(let i = pageId - parseInt(step / 2) - 1; i < pageId + parseInt(step / 2) + 1; i++) {
+                        %><li><a class="<%=i === pageId ? 'active' : '' %>" href="<%=go.replace('${pageId}', i) %>"><%=i + 1 %></a></li><%
+                    }
+                    %><li><a href="<%=go.replace('${pageId}', pageId + step) %>">...</a></li><%
+                    %><li><a href="<%=go.replace('${pageId}', totalPage - 1) %>"><%=totalPage %></a></li><%
+                }
+                else {
+                    %><li><a href="<%=go.replace('${pageId}', 0) %>">1</a></li><%
+                    %><li><a href="<%=go.replace('${pageId}', pageId - step) %>">...</a></li><%
+                    for(let i = totalPage - (step * 2 - 2); i < totalPage; i++) {
+                        %><li><a class="<%=i === pageId ? 'active' : '' %>" href="<%=go.replace('${pageId}', i) %>"><%=i + 1 %></a></li><%
+                    }
+                }
+            }
+
+            %><li><a href="<%=nextHref %>"><i class="iconfont icon-enter"></i></a></li><%
+        %>
+    </ul>
+    <span class="pagination-total-count">共<%=totalCount %>条</span>
+</nav>

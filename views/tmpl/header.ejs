@@ -1,3 +1,11 @@
+<%#
+    @param author 作者
+    @param keywords 关键字
+    @param description 描述
+    @param title 网站标题
+    @param loadPostCss 是否加载 markdown preview 样式
+    @param hideHeader 是否隐藏 header
+%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -11,10 +19,33 @@
     <meta name="description" content="<%=locals.description %>">
     <%#动态标题 %>
     <title><%=locals.title %></title>
-    <%#是否需要加载文章页专有样式 %>
     <% if(locals.loadPostCss) { %>
     <link rel="stylesheet" href="/static/editor.md/css/editormd.preview.min.css">
-    <link rel="stylesheet" href="/static/editor.md/css/google_code_prettify_themes/monokai.min.css">
+    <!--<link rel="stylesheet" href="/static/editor.md/css/google_code_prettify_themes/monokai.min.css">-->
+    <link rel="stylesheet" href="/static/editor.md/css/google_code_prettify_themes/vibrant-ink.min.css">
     <% } %>
+    <link rel="stylesheet" href="/css/iconfont.min.css">
+    <link rel="stylesheet" href="/css/main.min.css">
 </head>
 <body>
+<%-include('./aside') %>
+<% if(!locals.hideHeader) { %>
+<header class="header">
+    <div class="content-wrapper">
+        <a href="/" class="logo">
+            <%#根据时间分钟显示 logo %>
+            <img src="/img/logo_<%=new Date().getMinutes() % 11 + 1 %>.png" alt="<%=locals.title %>">
+        </a>
+        <nav class="nav">
+            <ul class="menu">
+                <li class="menu-item"><a href="/"><i class="iconfont icon-homepage_fill"></i>首页</a></li>
+                <li class="menu-item"><a href="#"><i class="iconfont icon-manage_fill"></i>分类</a></li>
+                <%#<li class="menu-item"><a href="#"><i class="iconfont icon-workbench_fill"></i>归档</a></li>%>
+                <li class="menu-item"><a href="#"><i class="iconfont icon-marketing_fill"></i>标签</a></li>
+                <li class="menu-item"><a href="#"><i class="iconfont icon-message_fill"></i>留言</a></li>
+                <li class="menu-item"><a href="#"><i class="iconfont icon-people_fill"></i>关于</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<% } %>

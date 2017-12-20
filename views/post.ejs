@@ -1,8 +1,44 @@
 <%-include('./tmpl/header', { loadPostCss: true }) %>
-<h2>
-    <%=locals.info.title %>
-</h2>
-<div class="markdown-body">
-    <%-locals.info.content %>
+<div class="main">
+    <div class="content-wrapper post-box" data-post-id="<%=info['id'] %>">
+        <div class="post-header">
+            <h2><%=info['title'] %></h2>
+            <div class="post-meta">
+                <span><i class="iconfont icon-time"></i>发布于 <%=info['create_time'] %></span>
+                <span class="split-line">|</span>
+                <span><i class="iconfont icon-time"></i>最后更新于 <%=info['update_time'] %></span>
+                <br>
+                <span><i class="iconfont icon-manage"></i>分类于 <%=info['category_name'] %></span>
+                <span class="split-line">|</span>
+                <span><i class="iconfont icon-like"></i>点赞 <span class="like-num"><%=info['up_vote'] %></span></span>
+                <span class="split-line">|</span>
+                <span><i class="iconfont icon-browse"></i>阅读 <%=info['access_count'] %></span>
+            </div>
+        </div>
+        <div class="markdown-body post-body">
+            <%-info['content'] %>
+        </div>
+        <div class="post-tag-vote clearfix">
+            <div class="post-tags tagcloud">
+                <i class="iconfont icon-marketing_fill"></i>
+                <%
+                let tags = info['tags'].split(',');
+                for(let i = 0; i < tags.length; i++) {
+                %>
+                <a href="#" class="<%='color' + (i % 3) %>"><%=tags[i] %></a>
+                <%
+                }
+                %>
+            </div>
+            <div class="post-vote">
+            <span class="post-vote-item like">
+                <i class="iconfont <%=info['vote_type'] === 1 ? 'pink active icon-praise_fill' : 'icon-praise' %>"></i>Like ( <span class="like-num"><%=info['up_vote'] %></span> )
+            </span>
+                <span class="post-vote-item unlike">
+                <i class="iconfont <%=info['vote_type'] === -1 ? 'pink active icon-emoji_fill' : 'icon-emoji' %>"></i>Unlike ( <span class="unlike-num"><%=info['down_vote'] %></span> )
+            </span>
+            </div>
+        </div>
+    </div>
 </div>
 <%-include('./tmpl/footer') %>
