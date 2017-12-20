@@ -1,0 +1,37 @@
+.cursor {
+    cursor: pointer;
+}
+
+.underline {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.fr {
+    float: right;
+}
+
+.fl {
+    float: left;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+.clearfix:after{
+    display: block;
+    content: "clear";
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.red {
+    color: red !important;
+}
+
+.pink {
+    color: $pink-color !important;
+}
