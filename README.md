@@ -21,6 +21,7 @@
 ├── views           // 前端页面
 ├── ADMIN-API.md    // 管理后台接口文档
 ├── BLOG-API.md     // blog 接口文档
+├── redis-db.md     // redis 使用说明
 └── pm2-watch.json  // pm2 配置文件 `pm2 start|restart|reload pm2-watch.json`
 ```
 
