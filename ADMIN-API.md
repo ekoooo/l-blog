@@ -446,7 +446,7 @@ Authorization: <Token>
     ],
     "pageId": 0,
     "pageSize": 10,
-    "totalCount": "1"
+    "totalCount": 1
 }
 ```
 
@@ -480,4 +480,68 @@ Authorization: <Token>
         ]
     }
 }
+```
+
+## 文章投票列表
+请求语法
+```
+POST /admin/post/vote/list
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+{
+    "pageId": 0,
+    "pageSize": 10,
+    "q": {
+        title: undefined, // 文章标题
+        type: undefined, // Like/Unlike
+    }
+}
+```
+响应体
+```
+    "code": 200,
+    "info": [
+        {
+            //...
+        },
+        ...
+    ],
+    "pageId": 0,
+    "pageSize": 10,
+    "totalCount": 1
+```
+
+## 管理员列表
+请求语法
+```
+POST /admin/user?admin=1
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+{
+    "pageId": 0,
+    "pageSize": 10,
+    "q": {
+        username: undefined,
+        nickname: undefined,
+    }
+}
+```
+响应体
+```
+    "code": 200,
+    "info": [
+        {
+            //...
+        },
+        ...
+    ],
+    "pageId": 0,
+    "pageSize": 10,
+    "totalCount": 1
 ```
