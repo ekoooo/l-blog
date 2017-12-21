@@ -1,5 +1,5 @@
 # 个人网站后台以及前端项目
-> 个人网站 => http://www.lwl.tech
+> 个人网站 => http://blog.lwl.tech
 > 后台管理 => http://admin.lwl.tech
 
 ## 目录说明
