@@ -6,27 +6,7 @@
         <div class="box-content">
             <div class="table-header clearfix">
                 <div class="fl clearfix wp8">
-                    <div class="item">
-                        <el-popover
-                            ref="columnspopover"
-                            placement="bottom-start"
-                            width="100"
-                            trigger="click">
-                            <ul>
-                                <li v-for="column in columns">
-                                    <el-checkbox
-                                        v-model="column.show"
-                                        :disabled="column.disabled">
-                                        {{ column.label }}
-                                    </el-checkbox>
-                                </li>
-                            </ul>
-                        </el-popover>
-                        <el-button size="small" v-popover:columnspopover>
-                            <i class="fa fa-table"></i>
-                            <span>配置显示列</span>
-                        </el-button>
-                    </div>
+                    <columns-toggler :columns="columns" clazz="item" />
                     <post-category
                         emptyOption
                         emptyOptionLabel="请选择分类"
@@ -178,10 +158,8 @@
                     <el-table-column
                         v-if="columns['create_time'].show"
                         :label="columns['create_time'].label"
+                        :formatter="ColumnFormatter.timeFormatter"
                         width="140">
-                        <template slot-scope="props">
-                            {{ moment(props.row['create_time']).format('YYYY-MM-DD HH:mm:ss') }}
-                        </template>
                     </el-table-column>
                     <el-table-column
                         label="操作"
@@ -245,9 +223,9 @@
 <script>
     import PostLogic from '../logic/post';
     import MSG from '../utils/message';
-    import moment from 'moment';
     import ColumnFormatter from '../common/column_formatter';
     import postCategory from '../components/selector/post-category';
+    import columnsToggler from '../components/operation/columns-toggler';
 
     export default {
         data: function() {
@@ -259,18 +237,17 @@
                 totalCount: 0, // 总共多少条记录
                 listLoading: false, // 表格数据加载中标志
 
-                moment,
                 ColumnFormatter,
 
                 columns: {
                     id: {
                         label: 'ID',
-                        show: true,
-                        disabled: true,
+                        show: false,
                     },
                     title: {
                         label: '标题',
                         show: true,
+                        disabled: true,
                     },
                     category_name: {
                         label: '分类名',
@@ -397,7 +374,8 @@
             }
         },
         components: {
-            postCategory
+            postCategory,
+            columnsToggler
         },
         created: function() {
             this.search();
