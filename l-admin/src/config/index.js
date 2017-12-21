@@ -1,4 +1,7 @@
-const HOST = 'http://localhost:3000'; // 内部测试
+const HOST = process.env['NODE_ENV'] === 'development' ?
+    'http://localhost:10002' :
+    'http://blog.lwl.tech';
+
 const API_URL_RPEFIX = HOST + '/';
 const QINIU_UPLOAD_URL = 'http://up-z2.qiniu.com'; // 七牛云上传接口地址
 const QINIU_IMAGE_DOMAIN = 'http://img.lwl.tech/'; // 七牛云配置的域名
