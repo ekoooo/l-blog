@@ -18,8 +18,12 @@
 │   ├── admin       // 管理后台相关路由
 │   ├── blog        // 博客端相关路由
 ├── utils           // 工具
-└── views           // 前端页面
+├── views           // 前端页面
+├── ADMIN-API.md    // 管理后台接口文档
+├── BLOG-API.md     // blog 接口文档
+└── pm2-watch.json  // pm2 配置文件 `pm2 start|restart|reload pm2-watch.json`
 ```
+
 ### 管理后台前端
 ```text
 ├── build           // webpack
@@ -74,6 +78,7 @@ npm run build # 打包发布
     - 复制一份开发环境配置文件然后修改后缀名为 `.prod.js` 即可。
     - 里面配置值根据实际情况填写。
     - 具体逻辑可看 `./config/index.js` 代码。
+    - 管理后台配置文件夹 `./l-admin/src/config`
 2. 需要环境
     - 缓存 `Redis`。
     - 数据库 `postgresql`。
@@ -86,4 +91,4 @@ npm run build # 打包发布
 
 
 ## 后台管理接口文档
-> `./API.md` 文件可查看详情
+> `./ADMIN-API.md` 文件可查看详情
