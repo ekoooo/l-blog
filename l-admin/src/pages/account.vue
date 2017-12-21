@@ -189,7 +189,9 @@
 
 <script>
     import UsersLogic from '../logic/users';
+    import OauthLogic from '../logic/oauth';
     import MSG from '../utils/message';
+    import Util from '../utils/util';
     import ColumnFormatter from '../common/column_formatter';
     import columnsToggler from '../components/operation/columns-toggler';
 
@@ -324,6 +326,14 @@
                     if(rs.code === 200) {
                         MSG.success('修改成功');
                         this.updatePwdDialogVisiable = false;
+                        // 更新 TOKEN
+                        OauthLogic.saveLoginData({
+                            info: {
+                                ...this.$store.state.userInfo,
+                                token: rs.token
+                            },
+                            token: rs.token
+                        });
                     }else {
                         MSG.error(rs.message);
                     }

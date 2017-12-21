@@ -90,6 +90,7 @@ const Oauth = {
      * 保存登录信息
      */
     saveLoginData(data) {
+        debugger;
         let info = data.info;
         let token = data.token;
         let saveInfo = Oauth.getSaveInfo({ token, ...info });
