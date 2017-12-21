@@ -97,14 +97,14 @@ class Auth {
             if(username.length < User.USERNAME_MIN_LEN
                     || username.length > User.USERNAME_MAX_LEN) {
                 reject({
-                    code: CODE.UNAUTHORIZED,
+                    code: CODE.ERROR,
                     message: `用户名合法长度应在在${ User.USERNAME_MIN_LEN }至${ User.USERNAME_MAX_LEN }位！`,
                 });
             }
     
             if(password.length < User.PWD_MIN_LEN || password.length > User.PWD_MAX_LEN) {
                 reject({
-                    code: CODE.UNAUTHORIZED,
+                    code: CODE.ERROR,
                     message: `密码合法长度应在在${ User.PWD_MIN_LEN }至${ User.PWD_MAX_LEN }位！`,
                 });
             }
