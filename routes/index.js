@@ -23,6 +23,7 @@ module.exports = function(app) {
     app.use('/admin', require('./admin/index'));
     app.use('/admin/qiniu', require('./admin/qiniu'));
     app.use('/admin/post', require('./admin/post'));
+    app.use('/admin/user', require('./admin/user'));
     
     // admin 404
     app.use('/admin/*', function(req, res) {
