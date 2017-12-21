@@ -154,32 +154,32 @@ class Post {
             let index = 0;
             // title // 标题
             if(!Misc.isNullStr(searchParams.title)) {
-                sql += ` and p.title like $${ ++index } `;
+                conditionSql += ` and p.title like $${ ++index } `;
                 params.push(`%${ searchParams.title }%`);
             }
             // categoryName // 分类名
             if(!Misc.isNullStr(searchParams.categoryName)) {
-                sql += ` and pc.name like $${ ++index } `;
+                conditionSql += ` and pc.name like $${ ++index } `;
                 params.push(`%${ searchParams.categoryName }%`);
             }
             // categoryId // 分类名
             if(!Misc.isNullStr(searchParams.categoryId)) {
-                sql += ` and pc.id = $${ ++index } `;
+                conditionSql += ` and pc.id = $${ ++index } `;
                 params.push(searchParams.categoryId);
             }
             // keyWords // 关键字
             if(!Misc.isNullStr(searchParams.keyWords)) {
-                sql += ` and p.key_words like $${ ++index } `;
+                conditionSql += ` and p.key_words like $${ ++index } `;
                 params.push(`%${ searchParams.keyWords }%`);
             }
             // tag // 标签
             if(!Misc.isNullStr(searchParams.tag)) {
-                sql += ` and pt.tags like $${ ++index } `;
+                conditionSql += ` and pt.tags like $${ ++index } `;
                 params.push(`%${ searchParams.tag }%`);
             }
             // text // 内容
             if(!Misc.isNullStr(searchParams.text)) {
-                sql += ` and p.plain_text like $${ ++index } `;
+                conditionSql += ` and p.plain_text like $${ ++index } `;
                 params.push(`%${ searchParams.text }%`);
             }
         }
