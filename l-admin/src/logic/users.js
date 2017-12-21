@@ -17,6 +17,11 @@ const UsersLogic = {
         return requester.post('/admin/user?admin=1',
             Object.assign({}, defaultParams, searchParams));
     },
+    
+    // 修改密码
+    updatePwd(id, pwd) {
+        return requester.put('/admin/user/pwd/' + id, { pwd });
+    }
 };
 
 export default UsersLogic;

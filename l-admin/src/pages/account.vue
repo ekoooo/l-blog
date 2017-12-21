@@ -1,5 +1,38 @@
 <template>
     <div class="box">
+        <el-dialog
+            width="40%"
+            :title="updatePwdInfo.nickname + ' 修改密码'"
+            :visible.sync="updatePwdDialogVisiable">
+
+            <el-form
+                :model="updatePwdInfo"
+                ref="form"
+                label-width="100px"
+                @submit.native.prevent>
+                <el-form-item
+                    required
+                    label="请输入密码">
+                    <el-input
+                        v-model="updatePwdInfo.pwd"
+                        class="wd12"
+                        type="password"
+                        :maxlength="16"
+                        placeholder="6 ~ 16 位"
+                        size="small"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button
+                        size="small"
+                        type="primary"
+                        @click.native="updatePwd"
+                        :icon="'el-icon-edit'"
+                        :loading="updatePwdCommitLoading">
+                        确定修改
+                    </el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
         <div class="box-header">
             <h2 class="title">{{ title }}</h2>
         </div>
@@ -118,6 +151,22 @@
                                 :formatter="ColumnFormatter.timeFormatter"
                                 width="140">
                             </el-table-column>
+                            <el-table-column
+                                label="操作"
+                                width="80">
+                                <template slot-scope="props">
+                                    <el-tooltip
+                                        class="item"
+                                        effect="dark"
+                                        content="修改密码"
+                                        placement="top">
+                                        <i
+                                            key="update-status-2"
+                                            @click="openUpdatePwdDialog(props.row)"
+                                            class="fa fa-key op-icon red"></i>
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column>
                         </el-table>
                         <div class="table-pagination clearfix">
                             <div class="fr">
@@ -157,6 +206,14 @@
 
                 activeTab: '1',
                 listLoading: false,
+
+                updatePwdInfo: { // 修改密码信息
+                    nickname: undefined,
+                    id: undefined,
+                    pwd: undefined,
+                },
+                updatePwdDialogVisiable: false,
+                updatePwdCommitLoading: false,
 
                 columns: {
                     id: {
@@ -254,6 +311,28 @@
             resetSearchFrom: function() {
                 this.searchParams = Object.assign({}, UsersLogic.ADMIN_LIST_SEARCHPARAMS);
             },
+
+            // 修改密码
+            openUpdatePwdDialog: function (info) {
+                this.updatePwdInfo.id = info.id;
+                this.updatePwdInfo.nickname = info.nickname;
+                this.updatePwdDialogVisiable = true;
+            },
+            updatePwd: function () {
+                this.updatePwdCommitLoading = true;
+                UsersLogic.updatePwd(this.updatePwdInfo.id, this.updatePwdInfo.pwd).then(rs => {
+                    if(rs.code === 200) {
+                        MSG.success('修改成功');
+                        this.updatePwdDialogVisiable = false;
+                    }else {
+                        MSG.error(rs.message);
+                    }
+
+                    this.updatePwdCommitLoading = false;
+                }).catch(() => {
+                    this.updatePwdCommitLoading = false;
+                });
+            }
         },
         computed: {
             title: function() {
