@@ -33,7 +33,7 @@ class Token {
         let key = Token.REIDS_TABLE_NAME + id + '#' + iat;
         let time = clear ? 0 : Token.TOKEN_EXPIRE_TIME + new Date().getTime();
         let expireTime = clear ? 1 : Token.TOKEN_EXPIRE_TIME / 1000; // 失效时间至少 1 秒
-    
+        
         // 设置过期时间
         redisClient.set(key, time, 'EX', expireTime, (err, res) => {
             if(err) {
@@ -56,14 +56,14 @@ class Token {
             iss: 'liuwanlin',
             iat: +new Date(),
         };
-    
+        
         let id = info['user_id'];
         let password = info['password'];
         let token = jwt.encode(payload, Token.getSecret(id, password));
-    
+        
         // 缓存过期时间
         this.updateExpireTime(id, payload.iat);
-    
+        
         return token;
     }
     
@@ -75,21 +75,21 @@ class Token {
     validToken(token, isValid = true) {
         return new Promise((resolve, reject) => {
             let payload = {};
-    
+            
             try {
                 payload = jwt.decode(token, null, true, null);
-        
+                
                 if(!isValid) {
                     resolve(payload);
                 }
             } catch(e) {
                 reject(false);
             }
-    
+            
             new User().getCacheUserInfo(payload['user_id']).then(data => {
                 let id = data['user_id'];
                 let password = data['password'];
-        
+                
                 try {
                     // 验证 JWT Token 是否合法
                     jwt.decode(token, Token.getSecret(id, password));
@@ -102,7 +102,7 @@ class Token {
                             if(Number(res || 0) > (+new Date())) {
                                 // 刷新 Token 有效时间
                                 this.updateExpireTime(id, payload.iat);
-                        
+                                
                                 resolve(payload);
                             }else {
                                 reject(false);
@@ -112,7 +112,7 @@ class Token {
                 } catch (error) {
                     reject(false);
                 }
-        
+                
             }).catch(error => { reject(error); });
         });
     }
@@ -127,7 +127,7 @@ class Token {
     clearOldCacheToken(id, maxLen = 5) {
         return new Promise((resolve, reject) => {
             let param = `${ Token.REIDS_TABLE_NAME }${ id }#`;
-    
+            
             redisClient.send_command('keys', [param + '*'], (err, res) => {
                 if(err) {
                     Logger.error(`get token keys on error =>`, err);
@@ -138,17 +138,17 @@ class Token {
                     res = res.map(item => {
                         return Number(item.replace(param, ''));
                     });
-            
+                    
                     // 排序
                     res = res.sort((a, b) => a - b);
-            
+                    
                     // 获取需要删除 key 值
                     res = res.slice(0, res.length - maxLen);
-            
+                    
                     let delKeys = res.map(item => {
                         return param + item;
                     });
-            
+                    
                     redisClient.send_command('del', ['key', ...delKeys], (err, res) => {
                         if(err) {
                             Logger.error(`delete tokens on error =>`, err);
