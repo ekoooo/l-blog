@@ -5,6 +5,7 @@ let Sender = require('../../common/sender');
 let PostCategory = require('../../model/admin/post_category');
 let Post = require('../../model/admin/post');
 let PostTag = require('../../model/admin/post_tag');
+let PostVote = require('../../model/admin/post_vote');
 let jwt = require('jwt-simple');
 
 // 获取文章列表
@@ -74,6 +75,11 @@ router.delete('/category/:id', Filter.filtAdminHttpLogin, function (req, res) {
 // 获取文章标签下拉数据
 router.get('/tag', Filter.filtAdminHttpLogin, function (req, res) {
     Sender.send(res, new PostTag().getTagSelector());
+});
+
+// 投票列表
+router.post('/vote/list', Filter.filtAdminHttpLogin, function (req, res) {
+    Sender.send(res, new PostVote().getVoteList(req.body));
 });
 
 module.exports = router;
