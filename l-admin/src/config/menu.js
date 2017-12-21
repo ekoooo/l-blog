@@ -25,6 +25,11 @@ const config = [
                 text: '评论列表',
                 icon: 'fa-comments-o'
             },
+            {
+                path: '/main/postVote',
+                text: '文章投票',
+                icon: 'fa-heart'
+            },
         ]
     },
     {
@@ -48,6 +53,11 @@ const config = [
                 path: '/main/configs',
                 text: '基础配置',
                 icon: 'fa-cog'
+            },
+            {
+                path: '/main/account',
+                text: '账号管理',
+                icon: 'fa-user'
             },
         ]
     },

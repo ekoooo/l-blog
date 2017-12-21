@@ -63,6 +63,15 @@ const router = new Router({
                     }
                 },
                 {
+                    path: 'postVote',
+                    name: 'postVote',
+                    component: () => import('../pages/post_vote'),
+                    meta: {
+                        title: '文章投票',
+                        auth: true,
+                    }
+                },
+                {
                     path: 'images',
                     name: 'images',
                     component: () => import('../pages/images'),
@@ -77,6 +86,15 @@ const router = new Router({
                     component: () => import('../pages/configs'),
                     meta: {
                         title: '基础设置',
+                        auth: true,
+                    }
+                },
+                {
+                    path: 'account',
+                    name: 'account',
+                    component: () => import('../pages/account'),
+                    meta: {
+                        title: '账号管理',
                         auth: true,
                     }
                 },
