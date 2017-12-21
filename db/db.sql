@@ -13,7 +13,7 @@
 -- COMMENT ON DATABASE lblog IS 'l-blog 数据库';
 
 --添加字段语句
---﻿ALTER TABLE posts ADD content_desc_plain_text character varying(1024) default null;
+--ALTER TABLE posts ADD content_desc_plain_text character varying(1024) default null;
 --comment on column public.posts.content_desc_plain_text is '内容简述纯文本';
 
 
