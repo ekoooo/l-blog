@@ -14,8 +14,8 @@ module.exports = {
     // 网站配置
     blogInfo: {
         author: '刘万林,liuwanlin',
-        title: '刘万林的个人网站',
-        description: '刘万林的个人网站',
+        title: '刘万林的博客',
+        description: '刘万林的博客',
         keywords: '刘万林,个人博客,个人网站,web前端,后台开发',
     },
 };
