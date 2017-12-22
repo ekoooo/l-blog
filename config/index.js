@@ -18,4 +18,18 @@ module.exports = {
         description: '刘万林的博客',
         keywords: '刘万林,个人博客,个人网站,web前端,后台开发',
     },
+    
+    // 初始化第一个管理员的信息
+    initAdminInfo: {
+        username: 'admin',
+        nickname: '一生好吃没钱酒',
+        pwd: '123456',
+        age: 24,
+        phone: '15727781885',
+        mail: '954408050@qq.com',
+        desc: '管理员账号',
+    },
+    
+    // 服务器端口
+    serverPort: 10002,
 };
