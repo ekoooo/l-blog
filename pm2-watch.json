@@ -2,7 +2,6 @@
     "apps": [{
         "name": "lblog",
         "script": "./bin/www",
-        "out_file": "./logs/pm2-out.log",
         "error_file": "./logs/pm2-error.log",
         "env": {
             "NODE_ENV": "production"
