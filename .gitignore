@@ -4,3 +4,6 @@ npm-debug.log*
 config/*.prod.js
 .idea/
 test/
+
+*.js.map
+*.css.map
