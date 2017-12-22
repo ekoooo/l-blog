@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let Sender = require('../../common/sender');
 let Filter = require('../../middlewares/filter');
-let Auth = require('../../model/auth');
+let Auth = require('../../model/admin/auth');
 
 // 登录
 router.post('/login', (req, res) => {

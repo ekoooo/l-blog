@@ -1,9 +1,9 @@
-const CODE = require('../common/code');
+const CODE = require('../../common/code');
 
-let Logger = require('../common/logger');
-let Token = require('../common/token');
+let Logger = require('../../common/logger');
+let Token = require('../../common/token');
 let User = require('./user');
-let Pwd = require('../common/pwd');
+let Pwd = require('../../common/pwd');
 
 class Auth {
     constructor() {
