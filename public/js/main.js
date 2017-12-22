@@ -36,9 +36,11 @@ $(function () {
     function initMarkdownTocAnimate() {
         $('.markdown-toc a').on('click', function (e) {
             e.preventDefault();
-        
+    
+            var name = decodeURI(this.href.split('#')[1]);
+            
             $('html, body').animate({
-                scrollTop: $('.reference-link[name="' + this.href.split('#')[1] + '"]').offset().top - 70 + 'px'
+                scrollTop: $('.reference-link[name="' + name + '"]').offset().top - 70 + 'px'
             }, {
                 duration: 500,
                 easing: 'swing'
