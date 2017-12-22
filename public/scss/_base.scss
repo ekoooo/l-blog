@@ -336,8 +336,9 @@ html, body {
     border: 1px solid #ebeef5;
     border-radius: 8px;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 0;
+    left: 0;
+    margin: auto;
     font-size: 13px;
     color: #606266;
     opacity: 0;
