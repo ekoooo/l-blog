@@ -3,7 +3,7 @@ const CODE = require('../../common/code');
 let Logger = require('../../common/logger');
 let Misc = require('../../utils/misc');
 
-class PostVotes {
+class PostVote {
     constructor() {
     
     }
@@ -77,4 +77,4 @@ class PostVotes {
     }
 }
 
-module.exports = PostVotes;
+module.exports = PostVote;
