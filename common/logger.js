@@ -103,7 +103,7 @@ let Logger = {
 
     // 开发模式才开启
     debug: function() {
-        if(process.env.NODE_ENV === 'development') {
+        if(process.env['NODE_ENV'] === 'development') {
             let cellSite = stackTrace.get()[1];
     
             logger.debug.apply(

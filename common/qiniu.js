@@ -1,8 +1,8 @@
 let qiniu = require('qiniu');
 let Config = require('../config/index');
 
-qiniu.conf.ACCESS_KEY = Config.qiniuAK;
-qiniu.conf.SECRET_KEY = Config.qiniuSK;
+qiniu.conf.ACCESS_KEY = Config['qiniuAK'];
+qiniu.conf.SECRET_KEY = Config['qiniuSK'];
 
 let mac = new qiniu.auth.digest.Mac();
 let config = new qiniu.conf.Config();
@@ -19,7 +19,7 @@ let Qiniu = {
      */
     getUploadToken() {
         let options = {
-            scope: Config.qiniuBucket,
+            scope: Config['qiniuBucket'],
             expires: 7200, // 自定义凭证有效期单位秒，2小时，默认为一个小时
         };
         let putPolicy = new qiniu.rs.PutPolicy(options);

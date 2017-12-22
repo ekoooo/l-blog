@@ -18,7 +18,7 @@ class FileManager {
                 limit: pageSize, // 最多 1000
             };
     
-            Qiniu.getBucketManager().listPrefix(Config.qiniuBucket, options, (err, respBody, respInfo) => {
+            Qiniu.getBucketManager().listPrefix(Config['qiniuBucket'], options, (err, respBody, respInfo) => {
                 if(err) {
                     Logger.error(`get file list on error =>`, err);
                     
@@ -54,7 +54,7 @@ class FileManager {
      */
     deleteImage(key) {
         return new Promise((resolve, reject) => {
-            Qiniu.getBucketManager().delete(Config.qiniuBucket, key, (err, respBody, respInfo) => {
+            Qiniu.getBucketManager().delete(Config['qiniuBucket'], key, (err, respBody, respInfo) => {
                 if (err) {
                     Logger.error(`delete file on error =>`, err);
                     reject({

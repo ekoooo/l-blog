@@ -1,7 +1,7 @@
-const { pool } = require('../../common/pgsql');
+const Pgsql = require('../../common/pgsql');
 const CODE = require('../../common/code');
 let Logger = require('../../common/logger');
-let DbUtil = require('../../utils/db_util')
+let DbUtil = require('../../utils/db_util');
 let Misc = require('../../utils/misc');
 
 class PostVote {
@@ -62,7 +62,7 @@ class PostVote {
         Logger.info(`get vote list form info =>`, formInfo);
         Logger.info(`get vote list sql info =>`, `sql => ${ dataSql }`, `params =>`, params);
     
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
     
         try {
             let rsPromise = client.query(dataSql, params);

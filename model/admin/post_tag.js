@@ -1,4 +1,4 @@
-const { pool } = require('../../common/pgsql');
+const Pgsql = require('../../common/pgsql');
 const CODE = require('../../common/code');
 let Logger = require('../../common/logger');
 
@@ -12,7 +12,7 @@ class PostTag {
      * @return {Promise.<void>}
      */
     async getTagSelector() {
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             let rs = await client.query(`select distinct name from post_tags order by name`);

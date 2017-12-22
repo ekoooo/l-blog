@@ -1,5 +1,5 @@
 let format = require('pg-format');
-const { pool } = require('../../common/pgsql');
+const Pgsql = require('../../common/pgsql');
 const CODE = require('../../common/code');
 let Logger = require('../../common/logger');
 let Misc = require('../../utils/misc');
@@ -80,7 +80,7 @@ class Post {
                         left join (select post_id, string_agg(name, ',') as tags from post_tags group by post_id) pt on pt.post_id = p.id
                     where status <> -1 and id = $1`;
         
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             let rs = await client.query(sql, [id]);
@@ -190,7 +190,7 @@ class Post {
         Logger.info(`get post list form info =>`, formInfo);
         Logger.info(`get post list sql info =>`, `sql => ${ dataSql }`, `params =>`, params);
         
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
     
         try {
             let rsPromise = client.query(dataSql, params);
@@ -294,7 +294,7 @@ class Post {
                 formInfo['commentCheck'] ? 1 : 0,
             ];
         
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             await client.query('BEGIN');
@@ -347,7 +347,7 @@ class Post {
             });
         }
     
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             const rs = await client.query('update posts set status = $1 where id = $2 ', [status, id]);

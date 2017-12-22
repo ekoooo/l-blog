@@ -1,8 +1,7 @@
-const { pool } = require('../../common/pgsql');
+const Pgsql = require('../../common/pgsql');
 const CODE = require('../../common/code');
 let Logger = require('../../common/logger');
 let Misc = require('../../utils/misc');
-let DbUtil = require('../../utils/db_util');
 
 class PostVotes {
     constructor() {
@@ -24,7 +23,7 @@ class PostVotes {
             });
         }
     
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             // 验证文章是否存在

@@ -1,5 +1,5 @@
 let jwt = require('jwt-simple');
-let User =  require('../model/user');
+let UserBase =  require('../model/admin/user_base');
 let Logger = require('./logger');
 let redisClient = require('./redis');
 
@@ -35,7 +35,7 @@ class Token {
         let expireTime = clear ? 1 : Token.TOKEN_EXPIRE_TIME / 1000; // 失效时间至少 1 秒
         
         // 设置过期时间
-        redisClient.set(key, time, 'EX', expireTime, (err, res) => {
+        redisClient.set(key, time, 'EX', expireTime, (err) => {
             if(err) {
                 Logger.error('token expire time save on error =>', err);
             }else {
@@ -86,7 +86,7 @@ class Token {
                 reject(false);
             }
             
-            new User().getCacheUserInfo(payload['user_id']).then(data => {
+            new UserBase().getCacheUserInfo(payload['user_id']).then(data => {
                 let id = data['user_id'];
                 let password = data['password'];
                 

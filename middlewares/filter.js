@@ -1,7 +1,7 @@
 const CODE = require('../common/code');
 let Logger = require('../common/logger');
 
-let Auth = require('../model/auth');
+let Auth = require('../model/admin/auth');
 
 module.exports = {
     /**

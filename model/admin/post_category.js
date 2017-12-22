@@ -1,4 +1,4 @@
-const { pool } = require('../../common/pgsql');
+const Pgsql = require('../../common/pgsql');
 const CODE = require('../../common/code');
 let Logger = require('../../common/logger');
 let Misc = require('../../utils/misc');
@@ -37,7 +37,7 @@ class PostCategory {
      * @returns {Promise<boolean>} 存在 true, 不存在 false
      */
     async isExistName(name, id) {
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         let sql = `select count(1)::int as num from post_category where status <> 0 and name = $1 `;
         let params = [name];
@@ -71,7 +71,7 @@ class PostCategory {
        let sql = `select id, name from post_category
                     where status = 1
                     order by order_by asc, create_time desc`;
-       const client = await pool.connect();
+       const client = await Pgsql.pool.connect();
        
        try {
            let rs = await client.query(sql);
@@ -132,7 +132,7 @@ class PostCategory {
     
             Promise.all([
                 new Promise(function (resolve) {
-                    pool.connect().then(client => {
+                    Pgsql.pool.connect().then(client => {
                         client.query(sql, params).then(rs => {
                             client.release();
                             resolve(rs.rows);
@@ -178,7 +178,7 @@ class PostCategory {
             });
         }
         
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             let isExist = await this.isExistName(formInfo.postCategoryName);
@@ -234,7 +234,7 @@ class PostCategory {
             });
         }
     
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             let isExist = await this.isExistName(formInfo.postCategoryName, id);
@@ -285,7 +285,7 @@ class PostCategory {
             });
         }
     
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             // 验证是否已经被使用

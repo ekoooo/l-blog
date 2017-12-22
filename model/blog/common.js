@@ -1,8 +1,6 @@
-const { pool } = require('../../common/pgsql');
+const Pgsql = require('../../common/pgsql');
 const CODE = require('../../common/code');
 let Logger = require('../../common/logger');
-let Misc = require('../../utils/misc');
-let DbUtil = require('../../utils/db_util');
 
 class Common {
     constructor() {
@@ -23,7 +21,7 @@ class Common {
      * @return {Promise.<void>}
      */
     async getSidebarInfo() {
-        let client = await pool.connect();
+        let client = await Pgsql.pool.connect();
         
         try {
             const countSlq = `select

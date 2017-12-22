@@ -1,4 +1,4 @@
-const { pool } = require('../../common/pgsql');
+const Pgsql = require('../../common/pgsql');
 const CODE = require('../../common/code');
 let Logger = require('../../common/logger');
 let Misc = require('../../utils/misc');
@@ -50,7 +50,7 @@ class Post {
 
         Logger.info(`blog index sql info =>`, `sql => ${ dataSql }`, `params =>`, params);
     
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             let rsPromise = client.query(dataSql, params);
@@ -112,7 +112,7 @@ class Post {
                         left join post_votes pv on pv.post_id = p.id and pv.create_ip = $2
                     where p.status = 1 and p.id = $1`;
     
-        let client = await pool.connect();
+        let client = await Pgsql.pool.connect();
     
         try {
             let rs = await client.query(sql, [id, ip]);
