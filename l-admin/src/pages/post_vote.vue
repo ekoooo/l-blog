@@ -51,7 +51,7 @@
                         :label="columns['type'].label"
                         prop="type"
                         :formatter="ColumnFormatter.voteTypeFormatter"
-                        width="90">
+                        width="100">
                     </el-table-column>
                     <el-table-column
                         v-if="columns['create_ip'].show"
