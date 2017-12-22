@@ -1,14 +1,15 @@
-const { pool } = require('../../common/pgsql');
+const Pgsql = require('../../common/pgsql');
 const CODE = require('../../common/code');
 let Logger = require('../../common/logger');
 let Misc = require('../../utils/misc');
 let DbUtil = require('../../utils/db_util');
 let Token = require('../../common/token');
 let Pwd = require('../../common/pwd');
-let UserModel = require('../user');
+let UserBase = require('./user_base');
 
-class User {
+class User extends UserBase {
     constructor() {
+        super();
         this.tokenModel = new Token();
     }
     
@@ -66,7 +67,7 @@ class User {
         Logger.info(`get user list form info =>`, formInfo);
         Logger.info(`get user list sql info =>`, `sql => ${ dataSql }`, `params =>`, params);
     
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
         
         try {
             let rsPromise = client.query(dataSql, params);
@@ -115,7 +116,7 @@ class User {
             });
         }
 
-        const client = await pool.connect();
+        const client = await Pgsql.pool.connect();
 
         try {
             // 进行加密
@@ -127,13 +128,12 @@ class User {
                 // 删除旧 token
                 await this.tokenModel.clearOldCacheToken(id, 0);
 
-                let usermodel = new UserModel();
                 // 生成新 token
-                let userinfoRs = await usermodel.getInfoById(id);
+                let userinfoRs = await this.getInfoById(id);
                 let token = this.tokenModel.jwtEncode(userinfoRs[0]);
 
                 // 缓存用户数据
-                usermodel.cacheUserinfo(null, userinfoRs[0], true).then(() => {
+                this.cacheUserinfo(null, userinfoRs[0], true).then(() => {
                     Logger.info(`update pwd cache user info to resdis successed =>`, `user id => ${ userinfoRs[0]['user_id'] }`);
                 }).catch(error => {
                     Logger.error(`update pwd cache user info to resdis on error =>`, error);
