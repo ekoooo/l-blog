@@ -1,6 +1,20 @@
 (function($) {
-    $.fn.message = function(msg) {
-        var dom = $('<span class="message">' + msg + '</span>');
+    /**
+     *
+     * @param msg 消息
+     * @param type 1.success 2.warning 3.error
+     */
+    $.fn.message = function(msg, type) {
+        var icon = 'emoji';
+        
+        if(type === 2) {
+            icon = 'warning';
+        }else if(type === 3) {
+            icon = 'delete';
+        }
+        
+        
+        var dom = $('<span class="message"><i class="iconfont icon-' + icon + '"></i> ' + msg + '</span>');
         
         $('body').append(dom);
         
@@ -146,6 +160,15 @@ $(function () {
     }
     
     /**
+     * 移动端菜单缩放
+     */
+    function initMenu() {
+        $('.nav .switch').on('click', function() {
+            $(this).parent().toggleClass('active');
+        });
+    }
+    
+    /**
      * 初始化
      */
     function init() {
@@ -153,6 +176,7 @@ $(function () {
         initVote();
         initMarkdownLinkTarget();
         initSidebar();
+        initMenu();
     }
     
     init();

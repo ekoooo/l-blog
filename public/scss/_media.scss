@@ -1,0 +1,120 @@
+@mixin m-header {
+    .header {
+        .nav {
+            box-sizing: border-box;
+            width: $m-nav-size;
+            height: $m-nav-size;
+            line-height: $m-nav-size;
+            margin-top: ($m-header-height - $m-nav-size) / 2;
+
+            &.active {
+                .menu {
+                    max-height: 500px;
+                }
+            }
+
+            .switch {
+                cursor: pointer;
+                display: block;
+                margin: 0;
+                font-size: 30px;
+            }
+
+            .menu {
+                position: absolute;
+                top: $m-header-height;
+                right: 0;
+                background-color: $header-bg-color;
+                padding: 0;
+                width: 100%;
+                max-height: 0;
+                overflow: hidden;
+            }
+
+            .menu-item {
+                float: none;
+                line-height: normal;
+                border-top: 1px solid #eee;
+                margin: 0;
+
+                a {
+                    padding: 10px 0;
+                    display: block;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $wrapper-width) {
+    .content-wrapper {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: $wrapper-width + $sidebar-width) {
+    .sidebar-open {
+        .content-wrapper {
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: $m-max-width + $sidebar-width) {
+    .sidebar-open {
+        @include m-header;
+    }
+}
+
+@media screen and (max-width: $m-max-width) {
+    @include m-header;
+
+    .main {
+        padding-top: $m-header-height;
+    }
+
+    .sidebar {
+        width: 100%;
+        left: -100%;
+
+        .sidebar-op {
+            position: fixed;
+            left: 0;
+        }
+    }
+
+    .header {
+        height: $m-header-height;
+
+        .logo {
+            width: $m-header-height * 0.7;
+            height: $m-header-height * 0.7;
+            margin-top: $m-header-height * 0.15;
+        }
+
+        .title {
+            display: inline-block;
+            margin: 0 0 0 20px;
+            font-size: 14px;
+            line-height: $m-header-height;
+            color: #555;
+        }
+    }
+
+    .post-box {
+        .post-tags, .post-vote {
+            float: none;
+        }
+
+        .post-vote {
+            margin-top: 10px;
+        }
+
+        .post-header {
+            h2{
+                font-size: 24px;
+            }
+        }
+    }
+}
