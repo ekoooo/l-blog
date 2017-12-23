@@ -25,7 +25,7 @@
             },
             codeTheme: { // 代码高亮主题，传入 codeThemes 中 monokai 的值
                 'type': String,
-                'default': codeThemes[0].value
+                'default': 'vibrant-ink.min.css'
             },
             initData: {
                 'type': String
