@@ -4,6 +4,7 @@ npm-debug.log*
 config/*.prod.js
 .idea/
 test/
+xx-words/
 
 *.js.map
 *.css.map
