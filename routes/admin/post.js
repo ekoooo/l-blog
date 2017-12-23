@@ -6,6 +6,7 @@ let PostCategory = require('../../model/admin/post_category');
 let Post = require('../../model/admin/post');
 let PostTag = require('../../model/admin/post_tag');
 let PostVote = require('../../model/admin/post_vote');
+let Access = require('../../model/admin/access');
 let jwt = require('jwt-simple');
 
 // 获取文章列表
@@ -80,6 +81,11 @@ router.get('/tag', Filter.filtAdminHttpLogin, function (req, res) {
 // 投票列表
 router.post('/vote/list', Filter.filtAdminHttpLogin, function (req, res) {
     Sender.send(res, new PostVote().getVoteList(req.body));
+});
+
+// 文章访问记录
+router.post('/access/list', Filter.filtAdminHttpLogin, function (req, res) {
+    Sender.send(res, new Access().getPostAccessList(req.body));
 });
 
 module.exports = router;

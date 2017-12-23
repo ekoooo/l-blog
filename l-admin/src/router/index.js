@@ -72,6 +72,15 @@ const router = new Router({
                     }
                 },
                 {
+                    path: 'postAccess',
+                    name: 'postAccess',
+                    component: () => import('../pages/post_access'),
+                    meta: {
+                        title: '文章访问',
+                        auth: true,
+                    }
+                },
+                {
                     path: 'images',
                     name: 'images',
                     component: () => import('../pages/images'),

@@ -30,6 +30,11 @@ const config = [
                 text: '文章投票',
                 icon: 'fa-heart'
             },
+            {
+                path: '/main/postAccess',
+                text: '文章访问',
+                icon: 'fa-eye'
+            },
         ]
     },
     {

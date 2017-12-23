@@ -76,7 +76,7 @@
                     <el-table-column
                         label="操作"
                         align="center"
-                        width="60">
+                        width="80">
                         <template slot-scope="props">
                             <i class="el-icon-edit op-icon" @click="openAddEditDialog(props.row)"></i>
                             <i class="el-icon-delete red op-icon" @click="deleteOneRow(props.row.id)"></i>

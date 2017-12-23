@@ -69,7 +69,8 @@
                         v-if="columns['user_agent'].show"
                         :label="columns['user_agent'].label"
                         prop="user_agent"
-                        width="350">
+                        show-overflow-tooltip
+                        width="500">
                     </el-table-column>
                     <el-table-column
                         v-if="columns['create_time'].show"
@@ -106,7 +107,7 @@
     export default {
         data: function () {
             return {
-                searchParams: Object.assign({}, PostVoteLigic.VOTE_LIST_SEARCHPARAMS),
+                searchParams: Object.assign({}, PostVoteLigic.VOTE_LIST_SEARCH_PARAMS),
                 listData: [],
                 pageId: 0, // 当前页码（从 0 开始计算第一页）
                 pageSize: PostVoteLigic.PAGE_SIZE, // 一页显示多少天记录
@@ -186,7 +187,7 @@
                 });
             },
             resetSearchFrom: function() {
-                this.searchParams = Object.assign({}, PostVoteLigic.VOTE_LIST_SEARCHPARAMS);
+                this.searchParams = Object.assign({}, PostVoteLigic.VOTE_LIST_SEARCH_PARAMS);
             },
         },
         computed: {

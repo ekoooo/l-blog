@@ -3,7 +3,7 @@ import requester from '../utils/requester';
 const PostVote = {
     PAGE_SIZE: 10,
     
-    VOTE_LIST_SEARCHPARAMS: {
+    VOTE_LIST_SEARCH_PARAMS: {
         title: undefined, // 文章标题
         type: undefined, // 投票类型
     },

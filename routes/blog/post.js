@@ -6,7 +6,7 @@ let Sender = require('../../common/sender');
 
 // 文章详情页
 router.get('/:id', function (req, res, next) {
-    Sender.sendPostPage(res, next, new Post().getPostById(req['params']['id'], req.ip));
+    Sender.sendPostPage(req, res, next, new Post().getPostById(req['params']['id'], req.ip));
 });
 
 // 投票（like）

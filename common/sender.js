@@ -2,6 +2,8 @@ let Logger = require('./logger');
 let Config = require('../config/index');
 let Misc = require('../utils/misc');
 let moment = require('moment');
+let Access = require('../model/blog/access');
+
 const CODE = require('./code');
 
 const Sender = {
@@ -41,12 +43,16 @@ const Sender = {
     
     /**
      * 文章页面返回
+     * @param req
      * @param res
      * @param next
      * @param promise
      */
-    sendPostPage(res, next, promise) {
+    sendPostPage(req, res, next, promise) {
         promise.then(data => {
+            // add access log
+            new Access().addPostAccess(req['params']['id'], req).then(() => {}).catch(() => {});
+            
             data.info['create_time'] = moment(data.info['create_time']).format('YYYY-MM-DD HH:mm:ss');
             data.info['update_time'] = moment(data.info['update_time']).format('YYYY-MM-DD HH:mm:ss');
             
