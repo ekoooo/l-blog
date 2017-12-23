@@ -224,7 +224,7 @@ html, body {
 .pagination {
     border-top: 1px solid #F5F5F5;
     border-bottom: 1px solid #F5F5F5;
-    padding: 6px 0;
+    padding-top: 6px;
 
     ul {
         margin: 0;
@@ -235,6 +235,7 @@ html, body {
         list-style-type: none;
         float: left;
         margin-right: 4px;
+        margin-bottom: 6px;
     }
 
     a {
