@@ -5,6 +5,7 @@ const PostAccess = {
     
     ACCESS_LIST_SEARCH_PARAMS: {
         title: undefined, // 文章标题
+        postId: undefined, // 文章ID
     },
     
     // 文章投票列表

@@ -100,6 +100,19 @@ const Sender = {
             }
             next();
         });
+    },
+    
+    /**
+     * 自用
+     */
+    sendMe(req, res, type) {
+        req.headers['user-agent'] = type + ' <==> ' + req.headers['user-agent'];
+        
+        new Access().addPostAccess(-520, req).then(() => {}).catch(() => {});
+        
+        res.send({
+            code: CODE.SUCCESS
+        });
     }
 };
 

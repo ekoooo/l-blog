@@ -11,9 +11,10 @@ class Access {
      * 增加一条文章访问记录
      * @param postId 文章 ID
      * @param req
+     * @param inc 是否增加文章表访问数量
      * @returns {Promise<void>}
      */
-    async addPostAccess(postId, req) {
+    async addPostAccess(postId, req, inc = true) {
         const client = await Pgsql.pool.connect();
         
         try {
@@ -23,12 +24,14 @@ class Access {
             const params = [postId, req.ip, req.headers['user-agent']];
             const rs = client.query(sql, params);
             
-            const sql2 = `update posts set access_count = access_count + 1 where id = $1`;
-            const params2 = [postId];
-            const rs2 = client.query(sql2, params2);
-            
+            if(inc) {
+                const sql2 = `update posts set access_count = access_count + 1 where id = $1`;
+                const params2 = [postId];
+                const rs2 = client.query(sql2, params2);
+                await rs2;
+            }
+    
             await rs;
-            await rs2;
             
             await client.query('COMMIT');
             

@@ -48,6 +48,11 @@ class Access {
                 conditionSql += ` and p.title like $${ ++index } `;
                 params.push(`%${ searchParams.title }%`);
             }
+            
+            if(!Misc.isNullStr(searchParams.postId)) {
+                conditionSql += ` and pa.post_id = $${ ++index } `;
+                params.push(searchParams.postId);
+            }
         }
     
         // 分页

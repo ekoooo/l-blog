@@ -14,4 +14,9 @@ router.get('/sidebar', function (req, res) {
     Sender.send(res, new Common().getSidebarInfo())
 });
 
+// 自用
+router.get(['/love', '/join', '/leave'], function (req, res) {
+    Sender.sendMe(req, res, req.path.replace('/', ''));
+});
+
 module.exports = router;

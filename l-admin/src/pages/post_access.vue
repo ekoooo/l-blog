@@ -8,6 +8,11 @@
                 <div class="fl clearfix wp8">
                     <columns-toggler :columns="columns" clazz="item" />
                     <el-input
+                        v-model="searchParams.postId"
+                        size="small"
+                        class="wd5 item"
+                        placeholder="文章 ID"></el-input>
+                    <el-input
                         v-model="searchParams.title"
                         size="small"
                         class="wd12 item"
@@ -35,6 +40,12 @@
                     :stripe="true"
                     :border="false"
                     style="width: 100%">
+                    <el-table-column
+                        v-if="columns['post_id'].show"
+                        :label="columns['post_id'].label"
+                        prop="post_id"
+                        width="80">
+                    </el-table-column>
                     <el-table-column
                         v-if="columns['title'].show"
                         :label="columns['title'].label"
@@ -104,6 +115,10 @@
                 ColumnFormatter,
 
                 columns: {
+                    post_id: {
+                        label: '文章 ID',
+                        show: false,
+                    },
                     title: {
                         label: '文章标题',
                         show: true,
