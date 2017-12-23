@@ -17,6 +17,8 @@ module.exports = {
         title: '刘万林的博客',
         description: '刘万林的博客',
         keywords: '刘万林,个人博客,个人网站,web前端,后台开发',
+        // 需要加载的脚本，比如网站统计
+        scripts: ['https://s22.cnzz.com/z_stat.php?id=1271543900&web_id=1271543900'],
     },
     
     // 初始化第一个管理员的信息

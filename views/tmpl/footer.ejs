@@ -12,6 +12,11 @@
 <% } %>
 <script src="/static/editor.md/jquery.min.js"></script>
 <script src="/js/main.min.js"></script>
+<%
+    locals.scripts.map(item => {
+        %><script src="<%=item %>"></script><%
+    })
+%>
 <!--[if lt IE 9]>
 <script>
     $(function() {
