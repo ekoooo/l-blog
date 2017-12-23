@@ -5,9 +5,15 @@ module.exports = function(app) {
     app.use('/', require('./blog/index'));
     app.use('/post', require('./blog/post'));
     
+    //
+    app.all('/*', function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        
+        next();
+    });
+    
     // admin header
     app.all('/admin/*', function (req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
         res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
         res.header("Content-Type", "application/json;charset=utf-8");
