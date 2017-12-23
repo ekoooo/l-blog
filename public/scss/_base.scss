@@ -545,3 +545,7 @@ html, body {
     text-align: center;
     margin-top: 100px;
 }
+
+a[title="站长统计"] {
+    display: none;
+}
