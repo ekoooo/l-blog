@@ -15,8 +15,8 @@ module.exports = {
     blogInfo: {
         author: '刘万林,liuwanlin',
         title: '刘万林的博客',
-        description: '刘万林的博客',
-        keywords: '刘万林,个人博客,个人网站,web前端,后台开发',
+        description: '刘万林的博客,记录工作或者学习中所遇到的问题和有趣的知识点',
+        keywords: '刘万林,liuwanlin,lwl,个人博客,个人网站,web前端,后台开发',
         // 需要加载的脚本，比如网站统计
         scripts: ['https://s22.cnzz.com/z_stat.php?id=1271543900&web_id=1271543900'],
     },
