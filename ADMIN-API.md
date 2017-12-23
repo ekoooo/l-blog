@@ -425,7 +425,7 @@ Authorization: <Token>
 }
 ```
 成功响应
-```json
+```
 {
     "code": 200,
     "info": [
@@ -529,6 +529,37 @@ Authorization: <Token>
     "q": {
         username: undefined,
         nickname: undefined,
+    }
+}
+```
+响应体
+```
+    "code": 200,
+    "info": [
+        {
+            //...
+        },
+        ...
+    ],
+    "pageId": 0,
+    "pageSize": 10,
+    "totalCount": 1
+```
+
+## 文章访问记录
+请求语法
+```
+POST /admin/post/access/list
+Content-Type: application/json
+Authorization: <Token>
+```
+请求体
+```
+{
+    "pageId": 0,
+    "pageSize": 10,
+    "q": {
+        title: undefined, // 文章标题
     }
 }
 ```
