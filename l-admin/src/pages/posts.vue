@@ -174,7 +174,6 @@
                                     @click="updateStatus(props.row.id, -1)" class="el-icon-delete red op-icon"></i>
                             </el-tooltip>
                             <router-link
-                                v-if="props.row.status === 0"
                                 tag="span"
                                 :to="{
                                     name: 'postEdit',
