@@ -6,6 +6,7 @@ let bodyParser = require('body-parser');
 
 let router = require('./routes/index');
 let Logger = require('./common/logger');
+let sitemap = require('./common/sitemap');
 
 let app = express();
 
@@ -30,6 +31,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static', express.static(path.join(__dirname, 'l-admin/static')));
 app.use('/manager', express.static(path.join(__dirname, 'l-admin/dist'))); // 后台前端
+
+// sitemap
+sitemap(app);
 
 // 注册路由
 router(app);

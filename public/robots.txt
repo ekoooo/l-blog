@@ -1,3 +1,4 @@
 # robots.txt generated at http://www.lwl.tech
 User-agent: *
-Disallow:
+Disallow: /manager/
+Sitemap: http://www.lwl.tech/sitemap.xml

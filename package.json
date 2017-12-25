@@ -22,6 +22,7 @@
     "qiniu": "^7.1.1",
     "redis": "^2.8.0",
     "serve-favicon": "~2.4.5",
+    "sitemap": "^1.13.0",
     "stack-trace": "0.0.10",
     "winston": "^2.4.0",
     "winston-daily-rotate-file": "^1.7.2"

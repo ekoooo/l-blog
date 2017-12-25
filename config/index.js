@@ -34,4 +34,6 @@ module.exports = {
     
     // 服务器端口
     serverPort: 10002,
+    // 域名
+    serverDomain: 'http://www.lwl.tech',
 };
