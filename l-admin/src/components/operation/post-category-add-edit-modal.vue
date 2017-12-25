@@ -57,7 +57,7 @@
         },
         methods: {
             setFormInfo: function(info) {
-                if(info === null) { // 添加
+                if(info.id === undefined) { // 添加
                     this.formInfo = {
                         postCategoryName: undefined,
                         orderBy: undefined,

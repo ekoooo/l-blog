@@ -2,7 +2,7 @@
     <div class="box">
         <el-dialog
             width="40%"
-            :title="itemData ? '编辑分类' : '添加分类'"
+            :title="itemData && itemData.id ? '编辑分类' : '添加分类'"
             :visible.sync="addEditDialogVisible">
             <post-category-add-editor-modal
                 :data="itemData"
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-    import postCategoryAddEditorModal from '../components/operation/post-category-add-editor-modal';
+    import postCategoryAddEditorModal from '../components/operation/post-category-add-edit-modal';
     import PostCategoryLogic from '../logic/post_category';
     import MSG from '../utils/message';
     import moment from 'moment';
