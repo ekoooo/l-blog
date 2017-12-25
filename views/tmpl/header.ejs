@@ -9,7 +9,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="i9SpFYSwMTUHZZSWjj5vIB1EJW7BcnjBnUrJGFh8kqY" />
+    <%
+        locals.metas.map(item => {
+            %><meta name="<%=item.name %>" content="<%=item.content %>" /><%
+        })
+    %>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -22,7 +26,6 @@
     <title><%=locals.title %></title>
     <% if(locals.loadPostCss) { %>
     <link rel="stylesheet" href="/static/editor.md/css/editormd.preview.min.css">
-    <!--<link rel="stylesheet" href="/static/editor.md/css/google_code_prettify_themes/monokai.min.css">-->
     <link rel="stylesheet" href="/static/editor.md/css/google_code_prettify_themes/vibrant-ink.min.css">
     <% } %>
     <link rel="stylesheet" href="/css/iconfont.min.css">
@@ -43,13 +46,12 @@
             <%#根据时间分钟显示 logo %>
             <img src="/img/logo_<%=new Date().getMinutes() % 11 + 1 %>.png" alt="<%=locals.title %>">
         </a>
-        <h2 class="title">刘万林的博客</h2>
+        <h2 class="title"><%=locals.siteName %></h2>
         <nav class="nav">
             <i class="switch iconfont icon-switch"></i>
             <ul class="menu">
                 <li class="menu-item"><a href="/"><i class="iconfont icon-homepage_fill"></i>首页</a></li>
                 <li class="menu-item"><a href="#"><i class="iconfont icon-manage_fill"></i>分类</a></li>
-                <%#<li class="menu-item"><a href="#"><i class="iconfont icon-workbench_fill"></i>归档</a></li>%>
                 <li class="menu-item"><a href="#"><i class="iconfont icon-marketing_fill"></i>标签</a></li>
                 <li class="menu-item"><a href="#"><i class="iconfont icon-message_fill"></i>留言</a></li>
                 <li class="menu-item"><a href="#"><i class="iconfont icon-people_fill"></i>关于</a></li>

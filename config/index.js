@@ -4,7 +4,7 @@
  * 开发环境文件 filename.dev.js
  * 生产环境文件 filename.prod.js （.gitignore 中已忽略，需要自己建立）
  */
-const SUFFIX = process.env.NODE_ENV === 'development' ? '.dev' : '.prod';
+const SUFFIX = process.env['NODE_ENV'] === 'development' ? '.dev' : '.prod';
 
 module.exports = {
     ...require('./db' + SUFFIX), // 数据库配置文件
@@ -17,8 +17,15 @@ module.exports = {
         title: '刘万林的博客',
         description: '刘万林的博客,记录工作或者学习中所遇到的问题和有趣的知识点',
         keywords: '刘万林,liuwanlin,lwl,个人博客,个人网站,web前端,后台开发',
-        // 需要加载的脚本，比如网站统计
-        scripts: ['https://s22.cnzz.com/z_stat.php?id=1271543900&web_id=1271543900'],
+        metas: [{ // 自定义 meta
+            name: 'google-site-verification',
+            content: 'i9SpFYSwMTUHZZSWjj5vIB1EJW7BcnjBnUrJGFh8kqY',
+        }],
+        scripts: ['https://s22.cnzz.com/z_stat.php?id=1271543900&web_id=1271543900'], // 需要加载的脚本，比如网站统计
+        adminAddress: 'http://admin.lwl.tech', // 后台管理域名
+        
+        siteName: '刘万林的博客',
+        recordCode: '粤ICP备17137964号-1',
     },
     
     // 初始化第一个管理员的信息
