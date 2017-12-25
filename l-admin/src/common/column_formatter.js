@@ -32,6 +32,16 @@ const ColumnFormatter = {
         return map[cellValue];
     },
     
+    // 配置状态
+    configStatusFormatter(row, column, cellValue) {
+        const map = {
+            "1": "正常",
+            "0": "禁用",
+            "-1": "删除",
+        };
+        return map[cellValue];
+    },
+    
     // 投票类型
     voteTypeFormatter(row, column, cellValue) {
         const map = {
