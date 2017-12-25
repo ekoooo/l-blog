@@ -22,8 +22,6 @@
 </template>
 
 <script>
-    import PostTagLogic from '../../logic/post_tag';
-
     export default {
         props: {
             value: {
