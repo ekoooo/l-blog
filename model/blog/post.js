@@ -37,7 +37,7 @@ class Post {
                        left join post_category pc on pc.id = p.post_category_id
                        left join (select post_id, string_agg(name, ',') as tags from post_tags group by post_id) pt on pt.post_id = p.id
                    where 1 = 1 `;
-        let conditionSql = ` and p.status = 1 `;
+        let conditionSql = ` and p.status = 1 and p.id > 0 `;
         let orderBySql = ` order by create_time desc `;
         let params = [];
         
