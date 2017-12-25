@@ -30,6 +30,7 @@ module.exports = function(app) {
     app.use('/admin/qiniu', require('./admin/qiniu'));
     app.use('/admin/post', require('./admin/post'));
     app.use('/admin/user', require('./admin/user'));
+    app.use('/admin/config', require('./admin/config'));
     
     // admin 404
     app.use('/admin/*', function(req, res) {
