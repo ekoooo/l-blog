@@ -190,14 +190,31 @@
                                 class="item" effect="dark" content="撤回" placement="top">
                                 <i
                                     key="update-status-2"
-                                    @click="updateStatus(props.row.id, 0)" class="el-icon-remove-outline op-icon"></i>
+                                    @click="updateStatus(props.row.id, 0)"
+                                    class="el-icon-remove-outline op-icon">
+                                </i>
+                            </el-tooltip>
+                            <el-tooltip
+                                v-if="props.row.status === 1"
+                                class="item" effect="dark" content="查看" placement="top">
+                                <a
+                                    :href="InfoConfig.blogUrl + '/post/' + props.row.id"
+                                    style="color: red; outline: none;"
+                                    target="_blank">
+                                    <i
+                                        key="update-status-4"
+                                        class="el-icon-view op-icon">
+                                    </i>
+                                </a>
                             </el-tooltip>
                             <el-tooltip
                                 v-if="props.row.status === 0"
                                 class="item" effect="dark" content="发布" placement="top">
                                 <i
                                     key="update-status-3"
-                                    @click="updateStatus(props.row.id, 1)" class="el-icon-circle-check-outline op-icon"></i>
+                                    @click="updateStatus(props.row.id, 1)"
+                                    class="el-icon-circle-check-outline op-icon">
+                                </i>
                             </el-tooltip>
                         </template>
                     </el-table-column>
@@ -225,6 +242,7 @@
     import ColumnFormatter from '../common/column_formatter';
     import postCategory from '../components/selector/post-category';
     import columnsToggler from '../components/operation/columns-toggler';
+    import InfoConfig from '../config/info';
 
     export default {
         data: function() {
@@ -237,6 +255,7 @@
                 listLoading: false, // 表格数据加载中标志
 
                 ColumnFormatter,
+                InfoConfig,
 
                 columns: {
                     id: {
