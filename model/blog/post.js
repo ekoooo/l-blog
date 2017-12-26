@@ -15,6 +15,35 @@ class Post {
     }
     
     /**
+     * 所有已发布文章的 id 以及 totalPage
+     * @return {Promise.<void>}
+     */
+    async getPostIdInfo() {
+        const client = await Pgsql.pool.connect();
+        try {
+            let rs = await client.query('select id from posts where status = 1');
+    
+            const pageSize = Post.POST_LIST_PAGE_SIZE;
+            return Promise.resolve({
+                code: CODE.SUCCESS,
+                info: {
+                    ids: rs.rows,
+                    totalPage: parseInt((rs.rowCount + pageSize - 1) / pageSize)
+                }
+            });
+        }catch(e) {
+            Logger.error(`get post id info on error => `, e);
+    
+            return Promise.reject({
+                code: CODE.ERROR,
+                message: '获取文章信息数据失败'
+            });
+        }finally {
+            client.release();
+        }
+    }
+    
+    /**
      * 获取文章列表（首页）
      * @param pageId
      * @param q 搜索参数
