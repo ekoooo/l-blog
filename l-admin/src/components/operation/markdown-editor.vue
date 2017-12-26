@@ -8,7 +8,7 @@
 
 <script>
     import scriptjs from 'scriptjs';
-    import { defaultConfig, codeThemes } from '../../config/editor.md';
+    import { defaultConfig } from '../../config/editor.md';
 
     // 一个界面多个编辑器，多次引入样式问题？
     export default {
@@ -20,10 +20,10 @@
             onchange: { // 内容改变时回调，返回（html, markdown, text）
                 type: Function
             },
-            config: { // 编辑器配置文件
+            config: { // 编辑器配置
                 type: Object
             },
-            codeTheme: { // 代码高亮主题，传入 codeThemes 中 monokai 的值
+            codeTheme: { // 代码高亮主题
                 'type': String,
                 'default': 'vibrant-ink.min.css'
             },
@@ -38,7 +38,6 @@
         data: function() {
             return {
                 editor: null,
-                codeThemes,
                 editorLoaded: false,
             };
         },
@@ -65,7 +64,7 @@
                         let editor = window.editormd(this.editorId, this.getConfig());
 
                         editor.on('load', () => {
-                            setTimeout(() => { // hack bug: 多个编辑器只能 preview 一个的问题
+                            setTimeout(() => { // hack bug: 多个编辑器只能初始化一个的问题
                                 this.editorLoaded = true;
                                 this.initData && editor.setMarkdown(this.initData);
                             }, this.initDataDelay);
