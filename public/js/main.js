@@ -1,3 +1,6 @@
+/**
+ * 消息提示
+ */
 (function($) {
     /**
      *
@@ -41,7 +44,211 @@
         });
     }
 })(jQuery);
+/**
+ * 留言
+ */
+(function ($) {
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email.toLowerCase());
+    }
+    function validateUrl(string){
+        return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(string);
+    }
+    /**
+     * 验证留言表单值
+     * @param formInfo
+     */
+    function validForm(formInfo) {
+        var isNullStr = function(str) {
+            return str === '' || str === null || str === undefined;
+        };
+        
+        if(isNullStr(formInfo.postId)) {
+            return '参数错误';
+        }
+        if(isNullStr(formInfo.name)) {
+            return '请输入昵称';
+        }
+        if(isNullStr(formInfo.mail)) {
+            return '请输入邮箱';
+        }
+        if(isNullStr($.trim(formInfo.content))) {
+            return '请输入内容';
+        }
+        
+        // 昵称 4 ~ 16
+        if(formInfo.name.length < 4 || formInfo.name.length > 16) {
+            return '昵称必须 4 到 16 位';
+        }
+        if(!isNullStr(formInfo.mail) && !validateEmail(formInfo.mail)) {
+            return '邮箱格式不正确';
+        }
+        if(!isNullStr(formInfo.site) && !validateUrl(formInfo.site)) {
+            return '网址格式不正确';
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 发送留言
+     * @param formInfo
+     * @param cb
+     */
+    function send(formInfo, cb) {
+        var errMsg = validForm(formInfo);
+        
+        if(errMsg) {
+            $().message(errMsg);
+            cb(false);
+        }else {
+            $.ajax({
+                url: '/comment',
+                method: 'POST',
+                data: formInfo,
+                dataType: 'json',
+                success: function (data) {
+                    cb(data);
+                },
+                error: function () {
+                    cb(false);
+                }
+            });
+        }
+    }
+    
+    /**
+     * 加载编辑器 css
+     * @param cb
+     */
+    function loadMdEditorCss(cb) {
+        var css = document.createElement('link');
+        css.type = 'text/css';
+        css.rel = 'stylesheet';
+        css.href = '/manager/static/editor.md/css/editormd.min.css';
+        css.onload = css.onreadystatechange = function() {
+            cb && cb();
+        };
+        document.getElementsByTagName("head")[0].appendChild(css);
+    }
+    
+    /**
+     * 加载编辑器 js
+     * @param cb
+     */
+    function loadMdEditorScript(cb) {
+        var script = document.createElement("script");
+        script.type = 'text/javascript';
+        script.src = '/manager/static/editor.md/editormd.min.js';
+        script.onload = script.onreadystatechange = function () {
+            cb && cb();
+        };
+        document.body.appendChild(script);
+    }
+    
+    /**
+     * 初始化编辑器
+     */
+    function initMdEditor(cb, mdEditorId) {
+        var editor = window.editormd(mdEditorId.replace('#', ''), {
+            width: "200%",
+            height: 150,
+            path: '/manager/static/editor.md/lib/',
+            placeholder: '请输入留言，支持 Markdown...',
+            lineNumbers: false,
+            saveHTMLToTextarea: true,
+            watch: true,
+            toolbar: false,
+        });
+        
+        editor.on('load', function () {
+            cb && cb(editor);
+        });
+    }
+    
+    $.fn.comment = function () {
+        var selector = {
+            box: '#comment-tool',
+            postId: '#post-id',
+            parentId: '#parent-id',
+            authorName: '#author-name',
+            authorMail: '#author-mail',
+            authorSite: '#author-site',
+            commentArea: '#comment-content-area',
+            mdEditor: '#md-editor',
+            sendBtn: '#send-comment',
+            loadEditorBtn: '#load-editor'
+        };
+        
+        var editor = null;
+        
+        // 点击发送按钮
+        $(selector.sendBtn).on('click', function (e) {
+            e.preventDefault();
+            
+            var $t = $(this);
+            var btnText = $t.val();
+            $t.attr('disabled', true).val('发送中...');
 
+            // 发送留言
+            send({
+                postId: $(selector.postId).val(),
+                parentId: $(selector.parentId).val(),
+                name: $(selector.authorName).val(),
+                mail: $(selector.authorMail).val(),
+                site: $(selector.authorSite).val(),
+                content: editor && editor.getPreviewedHTML()
+            }, function (data) {
+                $t.attr('disabled', false).val(btnText);
+                
+                if(data) {
+                    if(data.code === 200) {
+                        $().message('评论成功');
+                    }else {
+                        $().message(data.message);
+                    }
+                }
+            });
+        });
+        
+        // 点击使用 markdown 编辑器
+        $(selector.loadEditorBtn).on('click', function (e) {
+            e.preventDefault();
+            
+            // 加载资源
+            loadMdEditorCss(function () {
+                loadMdEditorScript(function () {
+                    initMdEditor(function (mdEditor) {
+                        $(e.currentTarget).hide();
+                        $().message('编辑器加载成功');
+                        
+                        $('html, body').animate({
+                            scrollTop: $(selector.box).offset().top - 70 + 'px'
+                        }, {
+                            duration: 500,
+                            easing: 'swing'
+                        });
+    
+                        editor = mdEditor;
+                    }, selector.mdEditor);
+                });
+            });
+        });
+        
+        // 如果网址没有填写协议前缀则自动填写
+        $(selector.authorSite).on('blur', function () {
+            var val = $(this).val();
+            
+            if(val.length > 0 &&
+                val.indexOf('http://') !== 0 &&
+                val.indexOf('https://') !== 0 &&
+                val.indexOf('tfp://') !== 0) {
+                $(this).val('http://' + val);
+            }
+        });
+    }
+})(jQuery);
 
 $(function () {
     /**
@@ -169,6 +376,13 @@ $(function () {
     }
     
     /**
+     * 留言
+     */
+    function initComment() {
+        $('.comment-form').comment();
+    }
+    
+    /**
      * 初始化
      */
     function init() {
@@ -177,6 +391,7 @@ $(function () {
         initMarkdownLinkTarget();
         initSidebar();
         initMenu();
+        initComment();
     }
     
     init();

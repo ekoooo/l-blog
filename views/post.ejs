@@ -39,6 +39,9 @@
             </span>
             </div>
         </div>
+        <%-include('./tmpl/comment', {
+            postId: info['id']
+        }) %>
     </div>
 </div>
 <%-include('./tmpl/footer') %>

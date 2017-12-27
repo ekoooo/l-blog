@@ -1,0 +1,58 @@
+<%#
+    @param postId 用回复的文章 ID（必填）
+    @param parentId 回复的留言 ID（选填）
+%>
+<div class="comment-tool" id="comment-tool">
+    <h3>我要留言</h3>
+    <form class="comment-form">
+        <input type="hidden"
+               class="post-id"
+               id="post-id"
+               value="<%=locals.postId %>">
+        <input type="hidden"
+               class="parent-id"
+               id="parent-id"
+               value="<%=locals.parentId %>">
+        <div class="comment-author-info clearfix">
+            <div class="item">
+                <input type="text"
+                       placeholder="请输入昵称 4 ~ 16 位"
+                       id="author-name"
+                       class="author-name"
+                       name="authorName">
+                <label for="author-name">昵称（必填）</label>
+            </div>
+            <div class="item">
+                <input type="text"
+                       placeholder="请输入邮箱"
+                       id="author-mail"
+                       class="author-mail"
+                       name="authorMail">
+                <label for="author-mail">邮箱（必填）</label>
+            </div>
+            <div class="item">
+                <input type="text"
+                       placeholder="例如：http://www.lwl.tech"
+                       id="author-site"
+                       class="author-site"
+                       name="authorSite">
+                <label for="author-site">网站</label>
+            </div>
+        </div>
+        <div class="comment-content-box">
+            <div class="editor-box">
+                <div id="md-editor" class="md-editor"></div>
+            </div>
+        </div>
+        <div class="comment-op">
+            <input type="button"
+                   value="发送留言"
+                   class="comment-btn send-comment"
+                   id="send-comment">
+            <input type="button"
+                   value="加载编辑器"
+                   class="comment-btn load-editor"
+                   id="load-editor">
+        </div>
+    </form>
+</div>

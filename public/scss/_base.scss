@@ -540,6 +540,72 @@ html, body {
     }
 }
 
+// 评论模块
+.comment-tool {
+    padding-top: 20px;
+    font-size: 14px;
+    color: #555;
+
+    .comment-author-info {
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+
+        .item {
+            margin-bottom: 10px;
+        }
+    }
+
+    .comment-content-box {
+        position: relative;
+    }
+
+    .md-editor {
+        height: 150px;
+        border: 1px solid #eee;
+    }
+
+    .author {
+        &-name {
+            width: 200px;
+        }
+        &-mail {
+            width: 200px;
+        }
+        &-site {
+            width: 200px;
+        }
+    }
+
+    input {
+        outline: none;
+        height: 20px;
+        border: 1px solid #eee;
+        border-radius: 2px;
+        font-size: 13px;
+        color: #555;
+        padding: 3px 4px;
+    }
+
+    .comment-btn {
+        cursor: pointer;
+        padding: 6px 20px;
+        border-radius: 2px;
+        border: 1px solid #eee;
+        margin-top: 10px;
+        outline: none;
+        background-color: #fff;
+        height: auto;
+
+        &:hover {
+            color: #555;
+        }
+    }
+
+    .editor-box {
+        overflow: hidden;
+    }
+}
+
 .not-found {
     font-size: 12px;
     text-align: center;
