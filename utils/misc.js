@@ -49,6 +49,23 @@ const Misc = {
         };
     
         return new RegExp(regMap[type], 'g').test(val);
+    },
+    
+    /**
+     * 验证 Email
+     * @param str
+     */
+    validEmail(str) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(str.toLowerCase());
+    },
+    
+    /**
+     * 验证 Url
+     * @param str
+     */
+    validUrl(str) {
+        return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(str);
     }
 };
 
