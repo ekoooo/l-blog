@@ -1,4 +1,4 @@
-# 个人网站后台以及前端项目
+# 个人网站后台以及后台管理前端项目
 > 个人网站 => http://blog.lwl.tech
 > 后台管理 => http://admin.lwl.tech
 
@@ -51,7 +51,7 @@
 - ...
 > 详情请看 `package.json` 文件依赖
 
-### 前端
+### 后台管理前端
 - `Vue`
 - `element-ui`
 - ...
@@ -66,7 +66,7 @@ npm run start # 生产环境运行
 gulp # ...
 ```
 
-### 前端
+### 后台管理前端
 ```bash
 npm run dev # 开发调试
 npm run build # 打包发布
@@ -88,8 +88,12 @@ npm run build # 打包发布
 3. 管理员账号说明
     - 管理员账号会在第一次服务器启动时自动生成。
     - 默认账号为 `admin`，密码为 `123456`。
-    - 具体可修改 `./model/user.js` 中 `initAdmin()` 方法。
+    - 初始化管理员信息可查看 `./config/index.js` 配置。
+    - 具体逻辑 `./model/admin/user_base.js` 中 `_initAdmin()` 方法。
 
 
 ## 后台管理接口文档
 > `./ADMIN-API.md` 文件可查看详情
+
+## 前端博客接口
+> `./BLOG-API.md` 文件可查看详情
