@@ -171,7 +171,7 @@ $(function () {
          */
         var initMdEditor = function(cb, mdEditorId) {
             var editor = window.editormd(mdEditorId.replace('#', ''), {
-                width: "200%",
+                width: "100%",
                 height: 150,
                 path: '/manager/static/editor.md/lib/',
                 placeholder: '请输入留言，支持 Markdown...',
@@ -183,6 +183,8 @@ $(function () {
             
             editor.on('load', function () {
                 cb && cb(editor);
+                
+                this.resize('200%', null);
             });
         };
     
