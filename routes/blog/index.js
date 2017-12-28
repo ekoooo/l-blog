@@ -20,6 +20,11 @@ router.post('/comment', function (req, res) {
     Sender.send(res, new Comment().addComment(req.body, req.ip));
 });
 
+// 获取留言列表 /comment?postId=<postId>&page=<pageId>
+router.get('/comment', function (req, res) {
+    Sender.send(res, new Comment().getCommentList(req['query']['postId'], req['query']['page']));
+});
+
 // 自用
 router.get(['/love', '/view', '/leave', '/join'], function (req, res) {
     Sender.sendMe(req, res, req.originalUrl.replace('/', ''));

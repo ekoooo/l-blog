@@ -3,7 +3,6 @@
  */
 (function($) {
     /**
-     *
      * @param msg 消息
      * @param type 1.success 2.warning 3.error
      */
@@ -44,132 +43,154 @@
         });
     }
 })(jQuery);
-/**
- * 留言
- */
-(function ($) {
-    function validateEmail(email) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email.toLowerCase());
-    }
-    function validateUrl(string){
-        return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(string);
-    }
+
+$(function () {
     /**
-     * 验证留言表单值
-     * @param formInfo
+     * 留言相关
+     * @constructor
      */
-    function validForm(formInfo) {
-        var isNullStr = function(str) {
-            return str === '' || str === null || str === undefined;
+    function CommentTool() {
+        var top = this;
+        
+        // 列表是否在加载中
+        this.listLoading = false;
+        
+        /**
+         * 验证 email 格式
+         * @param email
+         * @return {boolean}
+         */
+        var validateEmail = function(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email.toLowerCase());
         };
         
-        if(isNullStr(formInfo.postId)) {
-            return '参数错误';
-        }
-        if(isNullStr(formInfo.name)) {
-            return '请输入昵称';
-        }
-        if(isNullStr(formInfo.mail)) {
-            return '请输入邮箱';
-        }
-        if(isNullStr($.trim(formInfo.content))) {
-            return '请输入内容';
-        }
+        /**
+         * 验证 url 格式
+         * @param string
+         * @return {boolean}
+         */
+        var validateUrl = function(string){
+            return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(string);
+        };
         
-        // 昵称 4 ~ 16
-        if(formInfo.name.length < 4 || formInfo.name.length > 16) {
-            return '昵称必须 4 到 16 位';
-        }
-        if(!isNullStr(formInfo.mail) && !validateEmail(formInfo.mail)) {
-            return '邮箱格式不正确';
-        }
-        if(!isNullStr(formInfo.site) && !validateUrl(formInfo.site)) {
-            return '网址格式不正确';
-        }
+        /**
+         * 验证留言表单值
+         * @param formInfo
+         */
+        var validForm = function(formInfo) {
+            var isNullStr = function(str) {
+                return str === '' || str === null || str === undefined;
+            };
+            
+            if(isNullStr(formInfo.postId)) {
+                return '参数错误';
+            }
+            if(isNullStr(formInfo.name)) {
+                return '请输入昵称';
+            }
+            if(isNullStr(formInfo.mail)) {
+                return '请输入邮箱';
+            }
+            if(isNullStr($.trim(formInfo.content))) {
+                return '请输入内容';
+            }
+            
+            // 昵称 2 ~ 16
+            if(formInfo.name.length < 2 || formInfo.name.length > 16) {
+                return '昵称必须 2 到 16 位';
+            }
+            if(!isNullStr(formInfo.mail) && !validateEmail(formInfo.mail)) {
+                return '邮箱格式不正确';
+            }
+            if(!isNullStr(formInfo.site) && !validateUrl(formInfo.site)) {
+                return '网址格式不正确';
+            }
+            
+            return false;
+        };
         
-        return false;
-    }
-    
-    /**
-     * 发送留言
-     * @param formInfo
-     * @param cb
-     */
-    function send(formInfo, cb) {
-        var errMsg = validForm(formInfo);
+        /**
+         * 发送留言
+         * @param formInfo
+         * @param cb
+         */
+        var send = function(formInfo, cb) {
+            var errMsg = validForm(formInfo);
+            
+            if(errMsg) {
+                $().message(errMsg);
+                cb(false);
+            }else {
+                $.ajax({
+                    url: '/comment',
+                    method: 'POST',
+                    data: formInfo,
+                    dataType: 'json',
+                    success: function (data) {
+                        cb(data);
+                    },
+                    error: function () {
+                        cb(false);
+                    }
+                });
+            }
+        };
         
-        if(errMsg) {
-            $().message(errMsg);
-            cb(false);
-        }else {
-            $.ajax({
-                url: '/comment',
-                method: 'POST',
-                data: formInfo,
-                dataType: 'json',
-                success: function (data) {
-                    cb(data);
-                },
-                error: function () {
-                    cb(false);
-                }
+        /**
+         * 加载编辑器 css
+         * @param cb
+         */
+        var loadMdEditorCss = function(cb) {
+            var css = document.createElement('link');
+            css.type = 'text/css';
+            css.rel = 'stylesheet';
+            css.href = '/manager/static/editor.md/css/editormd.min.css';
+            css.onload = css.onreadystatechange = function() {
+                cb && cb();
+            };
+            $(css).insertAfter($('title'));
+        };
+        
+        /**
+         * 加载编辑器 js
+         * @param cb
+         */
+        var loadMdEditorScript = function(cb) {
+            var script = document.createElement("script");
+            script.type = 'text/javascript';
+            script.src = '/manager/static/editor.md/editormd.min.js';
+            script.onload = script.onreadystatechange = function () {
+                cb && cb();
+            };
+            document.body.appendChild(script);
+        };
+        
+        /**
+         * 初始化编辑器
+         */
+        var initMdEditor = function(cb, mdEditorId) {
+            var editor = window.editormd(mdEditorId.replace('#', ''), {
+                width: "200%",
+                height: 150,
+                path: '/manager/static/editor.md/lib/',
+                placeholder: '请输入留言，支持 Markdown...',
+                lineNumbers: false,
+                saveHTMLToTextarea: true,
+                watch: true,
+                toolbar: false,
             });
-        }
-    }
-    
-    /**
-     * 加载编辑器 css
-     * @param cb
-     */
-    function loadMdEditorCss(cb) {
-        var css = document.createElement('link');
-        css.type = 'text/css';
-        css.rel = 'stylesheet';
-        css.href = '/manager/static/editor.md/css/editormd.min.css';
-        css.onload = css.onreadystatechange = function() {
-            cb && cb();
+            
+            editor.on('load', function () {
+                cb && cb(editor);
+            });
         };
-        document.getElementsByTagName("head")[0].appendChild(css);
-    }
     
-    /**
-     * 加载编辑器 js
-     * @param cb
-     */
-    function loadMdEditorScript(cb) {
-        var script = document.createElement("script");
-        script.type = 'text/javascript';
-        script.src = '/manager/static/editor.md/editormd.min.js';
-        script.onload = script.onreadystatechange = function () {
-            cb && cb();
-        };
-        document.body.appendChild(script);
-    }
-    
-    /**
-     * 初始化编辑器
-     */
-    function initMdEditor(cb, mdEditorId) {
-        var editor = window.editormd(mdEditorId.replace('#', ''), {
-            width: "200%",
-            height: 150,
-            path: '/manager/static/editor.md/lib/',
-            placeholder: '请输入留言，支持 Markdown...',
-            lineNumbers: false,
-            saveHTMLToTextarea: true,
-            watch: true,
-            toolbar: false,
-        });
-        
-        editor.on('load', function () {
-            cb && cb(editor);
-        });
-    }
-    
-    $.fn.comment = function () {
+        /**
+         * 选择器
+         */
         var selector = {
-            box: '#comment-tool',
+            commentBox: '#comment-tool',
             postId: '#post-id',
             parentId: '#parent-id',
             authorName: '#author-name',
@@ -178,79 +199,214 @@
             commentArea: '#comment-content-area',
             mdEditor: '#md-editor',
             sendBtn: '#send-comment',
-            loadEditorBtn: '#load-editor'
+            loadEditorBtn: '#load-editor',
+            moreComment: '.comment-more'
         };
         
-        var editor = null;
-        
-        // 点击发送按钮
-        $(selector.sendBtn).on('click', function (e) {
-            e.preventDefault();
+        /**
+         * 添加一个留言工具
+         */
+        this.initEditor = function() {
+            var editor = null;
+            var $commentBox = $(selector.commentBox);
             
-            var $t = $(this);
-            var btnText = $t.val();
-            $t.attr('disabled', true).val('发送中...');
-
-            // 发送留言
-            send({
-                postId: $(selector.postId).val(),
-                parentId: $(selector.parentId).val(),
-                name: $(selector.authorName).val(),
-                mail: $(selector.authorMail).val(),
-                site: $(selector.authorSite).val(),
-                content: editor && editor.getPreviewedHTML()
-            }, function (data) {
-                $t.attr('disabled', false).val(btnText);
+            if(!$commentBox.length) {
+                return;
+            }
+            
+            var $authorName = $(selector.authorName);
+            var $authorMail = $(selector.authorMail);
+            var $authorSite = $(selector.authorSite);
+            
+            // 从缓存中取昵称、邮箱、网址
+            if(window.localStorage) {
+                var commentInfo = JSON.parse(window.localStorage.getItem('comment_info'));
                 
-                if(data) {
-                    if(data.code === 200) {
-                        $().message('评论成功');
-                    }else {
-                        $().message(data.message);
-                    }
+                if(commentInfo) {
+                    $authorName.val(commentInfo.name);
+                    $authorMail.val(commentInfo.mail);
+                    $authorSite.val(commentInfo.site);
                 }
-            });
-        });
-        
-        // 点击使用 markdown 编辑器
-        $(selector.loadEditorBtn).on('click', function (e) {
-            e.preventDefault();
+            }
             
-            // 加载资源
-            loadMdEditorCss(function () {
-                loadMdEditorScript(function () {
-                    initMdEditor(function (mdEditor) {
-                        $(e.currentTarget).hide();
-                        $().message('编辑器加载成功');
-                        
-                        $('html, body').animate({
-                            scrollTop: $(selector.box).offset().top - 70 + 'px'
-                        }, {
-                            duration: 500,
-                            easing: 'swing'
-                        });
-    
-                        editor = mdEditor;
-                    }, selector.mdEditor);
+            // 点击发送按钮
+            $(selector.sendBtn).on('click', function (e) {
+                e.preventDefault();
+                
+                var $t = $(this);
+                var btnText = $t.val();
+                $t.attr('disabled', true).val('发送中...');
+                
+                var params = {
+                    postId: $(selector.postId).val(),
+                    parentId: $(selector.parentId).val(),
+                    name: $authorName.val(),
+                    mail: $authorMail.val(),
+                    site: $authorSite.val(),
+                    content: editor && editor.getPreviewedHTML()
+                };
+                
+                // 发送留言
+                send(params, function (data) {
+                    $t.attr('disabled', false).val(btnText);
+                    
+                    if(data) {
+                        if(data.code === 200) {
+                            if(data.info.commentCheck) {
+                                $().message('评论成功，需管理员审核才能展示');
+                            }else {
+                                $().message('评论成功');
+                                // 刷新列表
+                                top.initCommentList(true);
+                            }
+                            
+                            // 清空
+                            editor.setMarkdown('');
+                            
+                            // 昵称，邮箱，网址保存到
+                            window.localStorage && window.localStorage.setItem('comment_info', JSON.stringify({
+                                name: params.name,
+                                mail: params.mail,
+                                site: params.site,
+                            }));
+                        }else {
+                            $().message(data.message);
+                        }
+                    }
                 });
             });
-        });
-        
-        // 如果网址没有填写协议前缀则自动填写
-        $(selector.authorSite).on('blur', function () {
-            var val = $(this).val();
             
-            if(val.length > 0 &&
-                val.indexOf('http://') !== 0 &&
-                val.indexOf('https://') !== 0 &&
-                val.indexOf('tfp://') !== 0) {
-                $(this).val('http://' + val);
+            // 点击使用 markdown 编辑器
+            $(selector.loadEditorBtn).on('click', function (e) {
+                e.preventDefault();
+                $(e.currentTarget).val('正在加载编辑器...');
+                
+                // 加载资源
+                loadMdEditorCss(function () {
+                    loadMdEditorScript(function () {
+                        initMdEditor(function (mdEditor) {
+                            $(e.currentTarget).hide();
+                            $().message('编辑器加载成功');
+                            
+                            $('html, body').animate({
+                                scrollTop: $commentBox.offset().top - 70 + 'px'
+                            }, {
+                                duration: 500,
+                                easing: 'swing'
+                            });
+                            
+                            editor = mdEditor;
+                        }, selector.mdEditor);
+                    });
+                });
+            });
+            
+            // 如果网址没有填写协议前缀则自动填写
+            $(selector.authorSite).on('blur', function () {
+                var val = $(this).val();
+                
+                if(val.length > 0 &&
+                    val.indexOf('http://') !== 0 &&
+                    val.indexOf('https://') !== 0 &&
+                    val.indexOf('tfp://') !== 0) {
+                    $(this).val('http://' + val);
+                }
+            });
+            
+            // 加载更多留言
+            $(selector.moreComment).on('click', function () {
+                if(!top.listLoading) {
+                    top.listLoading = true;
+                    top.initCommentList();
+                }
+            });
+        };
+    
+        /**
+         * 加入留言
+         * @param init true 则为显示第一页信息，加入信息
+         */
+        this.initCommentList = function(init) {
+            // 检测是否有显示留言节点
+            var $commentInfo = $('.comment-info');
+            if(!$commentInfo.length) {
+                return;
             }
-        });
+            
+            var postId = $commentInfo.attr('data-post-id');
+            var pageId = $commentInfo.attr('data-page');
+            var $moreComment = $(selector.moreComment);
+            var moreCommentText = $moreComment.text();
+    
+            $moreComment.text('加载中...');
+            
+            if(init) {
+                pageId = -1;
+            }
+    
+            $.ajax({
+                url: '/comment?page=' + (++pageId) + '&postId=' + postId,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if(data.code === 200) {
+                        var pageSize = data.pageSize;
+                        var list = data.list;
+                        var totalPage = parseInt((data.totalCount + pageSize - 1) / pageSize);
+                
+                        $commentInfo.attr('data-page', data.pageId);
+                        
+                        // 显示更早留言按钮
+                        if(totalPage <= data.pageId + 1) {
+                            $moreComment.hide();
+                        }else {
+                            $moreComment.show();
+                        }
+                
+                        // 显示留言条数
+                        $('.comment-info-count').text(data.totalCount);
+                
+                        var listDom = $('.comment-info-list');
+                        var count = undefined;
+                        
+                        if(init) {
+                            listDom.empty();
+                            count = 0;
+                            $commentInfo.attr('data-count', list.length);
+                        }else {
+                            count = Number($commentInfo.attr('data-count'));
+                            $commentInfo.attr('data-count', count + list.length);
+                        }
+                        
+                        // 显示数据
+                        for(var i = 0; i < list.length; i++) {
+                            var item = list[i];
+                    
+                            listDom.append('<li class="comment-info-item" id="post-comment-' + item['post_id'] + '">' +
+                                '    <div class="comment-info-box">' +
+                                '        <div class="comment-info-row">' +
+                                '            <a href="javascript:void(0);" class="comment-info-anchor"># ' + (count + i + 1) + ' </a>' +
+                                '            <span class="blod">' +
+                                '               <a target="_blank" href="' + item['author_site'] + '">' + item['author'] + '</a>' +
+                                '            </span>' +
+                                '            <span>于 ' + item['create_time'] + '</span>' +
+                                '            <span>回复到：</span>' +
+                                '        </div>' +
+                                '        <div class="comment-info-row">' +
+                                '            <div class="content markdown-body">' + item['content'] + '</div>' +
+                                '        </div>' +
+                                '    </div>' +
+                                '</li>');
+                        }
+                    }
+    
+                    top.listLoading = false;
+                    $moreComment.text(moreCommentText);
+                }
+            });
+        }
     }
-})(jQuery);
-
-$(function () {
+    
     /**
      * 文章页面 TOC 动画滚动
      */
@@ -379,7 +535,10 @@ $(function () {
      * 留言
      */
     function initComment() {
-        $('.comment-form').comment();
+        var comment = new CommentTool();
+
+        comment.initEditor();
+        comment.initCommentList(true);
     }
     
     /**

@@ -3,6 +3,8 @@ const CODE = require('../../common/code');
 
 let Misc = require('../../utils/misc');
 let Logger = require('../../common/logger');
+let DbUtil = require('../../utils/db_util');
+let moment = require('moment');
 
 class Comment {
     constructor() {
@@ -13,6 +15,77 @@ class Comment {
     static get COMMENT_TIME_DIFF() {
         return 60;
     };
+    
+    // 评论列表 pagesize
+    static get COMMENT_LIST_PAGE_SIZE() {
+        return 10;
+    };
+    
+    /**
+     * 获取评论列表
+     * @param postId
+     * @param pageId
+     * @return {Promise.<void>}
+     */
+    async getCommentList(postId, pageId) {
+        if(!Misc.validInt(pageId, 4)) {
+            // 默认
+            pageId = 0;
+        }
+    
+        let pagerSql = DbUtil.getPagerSqlStr({
+            pageId: pageId,
+            pageSize: Comment.COMMENT_LIST_PAGE_SIZE
+        });
+        
+        let sql = `select id, post_id, author, author_site,
+            mail, content, create_time
+            from post_comments
+            where 1 = 1 `;
+        
+        let conditionSql = ` and status = 1 and parent_id is null and post_id = $1 `;
+        let orderBySql = ` order by create_time desc `;
+        let params = [postId];
+        
+        // 分页
+        const dataSql = sql + conditionSql + orderBySql + pagerSql;
+    
+        Logger.info(`get comment list =>`, `sql => ${ dataSql }`, `params =>`, params);
+    
+        const client = await Pgsql.pool.connect();
+        
+        try {
+            let rsPromise = client.query(dataSql, params);
+            let countPromise = client.query(`select count(1)::int as num from (${ sql + conditionSql }) as tmp`, params);
+        
+            let rs = await rsPromise;
+            let count = await countPromise;
+            
+            // 格式化时间
+            rs.rows.map(item => {
+                if(item['create_time']) {
+                    item['create_time'] = moment(item['create_time']).format('YYYY-MM-DD HH:mm:ss');
+                }
+            });
+        
+            return Promise.resolve({
+                code: CODE.SUCCESS,
+                list: rs.rows,
+                pageId: Number(pageId),
+                pageSize: Comment.COMMENT_LIST_PAGE_SIZE,
+                totalCount: count.rows[0]['num']
+            });
+        }catch(e) {
+            Logger.error(`get comment list on error => `, e);
+        
+            return Promise.reject({
+                code: CODE.ERROR,
+                message: '获取留言列表失败'
+            });
+        }finally {
+            client.release();
+        }
+    }
     
     /**
      * 验证留言表单
@@ -31,9 +104,9 @@ class Comment {
             return '请输入内容';
         }
     
-        // 昵称 4 ~ 16
-        if(formInfo.name.length < 4 || formInfo.name.length > 16) {
-            return '昵称必须 4 到 16 位';
+        // 昵称 2 ~ 16
+        if(formInfo.name.length < 2 || formInfo.name.length > 16) {
+            return '昵称必须 2 到 16 位';
         }
         if(!Misc.isNullStr(formInfo.mail) && !Misc.validEmail(formInfo.mail)) {
             return '邮箱格式不正确';
@@ -104,7 +177,7 @@ class Comment {
             if(rs.rows[0].num >= 1) {
                 return Promise.reject({
                     code: CODE.ERROR,
-                    message: '一分钟内只能评论一条记录'
+                    message: Comment.COMMENT_TIME_DIFF + '秒内只能评论一条记录'
                 });
             }
             
@@ -137,7 +210,10 @@ class Comment {
             
             return Promise.resolve({
                 code: CODE.SUCCESS,
-                info: rs.rows[0].id
+                info: {
+                    id: rs.rows[0].id,
+                    commentCheck: commentCheck,
+                }
             });
         }catch(e) {
             Logger.error(`comment on error => `, e);
