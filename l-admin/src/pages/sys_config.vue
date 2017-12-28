@@ -106,6 +106,7 @@
                     v-if="columns['create_time'].show"
                     :label="columns['create_time'].label"
                     :formatter="ColumnFormatter.timeFormatter"
+                    prop="create_time"
                     width="140">
                 </el-table-column>
                 <el-table-column
