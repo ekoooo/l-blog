@@ -179,6 +179,7 @@ $(function () {
                 saveHTMLToTextarea: true,
                 watch: true,
                 toolbar: false,
+                taskList: true,
             });
             
             editor.on('load', function () {
