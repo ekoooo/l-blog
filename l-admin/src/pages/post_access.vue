@@ -122,6 +122,7 @@
                     title: {
                         label: '文章标题',
                         show: true,
+                        disabled: true,
                     },
                     nickname: {
                         label: '作者',

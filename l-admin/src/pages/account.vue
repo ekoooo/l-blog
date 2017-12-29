@@ -162,7 +162,7 @@
                                         content="修改密码"
                                         placement="top">
                                         <i
-                                            key="update-status-2"
+                                            :key="'btn-1-' + props.row.id"
                                             @click="openUpdatePwdDialog(props.row)"
                                             class="fa fa-key op-icon red"></i>
                                     </el-tooltip>

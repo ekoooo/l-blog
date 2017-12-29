@@ -114,7 +114,10 @@
                     align="center"
                     width="80">
                     <template slot-scope="props">
-                        <i class="el-icon-edit op-icon" @click="openAddEditDialog(props.row)"></i>
+                        <i
+                            :key="'btn-1-' + props.row.id"
+                            class="el-icon-edit op-icon"
+                            @click="openAddEditDialog(props.row)"></i>
                     </template>
                 </el-table-column>
             </el-table>

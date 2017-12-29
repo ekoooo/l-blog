@@ -169,10 +169,14 @@
                         <template slot-scope="props">
                             <el-tooltip
                                 v-if="props.row.status === 0"
-                                class="item" effect="dark" content="删除" placement="top">
+                                class="item"
+                                effect="dark"
+                                content="删除"
+                                placement="top">
                                 <i
-                                    key="update-status-1"
-                                    @click="updateStatus(props.row.id, -1)" class="el-icon-delete red op-icon"></i>
+                                    :key="'btn-1-' + props.row.id"
+                                    @click="updateStatus(props.row.id, -1)"
+                                    class="el-icon-delete red op-icon"></i>
                             </el-tooltip>
                             <router-link
                                 tag="span"
@@ -182,23 +186,34 @@
                                         id: props.row.id
                                     }
                                 }">
-                                <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                                <el-tooltip
+                                    class="item"
+                                    effect="dark"
+                                    content="编辑"
+                                    placement="top">
                                     <i class="el-icon-edit op-icon"></i>
                                 </el-tooltip>
                             </router-link>
                             <el-tooltip
                                 v-if="props.row.status === 1"
-                                class="item" effect="dark" content="撤回" placement="top">
+                                class="item"
+                                effect="dark"
+                                content="撤回"
+                                placement="top">
                                 <i
-                                    key="update-status-2"
+                                    :key="'btn-2-' + props.row.id"
                                     @click="updateStatus(props.row.id, 0)"
                                     class="el-icon-remove-outline op-icon">
                                 </i>
                             </el-tooltip>
                             <el-tooltip
                                 v-if="props.row.status === 1"
-                                class="item" effect="dark" content="查看" placement="top">
+                                class="item"
+                                effect="dark"
+                                content="查看"
+                                placement="top">
                                 <a
+                                    :key="'btn-3-' + props.row.id"
                                     :href="InfoConfig.blogUrl + '/post/' + props.row.id"
                                     style="color: red; outline: none;"
                                     target="_blank">
@@ -210,9 +225,12 @@
                             </el-tooltip>
                             <el-tooltip
                                 v-if="props.row.status === 0"
-                                class="item" effect="dark" content="发布" placement="top">
+                                class="item"
+                                effect="dark"
+                                content="发布"
+                                placement="top">
                                 <i
-                                    key="update-status-3"
+                                    :key="'btn-4-' + props.row.id"
                                     @click="updateStatus(props.row.id, 1)"
                                     class="el-icon-circle-check-outline op-icon">
                                 </i>
@@ -333,8 +351,6 @@
              * @param status
              */
             updateStatus(id, status) {
-                console.log(status);
-
                 MSG.warningConfirm('是否确定' + ({ '1': '发布', '0': '撤回', '-1': '删除' })[status] + '?').then(confirm => {
                     if(!confirm) { return; }
 

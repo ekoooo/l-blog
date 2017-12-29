@@ -42,6 +42,16 @@ const ColumnFormatter = {
         return map[cellValue];
     },
     
+    // 评论状态
+    commentStatusFormatter(row, column, cellValue) {
+        const map = {
+            "1": "正常",
+            "0": "未审核",
+            "-1": "删除",
+        };
+        return map[cellValue];
+    },
+    
     // 投票类型
     voteTypeFormatter(row, column, cellValue) {
         const map = {
