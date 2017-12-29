@@ -25,7 +25,8 @@
     "sitemap": "^1.13.0",
     "stack-trace": "0.0.10",
     "winston": "^2.4.0",
-    "winston-daily-rotate-file": "^1.7.2"
+    "winston-daily-rotate-file": "^1.7.2",
+    "xss": "^0.3.7"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

@@ -5,6 +5,7 @@ let Misc = require('../../utils/misc');
 let Logger = require('../../common/logger');
 let DbUtil = require('../../utils/db_util');
 let moment = require('moment');
+var xss = require("xss");
 
 class Comment {
     constructor() {
@@ -123,7 +124,7 @@ class Comment {
     }
     
     /**
-     *
+     * 发表评论
      * @return {Promise.<void>}
      */
     async addComment(formInfo, ip) {
@@ -201,7 +202,7 @@ class Comment {
                 formInfo.name,
                 formInfo.site,
                 formInfo.mail,
-                formInfo.content,
+                xss(formInfo.content),
                 ip,
                 commentCheck ? 0 : 1
             ];
