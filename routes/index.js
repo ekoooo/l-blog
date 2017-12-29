@@ -31,6 +31,7 @@ module.exports = function(app) {
     app.use('/admin/post', require('./admin/post'));
     app.use('/admin/user', require('./admin/user'));
     app.use('/admin/config', require('./admin/config'));
+    app.use('/admin/comment', require('./admin/comment'));
     
     // admin 404
     app.use('/admin/*', function(req, res) {
