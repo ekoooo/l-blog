@@ -113,7 +113,39 @@ const Sender = {
         res.send({
             code: CODE.SUCCESS
         });
-    }
+    },
+    
+    /**
+     * App 自用返回请求结果
+     * @param req
+     * @param res
+     * @param promise
+     * @param type
+     */
+    sendApp(req, res, promise, type) {
+        let t;
+        if(type === 'ZHIHUDAILY_SPONSOR') {
+            t = -1;
+        }else if(type === 'ZHIHUDAILY_MSG') {
+            t = -2;
+        }
+        
+        promise.then(rs => {
+            // 添加记录
+            req.headers['user-agent'] = type + ' <==> ' + req.headers['user-agent'];
+            new Access().addPostAccess(t, req).then(() => {});
+            
+            res.send({
+                code: rs.code,
+                info: JSON.parse(rs.info.val)
+            });
+        }).catch(err => {
+            if(err.code !== CODE.ERROR) {
+                Logger.error(err);
+            }
+            res.send(err);
+        });
+    },
 };
 
 module.exports = Sender;

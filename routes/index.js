@@ -12,6 +12,9 @@ module.exports = function(app) {
     app.use('/', require('./blog/index'));
     app.use('/post', require('./blog/post'));
     
+    // app
+    app.use('/app', require('./blog/app'));
+    
     // admin header
     app.all('/admin/*', function (req, res, next) {
         res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");

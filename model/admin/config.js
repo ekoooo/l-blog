@@ -69,6 +69,39 @@ class SysConfig {
         return false;
     }
     
+    async getSysConfigByKey(key) {
+        const sql = `select * from sys_config where key = $1 `;
+        let params = [key];
+    
+        const client = await Pgsql.pool.connect();
+    
+        try {
+            let rs = await client.query(sql, params);
+        
+            if(rs.rowCount === 0) {
+                return Promise.reject({
+                    code: CODE.ERROR,
+                    message: '配置不存在'
+                });
+            }
+        
+            let info = rs.rows[0];
+        
+            return Promise.resolve({
+                code: CODE.SUCCESS,
+                info: info
+            });
+        }catch (e) {
+            Logger.error(`get sysconfig by key on error => `, e);
+        
+            return Promise.reject({
+                code: CODE.ERROR,
+                message: '获取配置失败'
+            });
+        }finally {
+            client.release();
+        }
+    }
     
     /**
      * 获取配置列表数据

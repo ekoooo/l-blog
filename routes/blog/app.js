@@ -1,0 +1,18 @@
+/**
+ * 自用
+ */
+let express = require('express');
+let router = express.Router();
+let Config = require('../../model/admin/config');
+let Sender = require('../../common/sender');
+
+// 获取《知乎日报》攒足人名单
+router.get('/zhihudaily/sponsor', function (req, res) {
+    Sender.sendApp(req, res, new Config().getSysConfigByKey('ZHIHUDAILY_SPONSOR'), 'ZHIHUDAILY_SPONSOR');
+});
+// 获取《知乎日报》最新消息
+router.get('/zhihudaily/message', function (req, res) {
+    Sender.sendApp(req, res, new Config().getSysConfigByKey('ZHIHUDAILY_MSG'), 'ZHIHUDAILY_MSG');
+});
+
+module.exports = router;
