@@ -12,16 +12,18 @@ class Access {
      * @param postId 文章 ID
      * @param req
      * @param inc 是否增加文章表访问数量
+     * @param key 指定key值
      * @returns {Promise<void>}
      */
-    async addPostAccess(postId, req, inc = true) {
+    async addPostAccess(postId, req, inc = true, key = 'user-agent') {
         const client = await Pgsql.pool.connect();
         
         try {
             await client.query('BEGIN');
             
             const sql = `insert into post_access (post_id, create_ip, user_agent) values ($1, $2, $3)`;
-            const params = [postId, req.ip, req.headers['user-agent']];
+            
+            const params = [postId, req.ip, req.headers[key] || 'none'];
             const rs = client.query(sql, params);
             
             if(inc) {
