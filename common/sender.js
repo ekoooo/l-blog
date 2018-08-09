@@ -132,7 +132,8 @@ const Sender = {
         
         promise.then(rs => {
             // 添加记录
-            req.headers['appinfo'] = type + ' <==> ' + req.headers['appinfo'];
+            req.headers['appinfo'] = type + ' <==> ' + (req.headers['appinfo'] || req.headers['user-agent']);
+            
             new Access().addPostAccess(t, req, true, 'appinfo').then(() => {});
             
             res.send({
