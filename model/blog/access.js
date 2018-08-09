@@ -23,7 +23,7 @@ class Access {
             
             const sql = `insert into post_access (post_id, create_ip, user_agent) values ($1, $2, $3)`;
             
-            const params = [postId, req.ip, req.headers[key] || 'none'];
+            const params = [postId, req.ip, req.headers[key] || req.headers['user-agent']];
             const rs = client.query(sql, params);
             
             if(inc) {
