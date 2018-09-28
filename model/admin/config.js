@@ -23,13 +23,13 @@ class SysConfig {
         if(formInfo.key.length > 64) {
             return '配置键不得超过 64 位！';
         }
-        if(formInfo.val.length > 1024) {
-            return '配置值不得超过 1024 位！';
-        }
-        if(!Misc.isNullStr(formInfo.extraVal) &&
-            formInfo.extraVal.length > 256) {
-            return '备用值不得超过 256 位！';
-        }
+        // if(formInfo.val.length > 1024) {
+        //     return '配置值不得超过 1024 位！';
+        // }
+        // if(!Misc.isNullStr(formInfo.extraVal) &&
+        //     formInfo.extraVal.length > 256) {
+        //     return '备用值不得超过 256 位！';
+        // }
         if(formInfo.description.length > 128) {
             return '描述不得超过 128 位！';
         }
@@ -235,7 +235,7 @@ class SysConfig {
                 info: rs.rows[0].id,
             });
         }catch (e) {
-            Logger.error(`add sys config on error => `, error, `form info =>`, formInfo);
+            Logger.error(`add sys config on error => `, e, `form info =>`, formInfo);
         
             return Promise.reject({
                 code: CODE.ERROR,
@@ -306,7 +306,7 @@ class SysConfig {
                 });
             }
         }catch (e) {
-            Logger.error(`edit sys config on error => `, error, `form info =>`, formInfo);
+            Logger.error(`edit sys config on error => `, e, `form info =>`, formInfo);
         
             return Promise.reject({
                 code: CODE.ERROR,

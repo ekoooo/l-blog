@@ -11,8 +11,8 @@ create sequence seq_sys_config_id
 create table sys_config (
     id int not null default nextval('seq_sys_config_id'),
     key character varying(64) not null unique,
-    val character varying(1024) not null,
-    extra_val character varying(256),
+    val text not null,
+    extra_val text,
     description character varying(128) not null,
     create_time timestamp with time zone default current_timestamp,
     status smallint default 1

@@ -24,7 +24,6 @@
                     type="textarea"
                     :rows="3"
                     class="wd15"
-                    :maxlength="1024"
                     placeholder="请输入配置值">
                 </el-input>
             </el-form-item>
@@ -35,7 +34,6 @@
                     type="textarea"
                     :rows="3"
                     class="wd15"
-                    :maxlength="256"
                     placeholder="请输入备用值">
                 </el-input>
             </el-form-item>
@@ -128,15 +126,15 @@
                     MSG.error('配置键不得超过 64 位！');
                     return;
                 }
-                if(this.formInfo.val.length > 1024) {
-                    MSG.error('配置值不得超过 1024 位！');
-                    return;
-                }
-                if(!Util.isNullStr(this.formInfo.extraVal) &&
-                    this.formInfo.extraVal.length > 256) {
-                    MSG.error('备用值不得超过 256 位！');
-                    return;
-                }
+//                if(this.formInfo.val.length > 1024) {
+//                    MSG.error('配置值不得超过 1024 位！');
+//                    return;
+//                }
+//                if(!Util.isNullStr(this.formInfo.extraVal) &&
+//                    this.formInfo.extraVal.length > 256) {
+//                    MSG.error('备用值不得超过 256 位！');
+//                    return;
+//                }
                 if(this.formInfo.description.length > 128) {
                     MSG.error('描述不得超过 128 位！');
                     return;
