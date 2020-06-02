@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "set NODE_ENV=production && node --harmony ./bin/www",
-    "dev": "set NODE_ENV=development && node --harmony ./bin/www"
+    "dev": "set NODE_ENV=development && node --harmony ./bin/www",
+    "macStart": "export NODE_ENV=production && node --harmony ./bin/www",
+    "macDev": "export NODE_ENV=development && node --harmony ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
