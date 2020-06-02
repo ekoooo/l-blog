@@ -2,6 +2,11 @@
 > 个人网站 => http://blog.lwl.tech
 > 后台管理 => http://admin.lwl.tech
 
+```text
+node -v
+v8.8.0
+```
+
 ## 目录说明
 ### 后台
 ```text
