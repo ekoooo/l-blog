@@ -371,6 +371,10 @@ ul, li {
     outline: none;
 }
 
+.view-item-table-container {
+    overflow: auto;
+    padding-bottom: 20px;
+}
 .view-item-table {
     width: 100%;
     border: 1px solid #eee;
@@ -382,6 +386,7 @@ ul, li {
         background-color: #FAFAFA;
         text-align: right;
         padding-right: 10px;
+        min-width: 100px;
     }
 
     td {

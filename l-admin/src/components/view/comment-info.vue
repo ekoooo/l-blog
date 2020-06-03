@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div class="view-item-table-container" v-loading="loading">
         <link rel="stylesheet" href="/static/editor.md/css/editormd.preview.css">
         <link rel="stylesheet" href="/static/editor.md/css/google_code_prettify_themes/vibrant-ink.min.css">
 
