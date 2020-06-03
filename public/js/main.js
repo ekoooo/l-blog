@@ -383,20 +383,21 @@ $(function () {
             for(var i = 0; i < list.length; i++) {
               var item = list[i];
       
-              listDom.append('<li class="comment-info-item" id="post-comment-' + item['post_id'] + '">' +
-                '    <div class="comment-info-box">' +
-                '        <div class="comment-info-row">' +
-                '            <a href="javascript:void(0);" class="comment-info-anchor"># ' + (count + i + 1) + ' </a>' +
-                '            <span class="blod">' +
-                '               <a target="_blank" href="' + item['author_site'] + '">' + item['author'] + '</a>' +
-                '            </span>' +
-                '            <span>于 ' + item['create_time'] + '</span>' +
-                '            <span>回复到：</span>' +
-                '        </div>' +
-                '        <div class="comment-info-row">' +
-                '            <div class="content markdown-body">' + item['content'] + '</div>' +
-                '        </div>' +
+              listDom.append(
+                '<li class="comment-info-item" id="post-comment-' + item['post_id'] + '">' +
+                '  <div class="comment-info-box">' +
+                '    <div class="comment-info-row">' +
+                '      <a href="javascript:void(0);" class="comment-info-anchor"># ' + (count + i + 1) + ' </a>' +
+                '      <span class="blod">' +
+                '        <a target="_blank" href="' + item['author_site'] + '">' + item['author'] + '</a>' +
+                '      </span>' +
+                '      <span>于 ' + item['create_time'] + '</span>' +
+                '      <span>回复到：</span>' +
                 '    </div>' +
+                '    <div class="comment-info-row">' +
+                '      <div class="content markdown-body">' + item['content'] + '</div>' +
+                '    </div>' +
+                '  </div>' +
                 '</li>');
             }
           }
