@@ -61,26 +61,24 @@
                     // await this.fetchScript('/static/editor.md/editormd.js');
 
                     this.$nextTick(() => {
-                        let editor = window.editormd(this.editorId, this.getConfig());
+                        this.editor = window.editormd(this.editorId, this.getConfig());
 
-                        editor.on('load', () => {
+                        this.editor.on('load', () => {
                             setTimeout(() => { // hack bug: 多个编辑器只能初始化一个的问题
                                 this.editorLoaded = true;
-                                this.initData && editor.setMarkdown(this.initData);
+                                this.initData && this.editor.setMarkdown(this.initData);
                             }, this.initDataDelay);
                         });
 
-                        this.onchange && editor.on('change', () => {
-                            let html = editor.getPreviewedHTML();
+                        this.onchange && this.editor.on('change', () => {
+                            let html = this.editor.getPreviewedHTML();
 
                             this.onchange({
-                                markdown: editor.getMarkdown(),
+                                markdown: this.editor.getMarkdown(),
                                 html: html,
                                 text: window.$(html).text()
                             });
                         });
-
-                        this.editor = editor;
                     });
                 })();
             }
