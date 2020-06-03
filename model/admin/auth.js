@@ -112,7 +112,7 @@ class Auth {
             this.userModel.getInfoByUsername(username).then(rows => {
                 if(rows.length !== 1) {
                     reject({
-                        code: CODE.UNAUTHORIZED,
+                        code: CODE.ERROR,
                         message: '用户名或密码错误！',
                     });
                 }else {
@@ -120,14 +120,14 @@ class Auth {
                         if(rs) {
                             if(rows[0].status !== 1) {
                                 reject({
-                                    code: CODE.UNAUTHORIZED,
+                                    code: CODE.ERROR,
                                     message: '账号被冻结！',
                                 });
                             }
                     
                             if(rows[0]['is_admin'] !== 1) {
                                 reject({
-                                    code: CODE.UNAUTHORIZED,
+                                    code: CODE.ERROR,
                                     message: '非管理员账号！',
                                 });
                             }
@@ -135,7 +135,7 @@ class Auth {
                             resolve(rows[0]);
                         }else {
                             reject({
-                                code: CODE.UNAUTHORIZED,
+                                code: CODE.ERROR,
                                 message: '用户名或密码错误！',
                             });
                         }
