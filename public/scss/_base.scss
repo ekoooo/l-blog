@@ -686,6 +686,21 @@ html, body {
         }
     }
 
+    .load-editor {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin-top: 0;
+        color: #FF9D9D;
+        
+        &:hover {
+            color: #FF9D9D;
+            font-weight: bold;
+        }
+    }
+
     .editor-box {
         overflow: hidden;
     }
