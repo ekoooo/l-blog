@@ -1,27 +1,27 @@
 <%#
-    @param hideFooter 是否隐藏 footer
+  @param hideFooter 是否隐藏 footer
 %>
 <% if(!locals.hideFooter) { %>
 <footer class="footer">
-    <div class="content-wrapper">
-        <p>Powered & Designed by liuwanlin</p>
-        <p>Copyright 2017-2020 <%=locals.siteName %></p>
-        <p><%=locals.recordCode %> <a target="_blank" href="<%=locals.adminAddress %>">管理</a></p>
-    </div>
+  <div class="content-wrapper">
+    <p>Powered & Designed by liuwanlin</p>
+    <p>Copyright 2017-2020 <%=locals.siteName %></p>
+    <p><%=locals.recordCode %> <a target="_blank" href="<%=locals.adminAddress %>">管理</a></p>
+  </div>
 </footer>
 <% } %>
 <script src="/static/editor.md/jquery.min.js"></script>
 <script src="/js/main.min.js"></script>
 <%
-    locals.scripts.map(item => {
-        %><script src="<%=item %>"></script><%
-    })
+  locals.scripts.map(item => {
+    %><script src="<%=item %>"></script><%
+  })
 %>
 <!--[if lt IE 9]>
 <script>
-    $(function() {
-        $().message('请使用现代浏览器访问！');
-    });
+  $(function() {
+    $().message('请使用现代浏览器访问！');
+  });
 </script>
 <![endif]-->
 </body>

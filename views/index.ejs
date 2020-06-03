@@ -1,54 +1,52 @@
 <%-include('./tmpl/header', { loadPostCss: true }) %>
 <div class="main">
-    <div class="content-wrapper">
-        <section class="post-expand">
-            <%
-                for(var i = 0; i < list.length; i++) {
-                    let item = list[i];
-            %>
-            <article class="post-preview">
-                <h2 class="post-title"><a href="/post/<%=item.id %>"><%=item['title'] %></a></h2>
-                <div class="post-meta">
-                    <span><i class="iconfont icon-time"></i>发布 <%=item['create_time'] %></span>
-                    <span class="split-line">|</span>
-                    <span><i class="iconfont icon-manage"></i>分类 <%=item['category_name'] %></span>
-                    <span class="split-line">|</span>
-                    <span><i class="iconfont icon-like"></i>点赞 <%=item['up_vote'] %></span>
-                    <span class="split-line">|</span>
-                    <span><i class="iconfont icon-browse"></i>阅读 <%=item['access_count'] %></span>
-                    <br>
-                    <span class="tagcloud">
-                        <i class="iconfont icon-marketing_fill"></i>标签
-                        <%
-                            let tags = item['tags'].split(',');
-                            for(let i = 0; i < tags.length; i++) {
-                        %>
-                        <a href="#" class="color1"><%=tags[i] %></a>
-                        <%
-                            }
-                        %>
-                    </span>
-                </div>
-                <div class="post-desc markdown-body">
-                    <%-item['content_desc'] %>
-                </div>
-                <a href="/post/<%=item.id %>" class="post-detail-btn">阅读全文»</a>
-            </article>
-            <%
+  <div class="content-wrapper">
+    <section class="post-expand">
+      <%
+        for(var i = 0; i < list.length; i++) {
+          let item = list[i];
+      %>
+        <article class="post-preview">
+          <h2 class="post-title"><a href="/post/<%=item.id %>"><%=item['title'] %></a></h2>
+          <div class="post-meta">
+            <span><i class="iconfont icon-time"></i>发布 <%=item['create_time'] %></span>
+            <span class="split-line">|</span>
+            <span><i class="iconfont icon-manage"></i>分类 <%=item['category_name'] %></span>
+            <span class="split-line">|</span>
+            <span><i class="iconfont icon-like"></i>点赞 <%=item['up_vote'] %></span>
+            <span class="split-line">|</span>
+            <span><i class="iconfont icon-browse"></i>阅读 <%=item['access_count'] %></span>
+            <br>
+            <span class="tagcloud">
+              <i class="iconfont icon-marketing_fill"></i>标签
+              <%
+                let tags = item['tags'].split(',');
+                for(let i = 0; i < tags.length; i++) {
+              %>
+                <a href="#" class="color1"><%=tags[i] %></a>
+              <%
                 }
-            %>
-        </section>
-        <%-include('./tmpl/pagination', {
-            totalCount: locals.totalCount,
-            pageSize: locals.pageSize,
-            pageId: locals.pageId,
-            go: '/?page=${pageId}',
-            layout: {
-                jumper: true,
-                prev: true,
-                next: true,
-            },
-        }) %>
-    </div>
+              %>
+            </span>
+          </div>
+          <div class="post-desc markdown-body">
+            <%-item['content_desc'] %>
+          </div>
+          <a href="/post/<%=item.id %>" class="post-detail-btn">阅读全文»</a>
+        </article>
+      <% } %>
+    </section>
+    <%-include('./tmpl/pagination', {
+      totalCount: locals.totalCount,
+      pageSize: locals.pageSize,
+      pageId: locals.pageId,
+      go: '/?page=${pageId}',
+      layout: {
+        jumper: true,
+        prev: true,
+        next: true,
+      },
+    }) %>
+  </div>
 </div>
 <%-include('./tmpl/footer') %>
