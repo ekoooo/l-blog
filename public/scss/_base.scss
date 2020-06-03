@@ -561,6 +561,10 @@ html, body {
     &-item {
         padding: 5px 0;
 
+        .markdown-body pre ol {
+            margin-bottom: 0;
+        }
+
         .blod {
             font-weight: bold;
 
