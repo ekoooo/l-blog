@@ -25,15 +25,15 @@
     }, {
       duration: 300,
       // easing: 'swing',
-      done: function () {
-        setTimeout(function () {
+      done: function() {
+        setTimeout(function() {
           dom.animate({
             opacity: 0,
             top: '0'
           }, {
             duration: 500,
             easing: 'swing',
-            done: function () {
+            done: function() {
               dom.remove();
             }
           });
@@ -43,7 +43,7 @@
   }
 })(jQuery);
 
-$(function () {
+$(function() {
   /**
    * 留言相关
    * @constructor
@@ -129,7 +129,7 @@ $(function () {
           success: function (data) {
             cb(data);
           },
-          error: function () {
+          error: function() {
             cb(false);
           }
         });
@@ -159,7 +159,7 @@ $(function () {
       var script = document.createElement("script");
       script.type = 'text/javascript';
       script.src = '/manager/static/editor.md/editormd.min.js';
-      script.onload = script.onreadystatechange = function () {
+      script.onload = script.onreadystatechange = function() {
         cb && cb();
       };
       document.body.appendChild(script);
@@ -181,7 +181,7 @@ $(function () {
         taskList: true,
       });
       
-      editor.on('load', function () {
+      editor.on('load', function() {
         cb && cb(editor);
         this.resize('200%', null);
       });
@@ -194,6 +194,7 @@ $(function () {
       commentBox: '#comment-tool',
       postId: '#post-id',
       parentId: '#parent-id',
+      replyId: '#reply-id',
       authorName: '#author-name',
       authorMail: '#author-mail',
       authorSite: '#author-site',
@@ -201,7 +202,8 @@ $(function () {
       mdEditor: '#md-editor',
       sendBtn: '#send-comment',
       loadEditorBtn: '#load-editor',
-      moreComment: '.comment-more'
+      moreComment: '.comment-more',
+      replyButotn: '.reply-button',
     };
     
     /**
@@ -210,6 +212,22 @@ $(function () {
     this.initEditor = function() {
       var editor = null;
       var $commentBox = $(selector.commentBox);
+
+      // 关闭弹窗式回复面板
+      var closeCommentModal = function() {
+        $('#parent-id').val(null);
+        $('#reply-id').val(null);
+        $('.comment-container').removeClass('fixed');
+        editor && editor.resize('200%');
+      }
+      // 打开弹窗式回复面板
+      var openCommentModal = function(parentId, replyId) {
+        $('#parent-id').val(parentId);
+        $('#reply-id').val(replyId);
+        $('.comment-container').addClass('fixed');
+
+        editor && editor.resize('200%');
+      }
       
       if(!$commentBox.length) {
         return;
@@ -241,6 +259,7 @@ $(function () {
         var params = {
           postId: $(selector.postId).val(),
           parentId: $(selector.parentId).val(),
+          replyId: $(selector.replyId).val(),
           name: $authorName.val(),
           mail: $authorMail.val(),
           site: $authorSite.val(),
@@ -251,29 +270,34 @@ $(function () {
         send(params, function (data) {
           $t.attr('disabled', false).val(btnText);
           
-          if(data) {
-            if(data.code === 200) {
-              if(data.info.commentCheck) {
-                $().message('评论成功，需管理员审核才能展示');
-              }else {
-                $().message('评论成功');
-                // 刷新列表
-                top.initCommentList(true);
-              }
-              
-              // 清空
-              editor.setMarkdown('');
-              
-              // 昵称，邮箱，网址保存到
-              window.localStorage && window.localStorage.setItem('comment_info', JSON.stringify({
-                name: params.name,
-                mail: params.mail,
-                site: params.site,
-              }));
-            }else {
-              $().message(data.message);
-            }
+          if(!data) {
+            return;
           }
+
+          if(data.code !== 200) {
+            $().message(data.message);
+            return;
+          }
+
+          if(data.info.commentCheck) {
+            $().message('评论成功，需管理员审核才能展示');
+          }else {
+            $().message('评论成功');
+            // 刷新列表
+            top.initCommentList(true);
+          }
+          
+          // 清空
+          editor.setMarkdown('');
+          // 不管是不是弹窗式回复面板，都调用关闭
+          closeCommentModal();
+          
+          // 昵称，邮箱，网址保存到
+          window.localStorage && window.localStorage.setItem('comment_info', JSON.stringify({
+            name: params.name,
+            mail: params.mail,
+            site: params.site,
+          }));
         });
       });
       
@@ -283,8 +307,8 @@ $(function () {
         $(e.currentTarget).val('正在加载编辑器...');
         
         // 加载资源
-        loadMdEditorCss(function () {
-          loadMdEditorScript(function () {
+        loadMdEditorCss(function() {
+          loadMdEditorScript(function() {
             initMdEditor(function (mdEditor) {
               $(e.currentTarget).hide();
               $().message('编辑器加载成功');
@@ -303,7 +327,7 @@ $(function () {
       });
       
       // 如果网址没有填写协议前缀则自动填写
-      $(selector.authorSite).on('blur', function () {
+      $(selector.authorSite).on('blur', function() {
         var val = $(this).val();
         
         if(val.length > 0 &&
@@ -315,10 +339,22 @@ $(function () {
       });
       
       // 加载更多留言
-      $(selector.moreComment).on('click', function () {
+      $(selector.moreComment).on('click', function() {
         if(!top.listLoading) {
           top.listLoading = true;
           top.initCommentList();
+        }
+      });
+
+      // 引用回复
+      $('.comment-list').on('click', selector.replyButotn, function(e) {
+        openCommentModal(this.dataset.parentId, this.dataset.replyId);
+      });
+
+      // 回复弹出点击 modal 关闭
+      $('.comment-container').on('click', function(e) {
+        if($(e.target).hasClass('comment-container')) {
+          closeCommentModal();
         }
       });
     };
@@ -367,7 +403,7 @@ $(function () {
             // 显示留言条数
             $('.comment-info-count').text(data.totalCount);
     
-            var listDom = $('.comment-info-list');
+            var listDom = $('.comment-list');
             var count = undefined;
             
             if(init) {
@@ -382,22 +418,43 @@ $(function () {
             // 显示数据
             for(var i = 0; i < list.length; i++) {
               var item = list[i];
-      
+
+              var childDom = '';
+              var childItem;
+
+              for(var j = 0; j < item.childList.length; j++) {
+                childItem = item.childList[j];
+                childDom += '<li class="comment-list-item" id="post-comment-' + childItem['post_id'] + '">' + 
+                  '  <div>' + 
+                  '    <p class="head">' + 
+                  '      <span class="name"><a target="_blank" href="' + childItem['author_site'] + '">' + childItem['author'] + '</a></span>' + 
+                  '      <span>回复</span>' + 
+                  '      <span class="name"><a target="_blank" href="' + childItem['reply_to_author_site'] + '">' + childItem['reply_to_author'] + '</a></span>' + 
+                  '      <span>于</span>' + 
+                  '      <span class="time">' + childItem['create_time'] + '</span>' + 
+                  '    </p>' + 
+                  '    <div class="content markdown-body">' + childItem['content'] + '</div>' + 
+                  '    <span data-parent-id="' + item['id'] + '" data-reply-id="' + childItem['id'] + '" class="reply-button">回复TA</span>' + 
+                  '  </div>' + 
+                  '</li>';
+              }
+
+              if(childDom.length) {
+                childDom = '<ul class="comment-list-child">' + childDom + '</ul>'
+              }
+
               listDom.append(
-                '<li class="comment-info-item" id="post-comment-' + item['post_id'] + '">' +
-                '  <div class="comment-info-box">' +
-                '    <div class="comment-info-row">' +
-                '      <a href="javascript:void(0);" class="comment-info-anchor"># ' + (count + i + 1) + ' </a>' +
-                '      <span class="blod">' +
-                '        <a target="_blank" href="' + item['author_site'] + '">' + item['author'] + '</a>' +
-                '      </span>' +
-                '      <span>于 ' + item['create_time'] + '</span>' +
-                '      <span>回复到：</span>' +
-                '    </div>' +
-                '    <div class="comment-info-row">' +
-                '      <div class="content markdown-body">' + item['content'] + '</div>' +
-                '    </div>' +
-                '  </div>' +
+                '<li class="comment-list-item" id="post-comment-' + item['post_id'] + '">' +
+                '  <div>' +
+                '    <p class="head">' +
+                '      <span class="name"><a target="_blank" href="' + item['author_site'] + '">' + (count + i + 1) + '# ' + item['author'] + '</a></span>' +
+                '      <span>于</span>' +
+                '      <span class="time">' + item['create_time'] + '</span>' +
+                '      <span>回复：</span>' +
+                '    </p>' +
+                '    <div class="content markdown-body">' + item['content'] + '</div>' +
+                '    <span class="reply-button" data-parent-id="' + item['id'] + '" data-reply-id="' + item['id'] + '">回复TA</span>' +
+                '  </div>' + childDom + 
                 '</li>');
             }
           }
@@ -433,7 +490,7 @@ $(function () {
   function initVote() {
     var postId = $('.post-box').attr('data-post-id');
     
-    $('.post-vote .post-vote-item').on('click', function () {
+    $('.post-vote .post-vote-item').on('click', function() {
       if($('.post-vote-item i.active').length) {
         $().message('您已投过票了！');
       }else {
@@ -478,7 +535,7 @@ $(function () {
    * 初始化 sidebar
    */
   function initSidebar() {
-    $('.sidebar-op').on('click', function () {
+    $('.sidebar-op').on('click', function() {
       var sidebar = $('.sidebar');
       // 第一次初始化数据
       if(!sidebar.attr('data-init')) {

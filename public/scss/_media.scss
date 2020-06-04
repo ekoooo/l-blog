@@ -53,6 +53,20 @@
     }
 }
 
+@media screen and (max-width: $comment-dialog-width) {
+    .comment-container.fixed {
+        .comment-tool {
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 0;
+            margin-left: 0;
+            transform: translateX(0);
+            margin-top: $m-header-height * 2;
+        }
+    }
+}
+
 @media screen and (max-width: $wrapper-width + $sidebar-width) {
     .sidebar-open {
         .content-wrapper {
@@ -128,5 +142,15 @@
 
     .message {
         width: 80%;
+    }
+
+    
+    // 评论模块
+    .comment-info {
+        .comment-list {
+            &-child {
+                padding-left: 1em;
+            }
+        }
     }
 }

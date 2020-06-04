@@ -21,6 +21,56 @@ class Comment {
     static get COMMENT_LIST_PAGE_SIZE() {
         return 10;
     };
+
+    /**
+     * 格式化评论列表
+     * @param dataList
+     */
+    formatCommentList(list) {
+        let ids = [];
+        let item;
+
+        for(let i = 0; i < list.length; i++) {
+            item = Misc.cloneObj(list[i]);
+            ids.push(item['id']);
+
+            list[i] = {
+                id: item['id'],
+                post_id: item['post_id'],
+                author: item['author'],
+                author_site: item['author_site'],
+                mail: item['mail'],
+                content: item['content'],
+                create_time: moment(item['create_time']).format('YYYY-MM-DD HH:mm'),
+                childList: [],
+            };
+
+            if(item['c_id'] != null) {
+                let firstIndex = ids.indexOf(item['id']);
+
+                list[firstIndex === i ? i : firstIndex]['childList'].push({
+                    id: item['c_id'],
+                    parent_id: item['c_parent_id'],
+                    reply_id: item['c_reply_id'],
+                    post_id: item['c_post_id'],
+                    author: item['c_author'],
+                    author_site: item['c_author_site'],
+                    mail: item['c_mail'],
+                    content: item['c_content'],
+                    create_time: moment(item['c_create_time']).format('YYYY-MM-DD HH:mm'),
+                    reply_to_author: item['c_reply_to_author'],
+                    reply_to_author_site: item['c_reply_to_author_site'],
+                });
+
+                if(firstIndex !== i) {
+                    ids.splice(i, 1);
+                    list.splice(i--, 1);
+                }
+            }
+        }
+
+        return list;
+    }
     
     /**
      * 获取评论列表
@@ -48,8 +98,18 @@ class Comment {
         let orderBySql = ` order by create_time desc `;
         let params = [postId];
         
-        // 分页
-        const dataSql = sql + conditionSql + orderBySql + pagerSql;
+        const childSetSql = sql + conditionSql + orderBySql + pagerSql;
+
+        // 二级评论
+        const dataSql = `SELECT
+                pp.*,
+                p.id as c_id, p.parent_id as c_parent_id, p.reply_id  as c_reply_id, p.post_id as c_post_id,
+                p.author as c_author, p.author_site as c_author_site, p.mail as c_mail, p.content as c_content, p.create_time as c_create_time,
+                p2.author as c_reply_to_author, p2.author_site as c_reply_to_author_site
+            from (${ childSetSql }) pp
+            left join post_comments p on pp.id = p.parent_id and status = 1
+            left join post_comments p2 on p2.id = p.reply_id
+            order by pp.create_time desc, c_create_time asc`;
     
         Logger.info(`get comment list =>`, `sql => ${ dataSql }`, `params =>`, params);
     
@@ -61,17 +121,10 @@ class Comment {
         
             let rs = await rsPromise;
             let count = await countPromise;
-            
-            // 格式化时间
-            rs.rows.map(item => {
-                if(item['create_time']) {
-                    item['create_time'] = moment(item['create_time']).format('YYYY-MM-DD HH:mm:ss');
-                }
-            });
-        
+
             return Promise.resolve({
                 code: CODE.SUCCESS,
-                list: rs.rows,
+                list: this.formatCommentList(rs.rows),
                 pageId: Number(pageId),
                 pageSize: Comment.COMMENT_LIST_PAGE_SIZE,
                 totalCount: count.rows[0]['num']
@@ -154,12 +207,27 @@ class Comment {
                 commentCheck = rs.rows[0]['comment_check'];
             }
             
-            // 验证引用的 parentId 是否存在
+            // 验证回复的 parentId 是否存在
             if(!Misc.isNullStr(formInfo.parentId)) {
                 rs = await client.query(`select count(1)::int as num from
                         post_comments where
-                        status = 1 and id = $1 and post_id = $2`,
+                        parent_id is null and status = 1 and id = $1 and post_id = $2`,
                     [formInfo.parentId, formInfo.postId]);
+                
+                if(rs.rows[0].num !== 1) {
+                    return Promise.reject({
+                        code: CODE.ERROR,
+                        message: '回复评论不存在'
+                    });
+                }
+            }
+
+            // 验证 replyId 合法性
+            if(!Misc.isNullStr(formInfo.replyId)) {
+                rs = await client.query(`select count(1)::int as num from
+                        post_comments where status = 1 
+                        and id = $1 and post_id = $2`,
+                    [formInfo.replyId, formInfo.postId]);
                 
                 if(rs.rows[0].num !== 1) {
                     return Promise.reject({
@@ -186,6 +254,7 @@ class Comment {
             const sql = `insert into post_comments (
                     post_id,
                     parent_id,
+                    reply_id,
                     author,
                     author_site,
                     mail,
@@ -193,12 +262,13 @@ class Comment {
                     create_ip,
                     status
                 ) values (
-                    $1, $2, $3, $4, $5, $6, $7, $8
+                    $1, $2, $3, $4, $5, $6, $7, $8, $9
                 ) returning id`;
             
             const params = [
                 formInfo.postId,
                 formInfo.parentId || null,
+                formInfo.replyId || null,
                 formInfo.name,
                 formInfo.site,
                 formInfo.mail,

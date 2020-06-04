@@ -545,72 +545,89 @@ html, body {
     padding-top: 20px;
     font-size: 14px;
     color: #555;
-
-    &-list {
-        padding: 0;
+    
+    .comment-list {
         list-style-type: none;
+        padding-left: 0;
         font-size: 13px;
-    }
 
-    &-row {
-        padding: 0;
-        list-style-type: none;
-        margin-top: 5px;
-    }
+        &-child {
+            list-style-type: none;
+            margin-top: 15px;
+            padding-left: 2em;
 
-    &-item {
-        padding: 5px 0;
-
-        .markdown-body pre ol {
-            margin-bottom: 0;
-        }
-
-        .blod {
-            font-weight: bold;
-
-            a {
-                color: #555;
-                text-decoration: none;
+            .comment-list-item {
+                background: #fbfbfb;
+                margin-top: 4px;
             }
         }
 
-        .content {
-            margin-top: 10px;
-            font-size: 13px;
-            border-radius: 4px;
-            border: 1px dashed #eee;
-            padding: 10px 8px;
-            color: #666;
+        &-item {
+            padding: 15px 0;
+            border: 1px solid #eee;
+            padding: 15px;
+            margin-top: 15px;
 
-            h1,h2,h3,h4,h5,h6 {
-                border-bottom: none;
+            background-color: #fbfafa;
+
+            .head {
+                margin: 0;
             }
-            h1 {
-                font-size: 1.3em;
+            .name {
+                font-weight: bold;
+
+                a {
+                    color: #555;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
             }
-            h2 {
-                font-size: 1.25em;
+            .time {
+                color: #333;
+                font-style: italic;
+                font-weight: 300;
             }
-            h3 {
-                font-size: 1.2em;
+            .reply-button {
+                font-weight: bold;
+                cursor: pointer;
+                color: #34538B;
+
+                &:hover {
+                    text-decoration: underline;
+                }
             }
-            h4 {
-                font-size: 1.15em;
-            }
-            h5 {
-                font-size: 1.1em;
-            }
-            h6 {
-                font-size: 1.05em;
+            .content {
+                padding: 10px 0;
+                border-top: 1px dashed #ddd;
+                border-bottom: 1px dashed #ddd;
+                margin: 15px 0;
+
+                h1,h2,h3,h4,h5,h6 {
+                    border-bottom: none;
+                }
+                h1 {
+                    font-size: 1.3em;
+                }
+                h2 {
+                    font-size: 1.25em;
+                }
+                h3 {
+                    font-size: 1.2em;
+                }
+                h4 {
+                    font-size: 1.15em;
+                }
+                h5 {
+                    font-size: 1.1em;
+                }
+                h6 {
+                    font-size: 1.05em;
+                }
             }
         }
-    }
-
-    &-anchor {
-        font-size: 16px;
-        font-weight: bold;
-        color: $pink-color;
-        text-decoration: none;
     }
 
     .comment-more {
@@ -620,9 +637,36 @@ html, body {
         font-size: 13px;
         text-align: right;
 
+        font-weight: 700;
+        color: #34538b;
+
         &:hover {
-            color: $pink-color;
+            text-decoration: underline;
         }
+    }
+}
+
+.comment-placeholder {
+    min-height: 396px;
+}
+
+.comment-container.fixed {
+    position: fixed;
+    background-color: rgba(0,0,0,0.2);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+
+    .comment-tool {
+        background-color: #fff;
+        width: $comment-dialog-width;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        margin-top: $header-height * 2;
     }
 }
 
@@ -630,6 +674,10 @@ html, body {
     padding-top: 20px;
     font-size: 14px;
     color: #555;
+    
+    .editormd {
+        margin-bottom: 0;
+    }
 
     .comment-author-info {
         border-top: 1px solid #eee;
@@ -676,7 +724,7 @@ html, body {
         padding: 6px 20px;
         border-radius: 2px;
         border: 1px solid #eee;
-        margin-top: 10px;
+        margin: 10px 0;
         outline: none;
         background-color: #fff;
         height: auto;
@@ -693,10 +741,8 @@ html, body {
         width: 100%;
         height: 100%;
         margin-top: 0;
-        color: #FF9D9D;
         
         &:hover {
-            color: #FF9D9D;
             font-weight: bold;
         }
     }

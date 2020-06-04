@@ -6,7 +6,8 @@
     "start": "set NODE_ENV=production && node --harmony ./bin/www",
     "dev": "set NODE_ENV=development && node --harmony ./bin/www",
     "macStart": "export NODE_ENV=production && node --harmony ./bin/www",
-    "macDev": "export NODE_ENV=development && node --harmony ./bin/www"
+    "macDev": "export NODE_ENV=development && node --harmony ./bin/www",
+    "macDebug": "export NODE_ENV=development && nodemon --inspect --harmony ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
@@ -42,6 +43,7 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.1",
     "gulp-strip-css-comments": "^1.2.0",
-    "gulp-uglify": "^3.0.0"
+    "gulp-uglify": "^3.0.0",
+    "nodemon": "^2.0.4"
   }
 }
