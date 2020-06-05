@@ -1,6 +1,9 @@
 <template>
     <div class="box">
-        <el-dialog title="图片预览" :visible.sync="previewDialogVisible">
+        <el-dialog
+            title="图片预览"
+            :append-to-body="true"
+            :visible.sync="previewDialogVisible">
             <div class="preview-img-box">
                 <img :src="previewUrl">
             </div>
@@ -171,7 +174,7 @@
              * @param file
              */
             previewImg(file) {
-                this.previewUrl = file.url;
+                this.previewUrl = this.QINIU_IMAGE_DOMAIN + file.response.key;
                 this.previewDialogVisible = true;
             },
 
