@@ -94,7 +94,9 @@ class Comment {
             from post_comments
             where 1 = 1 `;
         
-        let conditionSql = ` and status = 1 and parent_id is null and post_id = $1 `;
+        let condition1 = ` and status = 1 and post_id = $1 `;
+        let condition2 = ` and parent_id is null `;
+        let conditionSql = condition1 + condition2;
         let orderBySql = ` order by create_time desc `;
         let params = [postId];
         
@@ -118,16 +120,21 @@ class Comment {
         try {
             let rsPromise = client.query(dataSql, params);
             let countPromise = client.query(`select count(1)::int as num from (${ sql + conditionSql }) as tmp`, params);
-        
-            let rs = await rsPromise;
-            let count = await countPromise;
+            let totalPromise = client.query(`select count(1)::int as num from (${ sql + condition1 }) as tmp`, params);
+
+            let [
+                rs,
+                count,
+                total,
+            ] = await Promise.all([rsPromise, countPromise, totalPromise]);
 
             return Promise.resolve({
                 code: CODE.SUCCESS,
                 list: this.formatCommentList(rs.rows),
                 pageId: Number(pageId),
                 pageSize: Comment.COMMENT_LIST_PAGE_SIZE,
-                totalCount: count.rows[0]['num']
+                totalCount: count.rows[0]['num'],
+                count: total.rows[0]['num'],
             });
         }catch(e) {
             Logger.error(`get comment list on error => `, e);
@@ -181,6 +188,12 @@ class Comment {
      * @return {Promise.<void>}
      */
     async addComment(formInfo, ip) {
+        // format
+        formInfo.name = Misc.getHtmlText(formInfo.name);
+        formInfo.site = Misc.getHtmlText(formInfo.site);
+        formInfo.mail = Misc.getHtmlText(formInfo.mail);
+        formInfo.content = xss(formInfo.content);
+
         let errMsg = Comment.validCommentForm(formInfo);
         
         if(errMsg) {
@@ -265,6 +278,8 @@ class Comment {
                     $1, $2, $3, $4, $5, $6, $7, $8, $9
                 ) returning id`;
             
+            const safeContent = xss(formInfo.content);
+
             const params = [
                 formInfo.postId,
                 formInfo.parentId || null,
@@ -272,7 +287,7 @@ class Comment {
                 formInfo.name,
                 formInfo.site,
                 formInfo.mail,
-                xss(formInfo.content),
+                formInfo.content,
                 ip,
                 commentCheck ? 0 : 1
             ];
@@ -284,6 +299,11 @@ class Comment {
                 info: {
                     id: rs.rows[0].id,
                     commentCheck: commentCheck,
+                    // 如果是引用回复才返回内容
+                    childInfo: (formInfo.parentId && formInfo.replyId) ? {
+                        content: formInfo.content,
+                        createTime: moment().format('YYYY-MM-DD HH:mm'),
+                    } : undefined
                 }
             });
         }catch(e) {

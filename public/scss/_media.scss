@@ -6,10 +6,15 @@
             height: $m-nav-size;
             line-height: $m-nav-size;
             margin-top: ($m-header-height - $m-nav-size) / 2;
+            text-align: center;
 
             &.active {
                 .menu {
                     max-height: 500px;
+
+                    &:before {
+                        height: 100%;
+                    }
                 }
             }
 
@@ -29,6 +34,19 @@
                 width: 100%;
                 max-height: 0;
                 overflow: hidden;
+
+                &:before {
+                    transition: all .5s;
+                    content: "";
+                    position: fixed;
+                    width: 100%;
+                    height: 0;
+                    top: $m-header-height;
+                    background: rgba(0,0,0,0.2);
+                    left: 0;
+                    right: 0;
+                    z-index: -1;
+                }
             }
 
             .menu-item {
@@ -38,7 +56,7 @@
                 margin: 0;
 
                 a {
-                    padding: 10px 0;
+                    padding: 12px 0;
                     display: block;
                     text-align: center;
                 }
@@ -113,6 +131,7 @@
             font-size: 14px;
             line-height: $m-header-height;
             color: #555;
+            float: left;
         }
     }
 

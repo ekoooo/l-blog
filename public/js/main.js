@@ -51,6 +51,25 @@ $(function() {
   function CommentTool() {
     var top = this;
     
+    /**
+     * 选择器
+     */
+    var selector = {
+      commentBox: '#comment-tool',
+      postId: '#post-id',
+      parentId: '#parent-id',
+      replyId: '#reply-id',
+      authorName: '#author-name',
+      authorMail: '#author-mail',
+      authorSite: '#author-site',
+      commentArea: '#comment-content-area',
+      mdEditor: '#md-editor',
+      sendBtn: '#send-comment',
+      loadEditorBtn: '#load-editor',
+      moreComment: '.comment-more',
+      replyButotn: '.reply-button',
+    };
+
     // 列表是否在加载中
     this.listLoading = false;
     
@@ -188,23 +207,49 @@ $(function() {
     };
 
     /**
-     * 选择器
+     * 获取被回复的 HTML 结构
      */
-    var selector = {
-      commentBox: '#comment-tool',
-      postId: '#post-id',
-      parentId: '#parent-id',
-      replyId: '#reply-id',
-      authorName: '#author-name',
-      authorMail: '#author-mail',
-      authorSite: '#author-site',
-      commentArea: '#comment-content-area',
-      mdEditor: '#md-editor',
-      sendBtn: '#send-comment',
-      loadEditorBtn: '#load-editor',
-      moreComment: '.comment-more',
-      replyButotn: '.reply-button',
+    var getChildCommentHTML = function(childItem, parentItem) {
+      return '<li class="comment-list-item" id="post-comment-' + childItem['id'] + '">' + 
+                '  <div>' + 
+                '    <p class="head">' + 
+                '      <span class="name"><a target="_blank" href="' + childItem['author_site'] + '">' + childItem['author'] + '</a></span>' + 
+                '      <span>回复</span>' + 
+                '      <span class="name"><a target="_blank" href="' + childItem['reply_to_author_site'] + '">' + childItem['reply_to_author'] + '</a></span>' + 
+                '      <span>于</span>' + 
+                '      <span class="time">' + childItem['create_time'] + '</span>' + 
+                '    </p>' + 
+                '    <div class="content markdown-body">' + childItem['content'] + '</div>' + 
+                '    <span id="reply-button-' + childItem['id'] + '"' + 
+                '          data-parent-id="' + parentItem['id'] + '"' + 
+                '          data-author="' + encodeURI(childItem['author']) + '"' + 
+                '          data-author-site="' + encodeURI(childItem['author_site']) + '"' + 
+                '          data-reply-id="' + childItem['id'] + '" class="reply-button">回复TA</span>' + 
+                '  </div>' + 
+                '</li>'
     };
+
+    /**
+     * 获取第一级回复的 HTML 结构
+     */
+    var getParentCommentHTML = function(item, index, childDom) {
+      return '<li class="comment-list-item" id="post-comment-' + item['id'] + '">' +
+                '  <div>' +
+                '    <p class="head">' +
+                '      <span class="name"><a target="_blank" href="' + item['author_site'] + '">' + index + '# ' + item['author'] + '</a></span>' +
+                '      <span>于</span>' +
+                '      <span class="time">' + item['create_time'] + '</span>' +
+                '      <span>回复：</span>' +
+                '    </p>' +
+                '    <div class="content markdown-body">' + item['content'] + '</div>' +
+                '    <span id="reply-button-' + item['id'] + '"' + 
+                '          data-parent-id="' + item['id'] + '"' + 
+                '          data-author="' + encodeURI(item['author']) + '"' + 
+                '          data-author-site="' + encodeURI(item['author_site']) + '"' + 
+                '          data-reply-id="' + item['id'] + '" class="reply-button">回复TA</span>' + 
+                '  </div>' + childDom + 
+                '</li>'
+    }
     
     /**
      * 添加一个留言工具
@@ -283,15 +328,44 @@ $(function() {
             $().message('评论成功，需管理员审核才能展示');
           }else {
             $().message('评论成功');
-            // 刷新列表
-            top.initCommentList(true);
+
+            // 如果是引用回复，则直接添加 DOM ，否则请求刷新即可
+            if(params.parentId && params.replyId) {
+              closeCommentModal();
+
+              var $replyButton = $('#reply-button-' + params.replyId);
+              var childHtml = getChildCommentHTML({
+                id: data.info.id,
+                content: data.info.childInfo.content,
+                create_time: data.info.childInfo.createTime,
+                post_id: params.postId,
+                author_site: params.site,
+                author: params.name,
+                reply_to_author_site: decodeURI($replyButton.data('authorSite')),
+                reply_to_author: decodeURI($replyButton.data('author')),
+              }, {
+                id: params.parentId
+              });
+
+              var parentSelector = '#post-comment-' + params.parentId;
+              var $childList = $(parentSelector + ' .comment-list-child');
+
+              $childList.length ? 
+                $childList.append(childHtml) : 
+                $(parentSelector).append('<ul class="comment-list-child">' + childHtml + '</ul>')
+
+              // 更新总条数
+              var $count = $('.comment-info-count');
+              $count.text(parseInt($count.text()) + 1);
+            }else {
+              // 刷新列表
+              top.initCommentList(true);
+            }
           }
           
           // 清空
           editor.setMarkdown('');
-          // 不管是不是弹窗式回复面板，都调用关闭
-          closeCommentModal();
-          
+
           // 昵称，邮箱，网址保存到
           window.localStorage && window.localStorage.setItem('comment_info', JSON.stringify({
             name: params.name,
@@ -401,7 +475,7 @@ $(function() {
             }
     
             // 显示留言条数
-            $('.comment-info-count').text(data.totalCount);
+            $('.comment-info-count').text(data.count);
     
             var listDom = $('.comment-list');
             var count = undefined;
@@ -424,38 +498,14 @@ $(function() {
 
               for(var j = 0; j < item.childList.length; j++) {
                 childItem = item.childList[j];
-                childDom += '<li class="comment-list-item" id="post-comment-' + childItem['post_id'] + '">' + 
-                  '  <div>' + 
-                  '    <p class="head">' + 
-                  '      <span class="name"><a target="_blank" href="' + childItem['author_site'] + '">' + childItem['author'] + '</a></span>' + 
-                  '      <span>回复</span>' + 
-                  '      <span class="name"><a target="_blank" href="' + childItem['reply_to_author_site'] + '">' + childItem['reply_to_author'] + '</a></span>' + 
-                  '      <span>于</span>' + 
-                  '      <span class="time">' + childItem['create_time'] + '</span>' + 
-                  '    </p>' + 
-                  '    <div class="content markdown-body">' + childItem['content'] + '</div>' + 
-                  '    <span data-parent-id="' + item['id'] + '" data-reply-id="' + childItem['id'] + '" class="reply-button">回复TA</span>' + 
-                  '  </div>' + 
-                  '</li>';
+                childDom += getChildCommentHTML(childItem, item);
               }
 
               if(childDom.length) {
                 childDom = '<ul class="comment-list-child">' + childDom + '</ul>'
               }
 
-              listDom.append(
-                '<li class="comment-list-item" id="post-comment-' + item['post_id'] + '">' +
-                '  <div>' +
-                '    <p class="head">' +
-                '      <span class="name"><a target="_blank" href="' + item['author_site'] + '">' + (count + i + 1) + '# ' + item['author'] + '</a></span>' +
-                '      <span>于</span>' +
-                '      <span class="time">' + item['create_time'] + '</span>' +
-                '      <span>回复：</span>' +
-                '    </p>' +
-                '    <div class="content markdown-body">' + item['content'] + '</div>' +
-                '    <span class="reply-button" data-parent-id="' + item['id'] + '" data-reply-id="' + item['id'] + '">回复TA</span>' +
-                '  </div>' + childDom + 
-                '</li>');
+              listDom.append(getParentCommentHTML(item, count + i + 1, childDom));
             }
           }
 

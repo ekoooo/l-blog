@@ -53,8 +53,8 @@ const Sender = {
             // add access log
             new Access().addPostAccess(req['params']['id'], req).then(() => {}).catch(() => {});
             
-            data.info['create_time'] = moment(data.info['create_time']).format('YYYY-MM-DD HH:mm:ss');
-            data.info['update_time'] = moment(data.info['update_time']).format('YYYY-MM-DD HH:mm:ss');
+            data.info['create_time'] = moment(data.info['create_time']).format('YYYY-MM-DD HH:mm');
+            data.info['update_time'] = moment(data.info['update_time']).format('YYYY-MM-DD HH:mm');
             
             res.render('post', {
                 ...data,

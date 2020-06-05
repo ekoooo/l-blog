@@ -77,7 +77,6 @@ html, body {
 .footer {
     box-sizing: border-box;
     position: relative;
-    z-index: 100;
     background-color: $footer-bg-color;
     width: 100%;
     height: $footer-height;
@@ -284,6 +283,7 @@ html, body {
         position: relative;
         border-radius: 0 5px 5px 0;
         margin-left: 10px;
+        margin-right: 5px;
         background: #ccc;
         font-family: Menlo,Monaco,Andale Mono,lucida console,Courier New,monospace;
 
@@ -521,11 +521,11 @@ html, body {
 
     &-op {
         position: absolute;
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
         text-align: center;
-        right: -30px;
+        right: -40px;
         bottom: $footer-height;
         background-color: #eee;
         color: #fff;
