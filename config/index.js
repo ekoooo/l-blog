@@ -16,7 +16,7 @@ module.exports = {
         author: '刘万林,liuwanlin',
         title: '刘万林的博客',
         description: '刘万林的博客,记录工作或者学习中所遇到的问题和有趣的知识点',
-        keywords: '刘万林,liuwanlin,lwl,个人博客,个人网站,web前端,后台开发',
+        keywords: '刘万林,个人博客,个人网站,liuwanlin,lwl,web前端,react-native',
         metas: [{ // 自定义 meta
             name: 'google-site-verification',
             content: 'i9SpFYSwMTUHZZSWjj5vIB1EJW7BcnjBnUrJGFh8kqY',
