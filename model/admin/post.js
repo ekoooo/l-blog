@@ -24,6 +24,13 @@ class Post {
         if(formInfo.tags.length === 0) {
             return '标签不能为空';
         }
+
+        for(let i = 0; i < formInfo.tags.length; i++) {
+            if(formInfo.tags[i].length > 32) {
+                return `“${ formInfo.tags[i] }”标签长度不能超过 32 个字符`;
+            }
+        }
+
         if(Misc.isNullStr(formInfo.html) ||
             Misc.isNullStr(formInfo.markdown) ||
             Misc.isNullStr(formInfo.text)) {
