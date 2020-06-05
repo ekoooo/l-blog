@@ -232,7 +232,7 @@
                                 <i
                                     :key="'btn-4-' + props.row.id"
                                     @click="updateStatus(props.row.id, 1)"
-                                    class="el-icon-circle-check-outline op-icon">
+                                    class="el-icon-check op-icon">
                                 </i>
                             </el-tooltip>
                         </template>
