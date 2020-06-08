@@ -60,12 +60,16 @@ class Post {
             pageSize: Post.POST_LIST_PAGE_SIZE
         });
     
-        let sql = `select p.key_words, p.id, p.title, p.create_time, pc.name as category_name, p.up_vote, p.down_vote, p.access_count, pt.tags, p.content_desc
-                   from posts p
-                       left join users u on u.id = p.user_id
-                       left join post_category pc on pc.id = p.post_category_id
-                       left join (select post_id, string_agg(name, ',') as tags from post_tags group by post_id) pt on pt.post_id = p.id
-                   where 1 = 1 `;
+        let sql = `select 
+                        p.key_words, p.id, p.title, p.create_time, pc.name as category_name, 
+                        p.up_vote, p.down_vote, p.access_count, pt.tags, p.content_desc,
+                        coalesce(pcs.comment_num, 0) as comment_num
+                    from posts p
+                        left join users u on u.id = p.user_id
+                        left join post_category pc on pc.id = p.post_category_id
+                        left join (select post_id, string_agg(name, ',') as tags from post_tags group by post_id) pt on pt.post_id = p.id
+                        left join (select post_id, count(id) as comment_num from post_comments where status = 1 group by post_id) pcs on pcs.post_id = p.id
+                    where 1 = 1 `;
         let conditionSql = ` and p.status = 1 and p.id > 0 `;
         let orderBySql = ` order by create_time desc `;
         let params = [];

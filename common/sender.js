@@ -84,7 +84,7 @@ const Sender = {
         promise.then(data => {
             data.list.map(item => {
                 if(item['create_time']) {
-                    item['create_time'] = moment(item['create_time']).format('YYYY-MM-DD HH:mm:ss');
+                    item['create_time'] = moment(item['create_time']).format('YYYY-MM-DD HH:mm');
                 }
             });
             

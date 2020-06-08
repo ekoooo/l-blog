@@ -81,7 +81,7 @@
                         v-if="columns['category_name'].show"
                         :label="columns['category_name'].label"
                         prop="category_name"
-                        width="100">
+                        width="120">
                     </el-table-column>
                     <el-table-column
                         v-if="columns['key_words'].show"
