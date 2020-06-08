@@ -17,9 +17,9 @@ Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
 Vue.use(NProgress, {
-    latencyThreshold: 100,
-    router: true,
-    http: false
+  latencyThreshold: 100,
+  router: true,
+  http: false
 });
 Vue.use(axios);
 Vue.use(log);
@@ -29,36 +29,36 @@ const nprogress = new NProgress({parent: '.nprogress-container'});
 
 // 调整到 new Vue 前面，防止在特殊情形下没来得及执行这个方法已近出现登录失效的情况
 Vue.http.interceptors.request.use(function(config) {
-    Vue.log('[HttpRequest][url, method, data, params]', config.url, config.method, config.data, config.params);
+  Vue.log('[HttpRequest][url, method, data, params]', config.url, config.method, config.data, config.params);
 
-    return config;
+  return config;
 }, function(error) {
-    MSG.error(error.message);
-    return Promise.reject(error);
+  MSG.error(error.message);
+  return Promise.reject(error);
 });
 
 Vue.http.interceptors.response.use(function(response) {
-    Vue.log('[HttpResponse][status, data]', response.status, response.data);
+  Vue.log('[HttpResponse][status, data]', response.status, response.data);
 
-    // validate login
-    if(response.data.code === 401) {
-        MSG.error(response.data.message);
-        
-        router.replace({
-            name: 'login'
-        });
-    }
+  // validate login
+  if(response.data.code === 401) {
+    MSG.error(response.data.message);
     
-    return response;
+    router.replace({
+      name: 'login'
+    });
+  }
+  
+  return response;
 }, function(error) {
-    MSG.error(error.message);
-    return Promise.reject(error);
+  MSG.error(error.message);
+  return Promise.reject(error);
 });
 
 new Vue({
-    el: '#app',
-    router,
-    store,
-    nprogress,
-    ...App,
+  el: '#app',
+  router,
+  store,
+  nprogress,
+  ...App,
 });

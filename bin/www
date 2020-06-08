@@ -8,39 +8,39 @@ const Config = require('../config/index');
 
 // 开启服务失败
 function onError(error) {
-    if (error.syscall !== 'listen') {
-        throw error;
-    }
-    
-    switch (error.code) {
-        case 'EACCES':
-            console.error(Config.serverPort + ' requires elevated privileges');
-            process.exit(1);
-            break;
-        case 'EADDRINUSE':
-            console.error(Config.serverPort + ' is already in use');
-            process.exit(1);
-            break;
-        default:
-            throw error;
-    }
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  
+  switch (error.code) {
+    case 'EACCES':
+      console.error(Config.serverPort + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(Config.serverPort + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
 }
 
 // 开启服务成功
 function onListening() {
-    Logger.info(`Listening on =>`, Config.serverPort);
-    Logger.info(`NODE_ENV => ${ process.env['NODE_ENV'] }`);
+  Logger.info(`Listening on =>`, Config.serverPort);
+  Logger.info(`NODE_ENV => ${ process.env['NODE_ENV'] }`);
 }
 
 (async function() {
-    // 初始化
-    await Init.init();
-    
-    app.set('port', Config.serverPort);
-    
-    let server = http.createServer(app);
-    
-    server.listen(Config.serverPort);
-    server.on('error', onError);
-    server.on('listening', onListening);
+  // 初始化
+  await Init.init();
+  
+  app.set('port', Config.serverPort);
+  
+  let server = http.createServer(app);
+  
+  server.listen(Config.serverPort);
+  server.on('error', onError);
+  server.on('listening', onListening);
 })();

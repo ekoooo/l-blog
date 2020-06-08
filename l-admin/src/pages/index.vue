@@ -1,14 +1,14 @@
 <template>
-    <div class="box">
-    </div>
+  <div class="box">
+  </div>
 </template>
 
 <script>
-    export default {
-        computed: {
-            title: function() {
-                return this.$route.meta.title;
-            }
-        },
-    }
+  export default {
+    computed: {
+      title: function() {
+        return this.$route.meta.title;
+      }
+    },
+  }
 </script>

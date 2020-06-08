@@ -1,11 +1,11 @@
 {
-    "apps": [{
-        "name": "lblog",
-        "script": "./bin/www",
-        "error_file": "./logs/pm2-error.log",
-        "env": {
-            "NODE_ENV": "production"
-        },
-        "node_args": "--harmony"
-    }]
+  "apps": [{
+    "name": "lblog",
+    "script": "./bin/www",
+    "error_file": "./logs/pm2-error.log",
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "node_args": "--harmony"
+  }]
 }

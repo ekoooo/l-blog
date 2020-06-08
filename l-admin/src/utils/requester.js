@@ -3,47 +3,45 @@ import store from '../store/';
 import { API_URL_RPEFIX } from '../config/';
 
 const Requester = {
+  _axios(url, data = {}, method) {
+    const isGet = method === 'get';
+    const isFormDataType = data instanceof FormData;
 
-    _axios(url, data = {}, method) {
+    return Vue.http({
+      baseURL: API_URL_RPEFIX,
+      method: method,
+      url: url,
+      data: isGet ? null : data,
+      params: Object.assign({}, {t: +new Date}, isGet ? data : {}),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': isFormDataType ? 'multipart/form-data' : 'application/json',
+        'Authorization': store.state.userInfo.token
+      }
+    }).then((response) => {
+      return response.data;
+    });
+  },
 
-        const isGet = method === 'get';
-        const isFormDataType = data instanceof FormData;
+  post(url, data) {
+    return this._axios(url, data, 'post');
+  },
 
-        return Vue.http({
-            baseURL: API_URL_RPEFIX,
-            method: method,
-            url: url,
-            data: isGet ? null : data,
-            params: Object.assign({}, {t: +new Date}, isGet ? data : {}),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': isFormDataType ? 'multipart/form-data' : 'application/json',
-                'Authorization': store.state.userInfo.token
-            }
-        }).then((response) => {
-            return response.data;
-        });
-    },
+  delete(url, data) {
+    return this._axios(url, data, 'delete');
+  },
 
-    post(url, data) {
-        return this._axios(url, data, 'post');
-    },
+  put(url, data) {
+    return this._axios(url, data, 'put');
+  },
 
-    delete(url, data) {
-        return this._axios(url, data, 'delete');
-    },
+  get(url, data) {
+    return this._axios(url, data, 'get');
+  },
 
-    put(url, data) {
-        return this._axios(url, data, 'put');
-    },
-
-    get(url, data) {
-        return this._axios(url, data, 'get');
-    },
-
-    patch(url, data) {
-        return this._axios(url, data, 'patch');
-    },
+  patch(url, data) {
+    return this._axios(url, data, 'patch');
+  },
 };
 
 export default Requester;
