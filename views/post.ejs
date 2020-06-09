@@ -37,12 +37,9 @@
       </span>
       </div>
     </div>
-    <%-include('./tmpl/comment', {
-      postId: info['id']
-    }) %>
-    <%-include('./tmpl/comment_list', {
-      postId: info['id']
-    }) %>
+    <%-include('./tmpl/comment', { postId: info['id'] }) %>
+    <%-include('./tmpl/comment_list', { postId: info['id']}) %>
+    <%-include('./tmpl/scroll_top') %>
   </div>
 </div>
 <%-include('./tmpl/footer') %>

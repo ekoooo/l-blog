@@ -69,6 +69,10 @@
     .content-wrapper {
         width: 100%;
     }
+
+    .scroll-top {
+        right: 0;
+    }
 }
 
 @media screen and (max-width: $comment-dialog-width) {

@@ -526,9 +526,10 @@ html, body {
         text-align: center;
         right: -40px;
         bottom: $footer-height;
-        background-color: #eee;
+        background-color: #bbb;
         color: #fff;
         cursor: pointer;
+        border-radius: 4px;
 
         .iconfont {
             display: block;
@@ -759,4 +760,28 @@ html, body {
 
 a[title="站长统计"] {
     display: none;
+}
+
+.scroll-top {
+    display: none;
+    position: fixed;
+    right: 12px;
+    bottom: $footer-height;
+    background: #AAA;
+    z-index: 99;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    text-align: center;
+    color: #fff;
+    user-select: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &-svg {
+        margin-top: 50%;
+        transform: translateY(-50%);
+    }
 }

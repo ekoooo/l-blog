@@ -691,6 +691,43 @@ $(function() {
     })
   }
 
+  function initScrollTop() {
+    var isShow = false;
+
+    var checkVisible = function() {
+      if($(window).scrollTop() > 400) {
+        if(!isShow) {
+          isShow = true;
+          $('.scroll-top').show();
+        }
+      }
+      else {
+        if(isShow) {
+          isShow = false;
+          $('.scroll-top').hide();
+        }
+      }
+    }
+
+    // 先判断是否需要显示，刷新的情况下可能直接要显示
+    checkVisible();
+
+    $(window).on('scroll', function(e) {
+      checkVisible();
+    });
+
+    $('.scroll-top').on('click', function (e) {
+      e.preventDefault();
+      
+      $('html, body').animate({
+        scrollTop: 0,
+      }, {
+        duration: 500,
+        easing: 'swing'
+      });
+    });
+  }
+
   
   /**
    * 初始化
@@ -703,6 +740,7 @@ $(function() {
     initMenu();
     initComment();
     initSearchPage();
+    initScrollTop();
   }
   
   init();
