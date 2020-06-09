@@ -47,9 +47,9 @@ module.exports = function(app) {
   });
   
   // blog 404
-  app.use(function(req, res) {
+  app.use(async function(req, res) {
     res.render('404', {
-      ...Sender.mergeBlogInfo()
+      ...(await Sender.mergeBlogInfo())
     });
   });
 };

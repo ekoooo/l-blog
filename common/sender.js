@@ -1,5 +1,6 @@
 let Logger = require('./logger');
 let Config = require('../config/index');
+let AdminConfig = require('../model/admin/config');
 let Misc = require('../utils/misc');
 let moment = require('moment');
 let Access = require('../model/blog/access');
@@ -7,9 +8,15 @@ let Access = require('../model/blog/access');
 const CODE = require('./code');
 
 const Sender = {
-  mergeBlogInfo: function (info) {
+  async mergeBlogInfo(info) {
     let config = Misc.cloneObj(Config.blogInfo);
-    
+
+    // 获取 关于页面 地址
+    let aboutPage = await new AdminConfig().getSysConfigByKey('ABOUT_PAGE_URL');
+    if(aboutPage.code === CODE.SUCCESS) {
+      config.aboutPageUrl = aboutPage.info.val;
+    }
+
     if(info) {
       if(info.title) {
         config.title = info.title + ' - ' + config.title;
@@ -49,7 +56,7 @@ const Sender = {
    * @param promise
    */
   sendPostPage(req, res, next, promise) {
-    promise.then(data => {
+    promise.then(async data => {
       // add access log
       new Access().addPostAccess(req['params']['id'], req).then(() => {}).catch(() => {});
       
@@ -58,11 +65,11 @@ const Sender = {
       
       res.render('post', {
         ...data,
-        ...Sender.mergeBlogInfo({
+        ...(await Sender.mergeBlogInfo({
           title: data.info['title'],
           keywords: data.info['key_words'],
           description: data.info['content_desc_plain_text']
-        }),
+        })),
       });
     }).catch(err => {
       if(err.code !== CODE.ERROR) {
@@ -78,7 +85,7 @@ const Sender = {
    * 搜索页面
    */
   sendSearchPage(res, next, promise) {
-    promise.then(data => {
+    promise.then(async data => {
       data.list.map(item => {
         if(item['create_time']) {
           item['create_time'] = moment(item['create_time']).format('YYYY-MM-DD HH:mm');
@@ -87,7 +94,7 @@ const Sender = {
       
       res.render('search', {
         ...data,
-        ...Sender.mergeBlogInfo(),
+        ...(await Sender.mergeBlogInfo()),
       });
     }).catch(err => {
       if(err.code !== CODE.ERROR) {
@@ -106,7 +113,7 @@ const Sender = {
    * @param promise
    */
   sendIndexPage(res, next, promise) {
-    promise.then(data => {
+    promise.then(async data => {
       data.list.map(item => {
         if(item['create_time']) {
           item['create_time'] = moment(item['create_time']).format('YYYY-MM-DD HH:mm');
@@ -115,7 +122,7 @@ const Sender = {
       
       res.render('index', {
         ...data,
-        ...Sender.mergeBlogInfo(),
+        ...(await Sender.mergeBlogInfo()),
       });
     }).catch(err => {
       if(err.code !== CODE.ERROR) {
@@ -131,10 +138,10 @@ const Sender = {
    * 分类、标签页面
    */
   sendCategoryPage(res, next, promise) {
-    promise.then(data => {
+    promise.then(async data => {
       res.render('category', {
         ...data,
-        ...Sender.mergeBlogInfo(),
+        ...(await Sender.mergeBlogInfo()),
       });
     }).catch(err => {
       if(err.code !== CODE.ERROR) {
