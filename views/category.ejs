@@ -24,7 +24,7 @@
         for(var i = 0; i < tag.length; i++) {
       %>
           <li class="tag-list-item">
-            <a href="/search?do=1&tag=<%=tag[i]['name'] %>">
+            <a href="/search?do=1&tag=<%=escape(tag[i]['name']) %>">
               <%=tag[i]['name'] %>
               <span class="count">(<%=tag[i]['num'] %>)</span>
             </a>
