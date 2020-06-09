@@ -22,13 +22,13 @@ class Post {
     const client = await Pgsql.pool.connect();
     
     try {
-      let rs = await client.query('select id from posts where status = 1');
+      let rs = await client.query('select id, update_time from posts where status = 1 order by create_time desc');
 
       const pageSize = Post.POST_LIST_PAGE_SIZE;
       return Promise.resolve({
         code: CODE.SUCCESS,
         info: {
-          ids: rs.rows,
+          list: rs.rows,
           totalPage: parseInt((rs.rowCount + pageSize - 1) / pageSize)
         }
       });

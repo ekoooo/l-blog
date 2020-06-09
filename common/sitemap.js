@@ -13,9 +13,10 @@ module.exports = function(app) {
     let urls = [];
 
     // 文章详情页面
-    for(let i = 0; i < info.ids.length; i++) {
+    for(let i = 0; i < info.list.length; i++) {
       urls.push({
-        url: '/post/' + info.ids[i]['id'],
+        url: '/post/' + info.list[i]['id'],
+        lastmod: info.list[i]['update_time'],
         changefreq: 'daily',
         priority: 1
       });
@@ -25,16 +26,16 @@ module.exports = function(app) {
     for(let i = 0; i < info.totalPage; i++) {
       urls.push({
         url: '/?page=' + i,
-        changefreq: 'weekly',
+        changefreq: 'daily',
         priority: 0.8
       });
     }
     
-    res.send(sm.createSitemap ({
+    res.send(sm.createSitemap({
       hostname: Config.serverDomain,
       urls: [
         { url: '/', changefreq: 'daily', priority: 1 }, // 主页
-        { url: '/category', changefreq: 'weekly', priority: 0.8 }, // 文章分类、标签页面
+        { url: '/category', changefreq: 'weekly', priority: 0.9 }, // 文章分类、标签页面
         ...urls
       ]
     }).toString());
