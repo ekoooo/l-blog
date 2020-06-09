@@ -10,10 +10,14 @@ router.get('/', function (req, res, next) {
   let promise = null;
 
   if(query['do'] == 1) {
+    const keyWord = query['keyWord'];
+    const tag = query['tag'];
+    const categoryName = query['categoryName'];
+
     promise = new Post().getPostList(query['page'] || 0, {
-      keyWord: query['keyWord'],
-      tag: query['tag'],
-      categoryName: query['categoryName'],
+      keyWord: keyWord != undefined ? unescape(keyWord) : undefined,
+      tag: tag != undefined ? unescape(tag) : undefined,
+      categoryName: categoryName != undefined ? unescape(categoryName) : undefined,
       categoryId: query['categoryId'],
     })
   }else {
