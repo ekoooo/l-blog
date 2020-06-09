@@ -1,0 +1,64 @@
+<%-include('./tmpl/header', { loadPostCss: false }) %>
+<div class="main">
+  <div class="content-wrapper search-page">
+    <h2 class="title">文章搜索</h2>
+    <div class="search-box">
+      <input
+        id="search-input"
+        class="search-input"
+        type="search"
+        placeholder="请输入关键字搜索..."
+        autocomplete="off">
+    </div>
+    <%
+      // 搜索标签显示
+      if(locals.q.tag != null) {
+        %><p class="search-label">文章标签：<%=unescape(locals.q.tag) %></p><%
+      }
+    %>
+    <%
+      // 搜索分类显示
+      if(locals.q.categoryId != null) {
+        %><p class="search-label">文章分类：<%=unescape(locals.q.categoryName) %></p><%
+      }
+    %>
+
+    <%
+      if(locals.noSearch) {
+    %>
+        <div class="empty-tip">搜索文章标题、内容、摘要、关键字、标签...</div>
+    <%
+      } else {
+    %>
+        <%-include('./tmpl/post_list', { list: locals.list }) %>
+    <%
+        if(locals.list.length === 0) {
+    %>
+          <div class="empty-tip">未搜索到文章，请重新搜索...</div>
+    <%
+        }else {
+          var querys = [];
+          for(var key in locals.q) {
+            if(locals.q[key] != null) {
+              querys.push(key + '=' + locals.q[key]);
+            }
+          }
+    %>
+          <%-include('./tmpl/pagination', {
+            totalCount: locals.totalCount,
+            pageSize: locals.pageSize,
+            pageId: locals.pageId,
+            go: '/search?page=${pageId}&do=1&' + querys.join('&'),
+            layout: {
+              jumper: true,
+              prev: true,
+              next: true,
+            },
+          }) %>
+    <%
+        }
+      }
+    %>
+  </div>
+</div>
+<%-include('./tmpl/footer') %>

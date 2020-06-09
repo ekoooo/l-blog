@@ -11,6 +11,8 @@ module.exports = function(app) {
   // blog
   app.use('/', require('./blog/index'));
   app.use('/post', require('./blog/post'));
+  app.use('/category', require('./blog/category'));
+  app.use('/search', require('./blog/search'));
   
   // app
   app.use('/app', require('./blog/app'));

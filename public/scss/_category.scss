@@ -1,0 +1,94 @@
+.category-page {
+    .title {
+        color: #333;
+        font-size: 22px;
+        font-weight: 400;
+        margin-top: 30px;
+        margin-bottom: 10px;
+    }
+
+    .count {
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    .category-list {
+        padding: 0;
+
+        &-item {
+            list-style: none;
+            font-size: 13px;
+            margin: 10px 0;
+
+            a {
+                text-decoration: none;
+                color: #555;
+                background: #f5f5f5;
+                display: inline-block;
+                padding: 0 15px;
+                line-height: 34px;
+
+                &:hover {
+                    background: #eee;
+                    color: #000;
+                }
+            }
+        }
+    }
+
+    .tag-list {
+        padding: 0;
+
+        &-item {
+            list-style: none;
+            font-size: 13px;
+            margin: 10px 0;
+            margin-right: 5px;
+            display: inline-block;
+
+            a {
+                position: relative;
+                display: inline-block;
+                text-decoration: none;
+                color: #555;
+                background: #f5f5f5;
+                padding: 0 15px;
+                line-height: 34px;
+                margin-right: 17px;
+
+                &:hover {
+                    background: #eee;
+                    color: #000;
+
+                    &:before {
+                        border-left-color: #eee;
+                    }
+                }
+
+                &:before {
+                    content: " ";
+                    width: 0;
+                    height: 0;
+                    position: absolute;
+                    top: 0;
+                    right: -34px;
+                    border: 17px solid transparent;
+                    border-left-color: #f5f5f5;
+                }
+
+                &:after {
+                    content: " ";
+                    width: 6px;
+                    height: 6px;
+                    background-color: #fff;
+                    border-radius: 3px;
+                    -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.3);
+                    box-shadow: 0 0 0 1px rgba(0,0,0,.3);
+                    position: absolute;
+                    top: 14px;
+                    right: -3px;
+                }
+            }
+        }
+    }
+}

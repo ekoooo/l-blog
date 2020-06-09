@@ -73,6 +73,31 @@ const Sender = {
       next();
     });
   },
+
+  /**
+   * 搜索页面
+   */
+  sendSearchPage(res, next, promise) {
+    promise.then(data => {
+      data.list.map(item => {
+        if(item['create_time']) {
+          item['create_time'] = moment(item['create_time']).format('YYYY-MM-DD HH:mm');
+        }
+      });
+      
+      res.render('search', {
+        ...data,
+        ...Sender.mergeBlogInfo(),
+      });
+    }).catch(err => {
+      if(err.code !== CODE.ERROR) {
+        Logger.error(err);
+      }else {
+        Logger.warn(err);
+      }
+      next();
+    });
+  },
   
   /**
    * 主页
@@ -89,6 +114,25 @@ const Sender = {
       });
       
       res.render('index', {
+        ...data,
+        ...Sender.mergeBlogInfo(),
+      });
+    }).catch(err => {
+      if(err.code !== CODE.ERROR) {
+        Logger.error(err);
+      }else {
+        Logger.warn(err);
+      }
+      next();
+    });
+  },
+
+  /**
+   * 分类、标签页面
+   */
+  sendCategoryPage(res, next, promise) {
+    promise.then(data => {
+      res.render('category', {
         ...data,
         ...Sender.mergeBlogInfo(),
       });

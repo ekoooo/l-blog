@@ -55,10 +55,12 @@ class Post {
       // 默认
       pageId = 0;
     }
+
+    const pageSize = Post.POST_LIST_PAGE_SIZE;
     
     let pagerSql = DbUtil.getPagerSqlStr({
       pageId: pageId,
-      pageSize: Post.POST_LIST_PAGE_SIZE
+      pageSize: pageSize
     });
 
     let sql = `select 
@@ -71,12 +73,41 @@ class Post {
         left join (select post_id, string_agg(name, ',') as tags from post_tags group by post_id) pt on pt.post_id = p.id
         left join (select post_id, count(id) as comment_num from post_comments where status = 1 group by post_id) pcs on pcs.post_id = p.id
       where 1 = 1 `;
+
     let conditionSql = ` and p.status = 1 and p.id > 0 `;
     let orderBySql = ` order by create_time desc `;
     let params = [];
     
     if(q) { // 搜索参数
-    
+      let index = 0;
+
+      // 关键字搜索：文章标题、文章内容、描述、关键字、标签
+      if(!Misc.isNullStr(q.keyWord)) {
+        // ilike 忽略大小写
+        conditionSql += ` and (
+          p.title ilike $${ ++index } or 
+          p.plain_text ilike $${ ++index } or 
+          p.content_desc_plain_text ilike $${ ++index } or 
+          p.key_words ilike $${ ++index } or
+          pt.tags ilike $${ ++index }
+        ) `;
+
+        let likeKeyWord = `%${q.keyWord}%`;
+
+        params.push(likeKeyWord, likeKeyWord, likeKeyWord, likeKeyWord, likeKeyWord);
+      }
+
+      // 标签精确搜索
+      if(!Misc.isNullStr(q.tag)) {
+        conditionSql += ` and string_to_array(pt.tags, ',') @> ARRAY [ $${ ++index } ]`;
+        params.push(q.tag);
+      }
+      
+      // 分类搜索
+      if(!Misc.isNullStr(q.categoryId) && Misc.validInt(q.categoryId, 4)) {
+        conditionSql += ` and pc.id = $${ ++index } `;
+        params.push(q.categoryId);
+      }
     }
     
     // 分页
@@ -97,8 +128,9 @@ class Post {
         code: CODE.SUCCESS,
         list: rs.rows,
         pageId: pageId,
-        pageSize: Post.POST_LIST_PAGE_SIZE,
-        totalCount: count.rows[0]['num']
+        pageSize: pageSize,
+        totalCount: count.rows[0]['num'],
+        q: q,
       });
     }catch(e) {
       Logger.error(`get post list on error => `, e);
@@ -170,6 +202,51 @@ class Post {
       return Promise.reject({
         code: CODE.ERROR,
         message: '获取文章列表失败'
+      });
+    }finally {
+      client.release();
+    }
+  }
+
+  /**
+   * 获取 分类、标签 统计数量
+   */
+  async getCategoryInfo() {
+    let categorySql = `select
+        p.post_category_id, pc.name, p.num
+      from (select post_category_id, count(id) as num from posts group by post_category_id) as p
+      left join post_category pc on pc.id = p.post_category_id
+      order by num desc`;
+
+    let tagSql = `select 
+        pt.name, count(id) as num 
+      from post_tags pt 
+      group by pt.name
+      order by num desc`;
+
+    const client = await Pgsql.pool.connect();
+    
+    try {
+      let categoryPromise = client.query(categorySql);
+      let tagPromise = client.query(tagSql);
+    
+      const [category, tag] = await Promise.all([
+        categoryPromise, tagPromise
+      ]);
+
+      return Promise.resolve({
+        code: CODE.SUCCESS,
+        info: {
+          category: category.rows,
+          tag: tag.rows
+        },
+      });
+    }catch(e) {
+      Logger.error(`get category and tag info on error => `, e);
+    
+      return Promise.reject({
+        code: CODE.ERROR,
+        message: '获取分类、标签失败'
       });
     }finally {
       client.release();

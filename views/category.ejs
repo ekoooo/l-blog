@@ -1,0 +1,38 @@
+<%-include('./tmpl/header', { loadPostCss: false }) %>
+<div class="main">
+  <div class="content-wrapper category-page">
+    <h2 class="title">文章分类</h2>
+    <ul class="category-list">
+      <%
+        var category = info.category;
+        for(var i = 0; i < category.length; i++) {
+      %>
+          <li class="category-list-item">
+            <a href="/search?do=1&categoryId=<%=category[i]['post_category_id'] %>&categoryName=<%=escape(category[i]['name']) %>">
+              <%=category[i]['name'] %>
+              <span class="count">(<%=category[i]['num'] %>)</span>
+            </a>
+          </li>
+      <%
+        }
+      %>
+    </ul>
+    <h2 class="title">文章标签</h2>
+    <ul class="tag-list">
+      <%
+        var tag = info.tag;
+        for(var i = 0; i < tag.length; i++) {
+      %>
+          <li class="tag-list-item">
+            <a href="/search?do=1&tag=<%=tag[i]['name'] %>">
+              <%=tag[i]['name'] %>
+              <span class="count">(<%=tag[i]['num'] %>)</span>
+            </a>
+          </li>
+      <%
+        }
+      %>
+    </ul>
+  </div>
+</div>
+<%-include('./tmpl/footer') %>

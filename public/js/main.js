@@ -41,6 +41,16 @@
       }
     });
   }
+
+  /**
+   * 获取链接中的参数
+   */
+  $.fn.getQueryString = function(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+  }
 })(jQuery);
 
 $(function() {
@@ -616,7 +626,7 @@ $(function() {
               // 加入标志
               sidebar.attr('data-init', '1');
             }else {
-              $.message(data.message);
+              $().message(data.message);
             }
           }
         });
@@ -648,6 +658,39 @@ $(function() {
     comment.initEditor();
     comment.initCommentList(true);
   }
+
+  /**
+   * 搜索页面
+   */
+  function initSearchPage() {
+    var $searchInput = $('#search-input');
+
+    if(!$searchInput.length) {
+      return;
+    }
+
+    $searchInput.val($().getQueryString('keyWord'));
+
+    $searchInput.bind('keypress', function(e) {
+      if(event.key !== 'Enter') {
+        return;
+      }
+
+      e.preventDefault();
+
+      // 搜索动作
+
+      var keyWord = e.currentTarget.value;
+
+      if(keyWord.length === 0) {
+        $().message('请输入关键字搜索');
+        return;
+      }
+
+      window.location = '/search?do=1&keyWord=' + escape(keyWord);
+    })
+  }
+
   
   /**
    * 初始化
@@ -659,6 +702,7 @@ $(function() {
     initSidebar();
     initMenu();
     initComment();
+    initSearchPage();
   }
   
   init();
