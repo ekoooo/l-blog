@@ -12,18 +12,20 @@ module.exports = function(app) {
     
     let urls = [];
 
+    // 文章详情页面
     for(let i = 0; i < info.ids.length; i++) {
       urls.push({
         url: '/post/' + info.ids[i]['id'],
-        changefreq: 'weekly',
-        priority: 0.9
+        changefreq: 'daily',
+        priority: 1
       });
     }
     
+    // 首页列表（翻页）
     for(let i = 0; i < info.totalPage; i++) {
       urls.push({
         url: '/?page=' + i,
-        changefreq: 'monthly',
+        changefreq: 'weekly',
         priority: 0.8
       });
     }
@@ -31,7 +33,8 @@ module.exports = function(app) {
     res.send(sm.createSitemap ({
       hostname: Config.serverDomain,
       urls: [
-        { url: '/', changefreq: 'daily', priority: 1 },
+        { url: '/', changefreq: 'daily', priority: 1 }, // 主页
+        { url: '/category', changefreq: 'weekly', priority: 0.8 }, // 文章分类、标签页面
         ...urls
       ]
     }).toString());
