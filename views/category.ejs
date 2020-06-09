@@ -1,7 +1,7 @@
 <%-include('./tmpl/header', { loadPostCss: false }) %>
 <div class="main">
   <div class="content-wrapper category-page">
-    <h2 class="title">文章分类</h2>
+    <h2 class="title">文章分类 <span class="count">(<%=info.category.length %>)</span></h2>
     <ul class="category-list">
       <%
         var category = info.category;
@@ -17,7 +17,7 @@
         }
       %>
     </ul>
-    <h2 class="title">文章标签</h2>
+    <h2 class="title">文章标签 <span class="count">(<%=info.tag.length %>)</span></h2>
     <ul class="tag-list">
       <%
         var tag = info.tag;
