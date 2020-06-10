@@ -44,8 +44,8 @@ class Post {
       return '关键字不能为空';
     }
     
-    if(formInfo.title.length > 64) {
-      return '标题长度不能超过 64 字符';
+    if(formInfo.title.length > 128) {
+      return '标题长度不能超过 128 字符';
     }
     if(formInfo.keyWords.length > 128) {
       return '关键字长度不能超过 128 字符';
@@ -60,7 +60,7 @@ class Post {
     }
     // 标签不能有重复相同
     if(formInfo.tags.length !== new Set(formInfo.tags).size) {
-      return '有重复便签';
+      return '有重复标签';
     }
     
     return false;
