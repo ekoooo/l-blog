@@ -24,7 +24,7 @@
             let tags = item['tags'].split(',');
             for(let i = 0; i < tags.length; i++) {
           %>
-            <a href="#" class="color1"><%=tags[i] %></a>
+            <a href="/search?do=1&tag=<%=escape(tags[i]) %>" class="color1"><%=tags[i] %></a>
           <%
             }
           %>
