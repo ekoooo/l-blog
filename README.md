@@ -2,6 +2,7 @@
 > 个人网站 => http://blog.lwl.tech
 > 后台管理 => http://admin.lwl.tech
 
+## node.js  版本
 ```text
 node -v
 v8.8.0
@@ -63,12 +64,15 @@ v8.8.0
 > 详情请看 `package.json` 文件依赖
 
 ## 命令说明
+
+### 依赖安装
+使用 `yarn` 代替 `npm`
+
 ### 后台
 ```bash
 npm run dev # 开发环境运行
 npm run start # 生产环境运行
-
-gulp # ...
+gulp # 博客前端编译 sass 和 压缩 js
 ```
 
 ### 后台管理前端
