@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.18.1",
     "clipboard": "^1.7.1",
     "echarts": "^4.8.0",
     "element-ui": "^2.0.8",
