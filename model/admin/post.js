@@ -381,6 +381,31 @@ class Post {
       client.release();
     }
   }
+
+  /**
+   * 文章下拉数据
+   */
+  async getPostSelectorData() {
+    const client = await Pgsql.pool.connect();
+    
+    try {
+      const rs = await client.query(`select title, id from posts where status = 1 order by id desc`);
+      
+      return Promise.resolve({
+        code: CODE.SUCCESS,
+        list: rs.rows,
+      });
+    }catch (e) {
+      Logger.error(`get post selector data on error => `, e);
+
+      return Promise.reject({
+        code: CODE.ERROR,
+        message: '获取文章下拉数据失败'
+      });
+    }finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = Post;

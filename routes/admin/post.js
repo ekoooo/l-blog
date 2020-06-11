@@ -78,6 +78,11 @@ router.get('/tag', Filter.filtAdminHttpLogin, function (req, res) {
   Sender.send(res, new PostTag().getTagSelector());
 });
 
+// 获取文章下拉数据
+router.get('/all', Filter.filtAdminHttpLogin, function (req, res) {
+  Sender.send(res, new Post().getPostSelectorData());
+});
+
 // 投票列表
 router.post('/vote/list', Filter.filtAdminHttpLogin, function (req, res) {
   Sender.send(res, new PostVote().getVoteList(req.body));
@@ -86,6 +91,11 @@ router.post('/vote/list', Filter.filtAdminHttpLogin, function (req, res) {
 // 文章访问记录
 router.post('/access/list', Filter.filtAdminHttpLogin, function (req, res) {
   Sender.send(res, new Access().getPostAccessList(req.body));
+});
+
+// 文章访问记录统计
+router.post('/access/chart', Filter.filtAdminHttpLogin, function (req, res) {
+  Sender.send(res, new Access().getPostAccessChartData(req.body));
 });
 
 module.exports = router;

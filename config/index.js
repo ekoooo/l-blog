@@ -21,7 +21,9 @@ module.exports = {
       name: 'google-site-verification',
       content: 'i9SpFYSwMTUHZZSWjj5vIB1EJW7BcnjBnUrJGFh8kqY',
     }],
-    scripts: [], // 需要加载的脚本，比如网站统计
+    scripts: [
+      'https://s22.cnzz.com/z_stat.php?id=1271543900&web_id=1271543900',
+    ], // 需要加载的脚本，比如网站统计
     adminAddress: 'http://admin.lwl.tech', // 后台管理域名
     
     siteName: '刘万林的博客',

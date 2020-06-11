@@ -17,6 +17,16 @@
             size="small"
             class="wd12 item"
             placeholder="请输入标题"></el-input>
+          <el-input
+            v-model="searchParams.createIp"
+            size="small"
+            class="wd8 item"
+            placeholder="IP"></el-input>
+          <el-input
+            v-model="searchParams.userAgent"
+            size="small"
+            class="wd12 item"
+            placeholder="UA"></el-input>
           <el-button
             :loading="listLoading"
             @click="search"

@@ -1,9 +1,9 @@
 <template>
   <el-select
-    multiple
     filterable
     allow-create
     :loading="loading"
+    :multiple="multiple"
     :placeholder="placeholder"
     :value="value"
     :size="size"
@@ -16,24 +16,32 @@
     </el-option>
     <el-option
       v-for="item in listData"
-      :label="item.name"
-      :value="item.name"
-      :key="'post_tag_' + item.name">
+      :label="item.title"
+      :value="item.id + ''"
+      :key="'post_selector_' + item.id">
     </el-option>
   </el-select>
 </template>
 
 <script>
-  import PostTagLogic from '../../logic/post_tag';
+  import PostLogic from '../../logic/post';
 
   export default {
     props: {
       value: {
-        'type': Array,
+        'type': Array | Number,
       },
       size: {
         'type': String,
         'default': 'small'
+      },
+      autoSetFirst: {
+        'type': Boolean,
+        'default': false
+      },
+      autoSetFirstCallBack: {
+        'type': Function,
+        'default': () => {},
       },
       emptyOption: {
         'type': Boolean,
@@ -47,9 +55,13 @@
         'type': Boolean,
         'default': false
       },
+      multiple: {
+        'type': Boolean,
+        'default': false
+      },
       placeholder: {
         'type': String,
-        'default': '请选择文章标签'
+        'default': '请选择文章'
       },
     },
     data: function() {
@@ -65,11 +77,17 @@
     },
     created: function() {
       this.loading = true;
-      PostTagLogic.getPostTagSelector().then((data) => {
-        this.listData = data.info;
+      PostLogic.getPostSelectorData().then((data) => {
+        this.listData = data.list;
         this.loading = false;
-      }).catch(() => {
+
+        if(this.autoSetFirst && this.listData[0]) {
+          this.change(data.list[0].id + '');
+          this.autoSetFirstCallBack();
+        }
+      }).catch((e) => {
         this.loading = false;
+        console.error(e);
       });
     }
   }

@@ -50,6 +50,13 @@ const PostLogic = {
   getPost(id) {
     return requester.get('/admin/post/?id=' + id);
   },
+
+  /**
+   * 获取文章下拉数据
+   */
+  getPostSelectorData() {
+    return requester.get('/admin/post/all');
+  },
   
   /**
    * 更新状态
