@@ -81,7 +81,7 @@
         this.listData = data.list;
         this.loading = false;
 
-        if(this.autoSetFirst && this.listData[0]) {
+        if(this.autoSetFirst && data.list[0]) {
           this.change(data.list[0].id + '');
           this.autoSetFirstCallBack();
         }
