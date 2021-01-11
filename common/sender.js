@@ -179,6 +179,8 @@ const Sender = {
       t = -1;
     }else if(type === 'ZHIHUDAILY_MSG') {
       t = -2;
+    }else if(type === 'XIMALAYA_MSG') {
+      t = -3;
     }
     
     promise.then(rs => {

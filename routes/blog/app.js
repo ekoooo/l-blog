@@ -14,5 +14,9 @@ router.get('/zhihudaily/sponsor', function (req, res) {
 router.get('/zhihudaily/message', function (req, res) {
   Sender.sendApp(req, res, new Config().getSysConfigByKey('ZHIHUDAILY_MSG'), 'ZHIHUDAILY_MSG');
 });
+// 获取《喜马拉雅》最新消息
+router.get('/ximalaya/message', function (req, res) {
+  Sender.sendApp(req, res, new Config().getSysConfigByKey('XIMALAYA_MSG'), 'XIMALAYA_MSG');
+});
 
 module.exports = router;
