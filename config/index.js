@@ -27,7 +27,7 @@ module.exports = {
     adminAddress: 'http://admin.lwl.tech', // 后台管理域名
     
     siteName: '刘万林的博客',
-    recordCode: '粤ICP备17137964号-1',
+    recordCode: '<a href="https://beian.miit.gov.cn/" target="_bank">粤ICP备17137964号-1</a>',
   },
   
   // 初始化第一个管理员的信息
