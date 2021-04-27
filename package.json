@@ -23,7 +23,7 @@
     "pg": "^7.4.0",
     "pg-format": "^1.0.4",
     "qiniu": "^7.1.1",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "serve-favicon": "~2.4.5",
     "sitemap": "^1.13.0",
     "stack-trace": "0.0.10",
