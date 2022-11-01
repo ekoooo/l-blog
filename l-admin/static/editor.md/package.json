@@ -12,7 +12,7 @@
   "author": "ekoooo",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-jshint": "^2.0.4",
     "gulp-minify-css": "^1.2.4",
     "gulp-notify": "^3.0.0",
